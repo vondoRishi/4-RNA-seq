@@ -4,7 +4,8 @@ A [slurm](https://slurm.schedmd.com/) based schema for RNA-seq analysis to execu
 The purpose of this project to develop a easily customizable commandline based schema. Additionally it has basic lynux scripts for file manipulation which is key to execute command line pipeline.
 
 ## install
-__Download__ *wget https://github.com/vondoRishi/4-RNA-seq/raw/master/4-RNA-seq.tar.gz*  
+__Download__   
+		*wget https://github.com/vondoRishi/4-RNA-seq/raw/master/4-RNA-seq.tar.gz*  
 		mkdir /target/directory  
 		tar -xf archive.tar -C /target/directory
 
