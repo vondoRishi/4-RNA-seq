@@ -25,36 +25,36 @@ Input: Reference Genome (DNA sequences) fasta and annotation file (GTF)
 Run “ls -lrth” after every step to find the last modified file
 
 ## QC and Filtering
-1.	Start QC with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
-Input : directory rawReads with fastq or fastq.gz files
-execution : “sbatch -D $PWD --mail-user EMAIL@email.com  scripts/fastqc.sh rawReads”
-Output : directory rawReads
+1.	Start QC with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  
+Input : directory rawReads with fastq or fastq.gz files  
+execution : “sbatch -D $PWD --mail-user EMAIL@email.com scripts/fastqc.sh rawReads”  
+Output : directory rawReads  
 
-2. Summarize by [Multiqc](http://multiqc.info/) ( run almost after all the commands )
-	sbatch -D $PWD --mail-user EMAIL@email.com  scripts/multiqc_slurm.sh rawReads
+2. Summarize by [Multiqc](http://multiqc.info/) ( run almost after all the commands )  
+	sbatch -D $PWD --mail-user EMAIL@email.com scripts/multiqc_slurm.sh rawReads
 
 3. QC filtering with 
-     a) [AfterQC](https://github.com/OpenGene/AfterQC)  ( need to install afterqc by the user and set the path )
-Execution : sbatch -D $PWD --mail-user EMAIL@email.com  scripts/afterqc_batch.sh rawReads
-Output : directory good, bad and QC
+     a) [AfterQC](https://github.com/OpenGene/AfterQC) ( need to install afterqc by the user and set the path )  
+Execution : sbatch -D $PWD --mail-user EMAIL@email.com scripts/afterqc_batch.sh rawReads  
+Output : directory good, bad and QC  
 
      b) Compressing fastq files
 sbatch -D $PWD --mail-user rishi.dasroy@helsinki.fi scripts/compress_fastq.sh good  
      c) AfterQC can not trim adapters from [single end reads](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1469-3). Hence Trimmomatic to cut adapters \[ check for trimming parameters ] \[ Tips for filename ]
-		Input : directory good with fastq or fastq.gz files
-execution : sbatch -D $PWD --mail-user EMAIL@email.com scripts/trimmo.sh good trimmed_reads
-		Output : directory trimmed_reads
+		Input : directory good with fastq or fastq.gz files  
+		execution : sbatch -D $PWD --mail-user EMAIL@email.com scripts/trimmo.sh good trimmed_reads  
+		Output : directory trimmed_reads  
 
 
-{ Run  step 1 and 2 again to review effect of  trimming }
+{ Run step 1 and 2 again to review effect of trimming }
 
 4. [Sortmerna.sh](http://bioinfo.lifl.fr/RNA/sortmerna/) \[ We can execute this at the very beginning ]
-	Input : good
-	Execution sbatch -D $PWD --mail-user EMAIL@email.com  scripts/sortmerna.sh trimmed_reads sortMeRna
-	Output: sortMeRna
-	Execution: sbatch -D $PWD --mail-user EMAIL@email.com  scripts/fastqc.sh sortMeRna
-	Output : sortMeRna 
-  
+	Input : good  
+	Execution sbatch -D $PWD --mail-user EMAIL@email.com scripts/sortmerna.sh trimmed_reads sortMeRna  
+	Output: sortMeRna  
+	Execution: sbatch -D $PWD --mail-user EMAIL@email.com scripts/fastqc.sh sortMeRna  
+	Output : sortMeRna  
+
  ## Alignment 
  Depending upon the library preparation kit the parameters of alignment software need to set. 
  Below is few example of different popular library kit. \[ please report any missing library type and parameters]    
@@ -76,7 +76,8 @@ The second read (read 2) is from the original RNA strand/template, first read (r
 **Parameters:**  
 * TopHat / Cufflinks / Cuffdiff: library-type fr-firststrand  
 * HTSeq: stranded -- reverse  
-### **Directional, second strand:**   The first read (read 1) is from the original RNA strand/template, second read (read 2) is from the opposite strand. The directionality is preserved, as different adapters are ligated to different ends of the fragment.   
+### **Directional, second strand:**
+The first read (read 1) is from the original RNA strand/template, second read (read 2) is from the opposite strand. The directionality is preserved, as different adapters are ligated to different ends of the fragment.   
 **Kits:**  
 * Directional Illumina (Ligation), Standard SOLiD  
 * ScriptSeq v2 RNA-Seq Library Preparation Kit  
