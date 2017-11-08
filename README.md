@@ -7,7 +7,7 @@ The purpose of this project to develop a easily customizable commandline based s
 __Download__   
 		*wget https://github.com/vondoRishi/4-RNA-seq/raw/master/4-RNA-seq.tar.gz*  
 		mkdir /target/directory  
-		tar -xf archive.tar -C /target/directory
+		tar -xf 4-RNA-seq.tar.gz -C /target/directory
 
 ![The schema](https://github.com/vondoRishi/4-RNA-seq/blob/master/4-rna-seq.jpg)
 
@@ -33,7 +33,7 @@ Output : directory rawReads
 2. Summarize by [Multiqc](http://multiqc.info/) ( run almost after all the commands )  
 	sbatch -D $PWD --mail-user EMAIL@email.com scripts/multiqc_slurm.sh rawReads
 
-3. QC filtering with 
+3. QC filtering with  
      a) [AfterQC](https://github.com/OpenGene/AfterQC) ( need to install afterqc by the user and set the path )  
 Execution : sbatch -D $PWD --mail-user EMAIL@email.com scripts/afterqc_batch.sh rawReads  
 Output : directory good, bad and QC  
