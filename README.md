@@ -40,8 +40,8 @@ Output : directory good, bad and QC
 
      b) Compressing fastq files
 sbatch -D $PWD --mail-user rishi.dasroy@helsinki.fi scripts/compress_fastq.sh good  
-     c) AfterQC can not trim adapters from [single end reads](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1469-3). Hence Trimmomatic to cut adapters \[ check for trimming parameters ] \[ Tips for filename ]
-		Input : directory good with fastq or fastq.gz files  
+     c) AfterQC can not trim adapters from [single end reads](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1469-3). Hence Trimmomatic to cut adapters \[ check for trimming parameters ] \[ Tips for filename ]  
+		Input : directory good with fastq or fastq.gz files   
 		execution : sbatch -D $PWD --mail-user EMAIL@email.com scripts/trimmo.sh good trimmed_reads  
 		Output : directory trimmed_reads  
 
