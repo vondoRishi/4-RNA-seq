@@ -27,22 +27,22 @@ Run “ls -lrth” after every step to find the last modified file
 ## QC and Filtering
 1.	Start QC with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  
 Input : directory rawReads with fastq or fastq.gz files  
-execution : “sbatch -D $PWD --mail-user EMAIL@email.com scripts/fastqc.sh rawReads”  
+execution : “sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh rawReads”  
 Output : directory rawReads  
 
 2. Summarize by [Multiqc](http://multiqc.info/) ( run almost after all the commands )  
-	sbatch -D $PWD --mail-user EMAIL@email.com scripts/multiqc_slurm.sh rawReads
+	sbatch -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh rawReads
 
 3. QC filtering with  
      a) [AfterQC](https://github.com/OpenGene/AfterQC) ( need to install afterqc by the user and set the path )  
-Execution : sbatch -D $PWD --mail-user EMAIL@email.com scripts/afterqc_batch.sh rawReads  
+Execution : sbatch -D $PWD --mail-user ur_email_at_domain scripts/afterqc_batch.sh rawReads  
 Output : directory good, bad and QC  
 
      b) Compressing fastq files
-sbatch -D $PWD --mail-user rishi.dasroy@helsinki.fi scripts/compress_fastq.sh good  
+sbatch -D $PWD --mail-user ur_email_at_domain scripts/compress_fastq.sh good  
      c) AfterQC can not trim adapters from [single end reads](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1469-3). Hence Trimmomatic to cut adapters \[ check for trimming parameters ] \[ Tips for filename ]  
 		Input : directory good with fastq or fastq.gz files   
-		execution : sbatch -D $PWD --mail-user EMAIL@email.com scripts/trimmo.sh good trimmed_reads  
+		execution : sbatch -D $PWD --mail-user ur_email_at_domain scripts/trimmo.sh good trimmed_reads  
 		Output : directory trimmed_reads  
 
 
@@ -50,9 +50,9 @@ sbatch -D $PWD --mail-user rishi.dasroy@helsinki.fi scripts/compress_fastq.sh go
 
 4. [Sortmerna.sh](http://bioinfo.lifl.fr/RNA/sortmerna/) \[ We can execute this at the very beginning ]
 	Input : good  
-	Execution sbatch -D $PWD --mail-user EMAIL@email.com scripts/sortmerna.sh trimmed_reads sortMeRna  
+	Execution sbatch -D $PWD --mail-user ur_email_at_domain scripts/sortmerna.sh trimmed_reads sortMeRna  
 	Output: sortMeRna  
-	Execution: sbatch -D $PWD --mail-user EMAIL@email.com scripts/fastqc.sh sortMeRna  
+	Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh sortMeRna  
 	Output : sortMeRna  
 
  ## Alignment 
@@ -93,33 +93,33 @@ Source : [Directional RNA-seq data -which parameters to choose?](http://chipster
 To align to a reference genome 
 * __Star:__  
   + Run scripts/star-genome_annotated.sh before alignment program. Set the parameter --sjdbOverhang (## sjdbOverhang should be (Max_Read_length - 1)  
-  sbatch -D $PWD --mail-user EMAIL@email.com scripts/star-genome_annotated.sh
+  sbatch -D $PWD --mail-user ur_email_at_domain scripts/star-genome_annotated.sh
   + Now align the reads  
-sbatch -D $PWD --mail-user EMAIL@email.com scripts/star_aligner_annotated.sh good star-genome_annotated 
+sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_aligner_annotated.sh good star-genome_annotated 
   + Check alignment quality  
-	sbatch -D $PWD --mail-user EMAIL@email.com scripts/multiqc_slurm.sh star-genome_annotated
+	sbatch -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh star-genome_annotated
 	
 	OR
 
 * __Tophat2:__ run \[ change your parameters for stranded ]  
-  + sbatch -D $PWD --mail-user EMAIL@email.com scripts/tophat2.sh sortMeRna tophat2_strand
-  + sbatch -D $PWD --mail-user EMAIL@email.com scripts/multiqc_slurm.sh tophat2_strand
+  + sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2.sh sortMeRna tophat2_strand
+  + sbatch -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh tophat2_strand
   
  ## Counting
 Stranded?? Set the parameter
 \[ STAR can also give count values of htseq-count’s default parameter ]
-* sbatch -D $PWD --mail-user EMAIL@email.com scripts/star_htseq-count.sh star-genome_annotated
-* sbatch -D $PWD --mail-user EMAIL@email.com scripts/htseq-count.sh tophat2_strand
+* sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star-genome_annotated
+* sbatch -D $PWD --mail-user ur_email_at_domain scripts/htseq-count.sh tophat2_strand
 
 
 # EXTRA
 
 ## Alignment read viewer
 Need to sort (uncomment for tophat output bams) and index.
-* sbatch -D $PWD --mail-user EMAIL@email.com scripts/samtools_index.sh bam_directory
+* sbatch -D $PWD --mail-user ur_email_at_domain scripts/samtools_index.sh bam_directory
 
 ## Compressing fastq files
-* sbatch -D $PWD --mail-user EMAIL@email.com scripts/compress_fastq.sh old_data
+* sbatch -D $PWD --mail-user ur_email_at_domain scripts/compress_fastq.sh old_data
 
 ## Cufflink 
 * sbatch scripts/cuffdiff_batch.sh Derm Ctrl Fgf20 star-genome_annotated 
