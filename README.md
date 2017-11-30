@@ -6,8 +6,8 @@ The purpose of this project to develop a easily customizable commandline based s
 ## install
 __Download__   
 		*wget https://github.com/vondoRishi/4-RNA-seq/raw/master/4-RNA-seq.tar.gz*  
-		mkdir /target/directory  
-		tar -xf 4-RNA-seq.tar.gz -C /target/directory
+		mkdir target_directory  
+		tar -xf 4-RNA-seq.tar.gz -C target_directory
 
 ![The schema](https://github.com/vondoRishi/4-RNA-seq/blob/master/4-rna-seq.jpg)
 
