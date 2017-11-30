@@ -30,7 +30,7 @@ Input : directory rawReads with fastq or fastq.gz files
 execution : “sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh rawReads”  
 Output : directory rawReads  
 
-2. Summarize by [Multiqc](http://multiqc.info/) ( run almost after all the commands )  
+2. Summarize by [Multiqc](http://multiqc.info/) ( run almost after all the commands) { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/Multiqc%20install)}     
 	sbatch -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh rawReads
 
 3. QC filtering with  
