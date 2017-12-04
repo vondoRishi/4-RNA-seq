@@ -34,11 +34,11 @@ Output : directory rawReads
 	sbatch -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh rawReads
 
 3. QC filtering with  
-     a) [AfterQC](https://github.com/OpenGene/AfterQC) ( need to install afterqc by the user.)  
+     a) [AfterQC](https://github.com/OpenGene/AfterQC)  ( Need to install afterqc by the user. [Installation instructions](https://github.com/vondoRishi/4-RNA-seq/tree/master).)  
 Execution : sbatch -D $PWD --mail-user ur_email_at_domain scripts/afterqc_batch.sh rawReads  
 Output : directory good, bad and QC  
-
-     b) Compressing fastq files
+     + Compressing fastq files  
+     AfterQC generates outputs in "fq" format which takes lots of space. Therefore these files needs to be compressed.  
 sbatch -D $PWD --mail-user ur_email_at_domain scripts/compress_fastq.sh good  
      c) AfterQC can not trim adapters from [single end reads](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1469-3). Hence Trimmomatic to cut adapters \[ check for trimming parameters ] \[ Tips for filename ]  
 		Input : directory good with fastq or fastq.gz files   
