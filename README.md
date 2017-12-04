@@ -48,7 +48,8 @@ sbatch -D $PWD --mail-user ur_email_at_domain scripts/compress_fastq.sh good
 
 { Run step 1 and 2 again to review effect of trimming }
 
-4. [Sortmerna.sh](http://bioinfo.lifl.fr/RNA/sortmerna/) \[ We can execute this at the very beginning ]
+4. [Sortmerna.sh](http://bioinfo.lifl.fr/RNA/sortmerna/) \[ We can execute this at the very beginning ]  
+	Sometimes ribosomal or any other unwanted RNAs may present in the library. Sortmerna could be used to filterout them.
 	Input : good  
 	Execution sbatch -D $PWD --mail-user ur_email_at_domain scripts/sortmerna.sh trimmed_reads sortMeRna  
 	Output: sortMeRna  
