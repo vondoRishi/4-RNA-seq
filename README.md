@@ -34,7 +34,7 @@ Output : directory rawReads
 	sbatch -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh rawReads
 
 3. QC filtering with  
-     a) [AfterQC](https://github.com/OpenGene/AfterQC) ( need to install afterqc by the user and set the path )  
+     a) [AfterQC](https://github.com/OpenGene/AfterQC) ( need to install afterqc by the user.)  
 Execution : sbatch -D $PWD --mail-user ur_email_at_domain scripts/afterqc_batch.sh rawReads  
 Output : directory good, bad and QC  
 
