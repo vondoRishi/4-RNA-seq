@@ -34,7 +34,7 @@ Output : directory rawReads
 	sbatch -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh rawReads
 
 3. QC filtering with  
-     a) [AfterQC](https://github.com/OpenGene/AfterQC)  ( Need to install afterqc by the user. [Installation instructions](https://github.com/vondoRishi/4-RNA-seq/tree/master).)  
+     a) [AfterQC](https://github.com/OpenGene/AfterQC)  ( Need to install afterqc by the user. [Installation instructions](https://github.com/vondoRishi/4-RNA-seq/blob/master/AfterQC%20install.md) .)  
 Execution : sbatch -D $PWD --mail-user ur_email_at_domain scripts/afterqc_batch.sh rawReads  
 Output : directory good, bad and QC  
      + Compressing fastq files  
