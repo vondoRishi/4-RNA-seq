@@ -33,7 +33,7 @@ rm commands/Trimmomatic_$1_commands.txt
 	mkdir $2
    fi
 
-for my_file in $1/*.{fastq*,fq}
+for my_file in $1/*.{fastq*,fq,fq.gz}
 do
 	filename="${my_file##*/}"
 	extension="${filename##*.}"
