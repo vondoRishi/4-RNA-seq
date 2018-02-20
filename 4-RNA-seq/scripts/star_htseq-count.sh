@@ -35,7 +35,7 @@ then
 	filename="${my_file##*/}"
         extension="${filename##*.}"
         filename="${filename%%.*}" 
-  echo "samtools view $my_file | htseq-count -s yes -t exon -i gene_id - $WRKDIR/DONOTREMOVE/Mouse_genome/Mus_musculus.GRCm38.79.gtf > $1/htseq_ensemble_gtf_reverse_$filename.txt" >> commands/htseq_$1_commands.txt
+  echo "samtools view $my_file | htseq-count -s yes -t exon -i gene_id - $WRKDIR/DONOTREMOVE/Mouse_genome/Mus_musculus.GRCm38.79.gtf > $1/htseq_ensemble_gtf_$filename.txt" >> commands/htseq_$1_commands.txt
 
 fi
 done
