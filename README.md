@@ -110,7 +110,8 @@ For Star output
   + Set path to GTF file  
   Input: star_output   
   Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star_output   
-  Output: star_output/htseq_*txt  
+  Output: star_output/htseq_*txt   
+  
 Or Tophat output   
   + Set path to GTF file  
   Input: tophat2_output   
