@@ -90,15 +90,15 @@ Source : [Directional RNA-seq data -which parameters to choose?](http://chipster
 
 To align to a reference genome 
 * __Star:__  
-  + Run scripts/star-genome_annotated.sh before alignment program. Set the parameter --sjdbOverhang (## sjdbOverhang should be (Max_Read_length - 1)  
-  Input: good  ( set the path to reference genome and gtf files )
-  Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/star-genome_annotated.sh good star_output  
-  	Internally it executes the  scripts/star_aligner_annotated.sh
+  Set the parameter --sjdbOverhang (## sjdbOverhang should be (Max_Read_length - 1). Additionally set path to reference genome and gtf files.  
+  Input: good  ( set the path to reference genome and gtf files)  
+  Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/star-genome_annotated.sh good star_output   
   Output: star_output (contains bam files and quality report star_output.html)
 	
 	OR
 
 * __Tophat2:__ run \[ change your parameters for stranded ]  
+	Set path to reference genome in the script.
   Input: good  
   Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2.sh good tophat2_output   
   Output: tophat2_output (contains bam files and quality report tophat2_output.html)  
@@ -107,10 +107,12 @@ To align to a reference genome
 Stranded?? Set the parameter
 \[ STAR can also give count values of htseq-count’s default parameter ]   
 For Star output
+  + Set path to GTF file  
   Input: star_output   
   Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star_output   
-  Output: star_output/htseq_*txt
+  Output: star_output/htseq_*txt  
 Or Tophat output   
+  + Set path to GTF file  
   Input: tophat2_output   
   Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2_htseq-count.sh tophat2_output
   Output: tophat2_output/htseq_*txt
