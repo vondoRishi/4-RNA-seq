@@ -23,6 +23,10 @@ This pipeline and workflow is based on [Taito.csc server batch scripts](https://
 **Additional info** :  Library type, sequencing platform
 Input: Reference Genome (DNA sequences) fasta and annotation file (GTF)
 Run “ls -lrth” after every step to find the last modified file
+## Dependency   
+Need to install afterqc by the user.
+* [Multiqc](http://multiqc.info/) ( run almost after all the commands) { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/Multiqc%20install.md)}   
+* [AfterQC](https://github.com/OpenGene/AfterQC)  { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/AfterQC%20install.md) .}
 
 ## QC and Filtering
 1.	Start QC with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  
@@ -30,31 +34,24 @@ Input : directory rawReads with fastq or fastq.gz files
 execution : “sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh rawReads”  
 Output : directory rawReads  
 
-2. Summarize by [Multiqc](http://multiqc.info/) ( run almost after all the commands) { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/Multiqc%20install.md)}     
-	sbatch -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh rawReads
-
-3. QC filtering with  
-     a) [AfterQC](https://github.com/OpenGene/AfterQC)  ( Need to install afterqc by the user. Installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/AfterQC%20install.md) .)  
+2. Filter/trimminging with  
+     a) [AfterQC](https://github.com/OpenGene/AfterQC)  
 Execution : sbatch -D $PWD --mail-user ur_email_at_domain scripts/afterqc_batch.sh rawReads  
 Output : directory good, bad and QC  
-     + Compressing fastq files  
-     AfterQC generates outputs in "fq" format which takes lots of space. Therefore these files needs to be compressed.  
-sbatch -D $PWD --mail-user ur_email_at_domain scripts/compress_fastq.sh good  
-     c) AfterQC can not trim adapters from [single end reads](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1469-3). Hence Trimmomatic to cut adapters \[ check for trimming parameters ] \[ Tips for filename ]  
+     b) AfterQC can not trim adapters from [single end reads](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1469-3). Hence Trimmomatic to cut adapters \[ check for trimming parameters ] \[ Tips for filename ]  
 		Input : directory good with fastq or fastq.gz files   
 		execution : sbatch -D $PWD --mail-user ur_email_at_domain scripts/trimmo.sh good trimmed_reads  
 		Output : directory trimmed_reads  
 
+{ Run step 1 review effect of trimming }
 
-{ Run step 1 and 2 again to review effect of trimming }
-
-4. [Sortmerna.sh](http://bioinfo.lifl.fr/RNA/sortmerna/) \[ We can execute this at the very beginning ]  
-	Sometimes ribosomal or any other unwanted RNAs may present in the library. Sortmerna could be used to filterout them.
-	Input : good  
-	Execution sbatch -D $PWD --mail-user ur_email_at_domain scripts/sortmerna.sh trimmed_reads sortMeRna  
+3. [Sortmerna.sh](http://bioinfo.lifl.fr/RNA/sortmerna/) \[ We can also execute this at the very beginning (optional) ]  
+	Sometimes ribosomal or any other unwanted RNAs may present in the library. Sortmerna could be used to filterout them.  
+	Input: good   
+	Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/sortmerna.sh trimmed_reads sortMeRna   
 	Output: sortMeRna  
 	Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh sortMeRna  
-	Output : sortMeRna  
+	Output: sortMeRna  
 
  ## Alignment 
  Depending upon the library preparation kit the parameters of alignment software need to set. 
@@ -94,25 +91,29 @@ Source : [Directional RNA-seq data -which parameters to choose?](http://chipster
 To align to a reference genome 
 * __Star:__  
   + Run scripts/star-genome_annotated.sh before alignment program. Set the parameter --sjdbOverhang (## sjdbOverhang should be (Max_Read_length - 1)  
-  sbatch -D $PWD --mail-user ur_email_at_domain scripts/star-genome_annotated.sh
-  + Now align the reads  
-sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_aligner_annotated.sh good star-genome_annotated 
-  + Check alignment quality  
-	sbatch -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh star-genome_annotated
+  Input: good  ( set the path to reference genome and gtf files )
+  Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/star-genome_annotated.sh good star_output  
+  	Internally it executes the  scripts/star_aligner_annotated.sh
+  Output: star_output (contains bam files and quality report star_output.html)
 	
 	OR
 
 * __Tophat2:__ run \[ change your parameters for stranded ]  
-  + sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2.sh sortMeRna tophat2_strand
-  + sbatch -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh tophat2_strand
+  Input: good  
+  Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2.sh good tophat2_output   
+  Output: tophat2_output (contains bam files and quality report tophat2_output.html)  
   
  ## Counting
 Stranded?? Set the parameter
 \[ STAR can also give count values of htseq-count’s default parameter ]   
 For Star output
-* sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star-genome_annotated   
+  Input: star_output   
+  Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star_output   
+  Output: star_output/htseq_*txt
 Or Tophat output   
-* sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2_htseq-count.sh tophat2_strand
+  Input: tophat2_output   
+  Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2_htseq-count.sh tophat2_output
+  Output: tophat2_output/htseq_*txt
 
 
 # EXTRA
