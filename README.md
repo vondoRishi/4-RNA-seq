@@ -108,10 +108,10 @@ sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_aligner_annotated.sh 
   
  ## Counting
 Stranded?? Set the parameter
-\[ STAR can also give count values of htseq-count’s default parameter ]
+\[ STAR can also give count values of htseq-count’s default parameter ]   
 For Star output
-* sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star-genome_annotated
-Or Tophat output
+* sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star-genome_annotated   
+Or Tophat output   
 * sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2_htseq-count.sh tophat2_strand
 
 
