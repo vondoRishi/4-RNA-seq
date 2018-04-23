@@ -29,7 +29,7 @@ Need to install afterqc by the user.
 * [AfterQC](https://github.com/OpenGene/AfterQC)  { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/AfterQC%20install.md) .}
 
 ## QC and Filtering
-1.	Start QC with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  
+1.	Start QC with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  and [Multiqc](http://multiqc.info/)
 Input : directory rawReads with fastq or fastq.gz files  
 execution : “sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh rawReads”  
 Output : directory rawReads  
