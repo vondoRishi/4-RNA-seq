@@ -3,7 +3,7 @@ A [slurm](https://slurm.schedmd.com/) based schema for RNA-seq analysis to execu
 
 The purpose of this project to develop a easily customizable commandline based schema. Additionally it has basic linux scripts for file manipulation which is key to execute command line pipeline.
 
-## install
+## Installation
 __Download__   
 		*wget https://github.com/vondoRishi/4-RNA-seq/archive/master.zip*  
 		mkdir target_directory  
@@ -11,7 +11,7 @@ __Download__
 
 ![The schema](https://github.com/vondoRishi/4-RNA-seq/blob/master/4-rna-seq.jpg)
 
-# RNA-seq pipeline for SE reads
+# RNA-seq pipeline
 
 This pipeline and workflow is based on [Taito.csc server batch scripts](https://research.csc.fi/taito-batch-jobs). The objective of this documentation is to make execution faster and reproducible as much as possible. The project folder ( should be in $WRKDIR path) should contain these folders before starting
 * scripts : contains all scripts to run in taito server
