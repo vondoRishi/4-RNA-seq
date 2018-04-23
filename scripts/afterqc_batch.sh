@@ -11,17 +11,23 @@
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
 
+source scripts/command_utility.sh
+num_cmnds=$( cmnds_in_file )
+
 module load biokit
-rm commands/afterqc_$1_commands.txt
 
 for my_file in $1/*.{fastq*,fq}
 do
 if [  -f $my_file ]
 then
-  echo " python $USERAPPL/AfterQC-master/after.py  -1 $my_file " >> commands/afterqc_$1_commands.txt
+  echo " python $USERAPPL/AfterQC-master/after.py  -1 $my_file " >> commands/$num_cmnds"_afterqc_"$1_commands.txt
 fi
 done
-sbatch_commandlist -t 4:00:00 -mem 4000 -jobname afterqc_array -threads 1  -commands commands/afterqc_$1_commands.txt
+sbatch_commandlist -t 4:00:00 -mem 4000 -jobname afterqc_array -threads 1  -commands commands/$num_cmnds"_afterqc_"$1_commands.txt
+
+
+mv *_out_*txt OUT
+mv *_err_*txt ERROR
 
 # This script will print some usage statistics to the
 # end of file: afterqc_out
