@@ -11,22 +11,10 @@
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
 
-# commands to manage the batch script
-#   submission command
-#     sbatch [script-file]
-#   status command
-#     squeue -u dasroy
-#   termination command
-#     scancel [jobid]
+source scripts/command_utility.sh
+num_cmnds=$( cmnds_in_file )
 
-# For more information
-#   man sbatch
-#   more examples in Taito guide in
-#   http://research.csc.fi/taito-user-guide
-
-# example run commands
 module load biokit
-rm commands/tophat2_$1_commands.txt
 
 if [ ! -d "$2" ]
 then
@@ -41,11 +29,15 @@ then
         extension="${filename##*.}"
         filename="${filename%.*}"  
 
-echo "tophat2 --library-type fr-firststrand -p 4 -o $2/$filename $WRKDIR/DONOTREMOVE/Mouse_genome/Mus_musculus_GRCm38  $my_file " >> commands/tophat2_$1_commands.txt
+echo "tophat2 --library-type fr-firststrand -p 4 -o $2/$filename $WRKDIR/DONOTREMOVE/Mouse_genome/Mus_musculus_GRCm38  $my_file " >> commands/$num_cmnds"_tophat2_"$1.txt
 fi
 done
-sbatch_commandlist -t 12:00:00 -mem 24000 -jobname tophat2_array -threads 4 -commands  commands/tophat2_$1_commands.txt
+sbatch_commandlist -t 12:00:00 -mem 24000 -jobname tophat2_array -threads 4 -commands  commands/$num_cmnds"_tophat2_"$1.txt
 
+mv *_out_*txt OUT
+mv *_err_*txt ERROR
+
+source scripts/multiqc_slurm.sh $2
 # This script will print some usage statistics to the
 # end of file: tophat2_out
 # Use that to improve your resource request estimate

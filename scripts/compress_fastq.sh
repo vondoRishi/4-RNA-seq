@@ -11,33 +11,23 @@
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
 
-# commands to manage the batch script
-#   submission command
-#     sbatch [script-file]
-#   status command
-#     squeue -u dasroy
-#   termination command
-#     scancel [jobid]
+source scripts/command_utility.sh
+num_cmnds=$( cmnds_in_file )
 
-# For more information
-#   man sbatch
-#   more examples in Taito guide in
-#   http://research.csc.fi/taito-user-guide
-
-# example run commands
 module load biokit
-rm commands/compress_$1_commands.txt
 
-for my_file in $1/*.{fastq*,fq}
+for my_file in $1/*.{fastq,fq}
 do
 if [  -f $my_file ]
 then
 
-	echo "gzip  $my_file " >> commands/compress_$1_commands.txt
+	echo "gzip  $my_file " >> commands/$num_cmnds"_compress_"$1.txt
 fi
 done
-sbatch_commandlist -t 12:00:00 -mem 4000 -jobname compress_array -threads 4 -commands  commands/compress_$1_commands.txt
+sbatch_commandlist -t 12:00:00 -mem 4000 -jobname compress_array -threads 4 -commands  commands/$num_cmnds"_compress_"$1.txt
 
+mv *_out_*txt OUT
+mv *_err_*txt ERROR
 # This script will print some usage statistics to the
 # end of file: compress_out
 # Use that to improve your resource request estimate

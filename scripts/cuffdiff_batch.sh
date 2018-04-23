@@ -11,37 +11,39 @@
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
 
+source scripts/command_utility.sh
+num_cmnds=$( cmnds_in_file )
+
 module load biokit 
-rm -rf commands/cuffdiff_$1_$2_$3_commands.txt
   if [ ! -d cuffdiff_$1_$2_$3 ]
    then
         mkdir cuffdiff_$1_$2_$3
    fi
 
-echo "cuffdiff -o cuffdiff_$1_$2_$3  -p 6 -u -L $2,$3  $WRKDIR/DONOTREMOVE/Mouse_genome/Mus_musculus.GRCm38.79.gtf \ " >> commands/cuffdiff_$1_$2_$3_commands.txt
+echo "cuffdiff -o cuffdiff_$1_$2_$3  -p 6 -u -L $2,$3  $WRKDIR/DONOTREMOVE/Mouse_genome/Mus_musculus.GRCm38.79.gtf \ " >> commands/$num_cmnds"_cuffdiff_"$1_$2_$3.txt
 	
 for u_file in $4/*$1*$2*bam
 do
   if [  -f $u_file ]
    then
 
-  echo "$u_file,\\" >> commands/cuffdiff_$1_$2_$3_commands.txt
+  echo "$u_file,\\" >> commands/$num_cmnds"_cuffdiff_"$1_$2_$3.txt
   
 fi
 done
 
-  echo " \\" >> commands/cuffdiff_$1_$2_$3_commands.txt
+  echo " \\" >> commands/$num_cmnds"_cuffdiff_"$1_$2_$3.txt
 
 for my_file in $4/*$1*$3*bam
 do
   if [  -f $my_file ]
    then
 
-  echo "$my_file,\\" >> commands/cuffdiff_$1_$2_$3_commands.txt
+  echo "$my_file,\\" >> commands/$num_cmnds"_cuffdiff_"$1_$2_$3.txt
   
 fi
 done
-# sbatch_commandlist -t 12:00:00 -mem 24000 -jobname cuffdiff_array -threads 8 -commands commands/cuffdiff_$1_$2_$3_commands.txt
+# sbatch_commandlist -t 12:00:00 -mem 24000 -jobname cuffdiff_array -threads 8 -commands commands/$num_cmnds"_cuffdiff_"$1_$2_$3.txt
 
 # This script will print some usage statistics to the
 # end of file: cuffdiff_out

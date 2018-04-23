@@ -11,22 +11,10 @@
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
 
-# commands to manage the batch script
-#   submission command
-#     sbatch [script-file]
-#   status command
-#     squeue -u dasroy
-#   termination command
-#     scancel [jobid]
+source scripts/command_utility.sh
+num_cmnds=$( cmnds_in_file )
 
-# For more information
-#   man sbatch
-#   more examples in Taito guide in
-#   http://research.csc.fi/taito-user-guide
-
-# example run commands
 module load biokit
-rm -rf commands/htseq_$1_commands.txt
 
 for my_file in $1/*
 do
@@ -35,12 +23,17 @@ then
 	filename="${my_file##*/}"
         extension="${filename##*.}"
         filename="${filename%%.*}" 
-  echo "samtools view $my_file/accepted_hits.bam | htseq-count -s reverse -t exon -i gene_id - $WRKDIR/DONOTREMOVE/Mouse_genome/Mus_musculus.GRCm38.79.gtf > $1/htseq_ensemble_reverse_$filename.txt" >> commands/htseq_$1_commands.txt
+  echo "samtools view $my_file/accepted_hits.bam | htseq-count -s reverse -t exon -i gene_id - $WRKDIR/DONOTREMOVE/Mouse_genome/Mus_musculus.GRCm38.79.gtf > $1/htseq_ensemble_reverse_$filename.txt" >> commands/$num_cmnds"_htseq_"$1_commands.txt
 
 fi
 done
-sbatch_commandlist -t 22:00:00 -mem 8000 -jobname htseq_array -threads 1 -commands  commands/htseq_$1_commands.txt
+sbatch_commandlist -t 22:00:00 -mem 8000 -jobname htseq_array -threads 1 -commands  commands/$num_cmnds"_htseq_"$1_commands.txt
 
+
+mv *_out_*txt OUT
+mv *_err_*txt ERROR
+
+source scripts/multiqc_slurm.sh $1
 # This script will print some usage statistics to the
 # end of file: htseq_out
 # Use that to improve your resource request estimate

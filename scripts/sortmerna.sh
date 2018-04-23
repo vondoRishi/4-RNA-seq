@@ -11,28 +11,17 @@
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
 
-# commands to manage the batch script
-#   submission command
-#     sbatch [script-file]
-#   status command
-#     squeue -u dasroy
-#   termination command
-#     scancel [jobid]
+source scripts/command_utility.sh
+num_cmnds=$( cmnds_in_file )
 
-## SBATCH --cpus-per-task=4
-# For more information
-#   man sbatch
-#   more examples in Taito guide in
-#   http://research.csc.fi/taito-user-guide
-
-# example run commands
 module load qiime/1.9.1
-rm -rf commands/sortmerna_$1_commands.txt
-  if [ ! -d "$2" ]
+  
+if [ ! -d "$2" ]
    then
         mkdir "$2"
-   fi
-for my_file in $1/*.{fastq*,fq}
+fi
+
+for my_file in $1/*.{fastq*,fq*}
 do
   if [  -f "$my_file" ]
    then
@@ -40,13 +29,15 @@ do
         extension="${filename##*.}"
         filename="${filename%.*}"
 
-  echo "sortmerna  --ref /wrk/dasroy/DONOTREMOVE/Mouse_genome/miscRNA/miscRNA_rRna_id_mouse.fasta,/wrk/dasroy/DONOTREMOVE/Mouse_genome/miscRNA/miscRNA_rRna_id_mouse.idx --reads $my_file --fastx  -a 8 --aligned $2/rRna_miscRNA_$filename --other $2/no_miscRna_$filename" >> commands/sortmerna_$1_commands.txt
+  echo "sortmerna  --ref $WRKDIR/DONOTREMOVE/Mouse_genome/miscRNA/miscRNA_rRna_id_mouse.fasta,$WRKDIR/DONOTREMOVE/Mouse_genome/miscRNA/miscRNA_rRna_id_mouse.idx --reads $my_file --fastx  -a 8 --aligned $2/rRna_miscRNA_$filename --other $2/no_miscRna_$filename" >> commands/$num_cmnds"_sortmerna_"$1_commands.txt
   
 fi
 done
-sbatch_commandlist -t 12:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/sortmerna_$1_commands.txt
+sbatch_commandlist -t 12:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/$num_cmnds"_sortmerna_"$1_commands.txt
 rm -rf $2/rRna_*
 
+mv *_out_*txt OUT
+mv *_err_*txt ERROR
 # This script will print some usage statistics to the
 # end of file: sortmerna_out
 # Use that to improve your resource request estimate

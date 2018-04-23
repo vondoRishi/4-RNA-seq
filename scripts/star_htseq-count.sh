@@ -12,22 +12,10 @@
 #SBATCH --mail-type=END
 #SBATCH --mail-user=rishi.dasroy@helsinki.fi
 
-# commands to manage the batch script
-#   submission command
-#     sbatch [script-file]
-#   status command
-#     squeue -u dasroy
-#   termination command
-#     scancel [jobid]
+source scripts/command_utility.sh
+num_cmnds=$( cmnds_in_file )
 
-# For more information
-#   man sbatch
-#   more examples in Taito guide in
-#   http://research.csc.fi/taito-user-guide
-
-# example run commands
 module load biokit
-rm commands/htseq_$1_commands.txt
 for my_file in $1/*.bam
 do
 if [ -f "$my_file" ]
@@ -35,11 +23,14 @@ then
 	filename="${my_file##*/}"
         extension="${filename##*.}"
         filename="${filename%%.*}" 
-  echo "samtools view $my_file | htseq-count -s yes -t exon -i gene_id - $WRKDIR/DONOTREMOVE/Mouse_genome/Mus_musculus.GRCm38.79.gtf > $1/htseq_ensemble_gtf_$filename.txt" >> commands/htseq_$1_commands.txt
+  echo "samtools view $my_file | htseq-count -s yes -t exon -i gene_id - $WRKDIR/DONOTREMOVE/Mouse_genome/Mus_musculus.GRCm38.79.gtf > $1/htseq_ensemble_gtf_$filename.txt" >> commands/$num_cmnds"_htseq_"$1.txt
 
 fi
 done
-sbatch_commandlist -t 12:00:00 -mem 4000 -jobname htseq_star -threads 1 -commands  commands/htseq_$1_commands.txt
+sbatch_commandlist -t 12:00:00 -mem 4000 -jobname htseq_star -threads 1 -commands  commands/$num_cmnds"_htseq_"$1.txt
+
+mv *_out_*txt OUT
+mv *_err_*txt ERROR
 
 # This script will print some usage statistics to the
 # end of file: htseq_out

@@ -12,22 +12,10 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mail-type=END
 
-# commands to manage the batch script
-#   submission command
-#     sbatch [script-file]
-#   status command
-#     squeue -u dasroy
-#   termination command
-#     scancel [jobid]
+source scripts/command_utility.sh
+num_cmnds=$( cmnds_in_file )
 
-# For more information
-#   man sbatch
-#   more examples in Taito guide in
-#   http://research.csc.fi/taito-user-guide
 
-# example run commands
-#module load biokit
-rm commands/Trimmomatic_$1_commands.txt
   if [ ! -d $2 ]
    then
 	mkdir $2
@@ -41,10 +29,12 @@ do
 	echo $filename ;
 	echo $extension ;
   echo "trimmomatic SE -phred33 -threads 8  $my_file $2/trimmed_$filename.$extension \
-ILLUMINACLIP:/appl/bio/trimmomatic/adapters/TruSeq3-SE.fa:2:30:10   " >> commands/Trimmomatic_$1_commands.txt
+ILLUMINACLIP:/appl/bio/trimmomatic/adapters/TruSeq3-SE.fa:2:30:10   " >> commands/$num_cmnds"_Trimmomatic_"$1_commands.txt
 done
- sbatch_commandlist -t 1:00:00 -mem 4000 -jobname trimo_array -threads 8 -commands commands/Trimmomatic_$1_commands.txt
+ sbatch_commandlist -t 1:00:00 -mem 4000 -jobname trimo_array -threads 8 -commands commands/$num_cmnds"_Trimmomatic_"$1_commands.txt
 
+mv *_out_*txt OUT
+mv *_err_*txt ERROR
 # This script will print some usage statistics to the
 # end of file: Trimmomatic_out
 # Use that to improve your resource request estimate

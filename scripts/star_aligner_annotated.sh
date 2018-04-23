@@ -9,21 +9,9 @@
 #SBATCH --mem=1000
 #SBATCH --mail-type=END
 
-# commands to manage the batch script
-#   submission command
-#     sbatch [script-file]
-#   status command
-#     squeue -u dasroy
-#   termination command
-#     scancel [jobid]
+source scripts/command_utility.sh
+num_cmnds=$( cmnds_in_file )
 
-# For more information
-#   man sbatch
-#   more examples in Taito guide in
-#   http://research.csc.fi/taito-user-guide
-
-# example run commands
-rm -rf commands/STAR_annotated_$1_commands.txt
   if [ ! -d "$2" ]
    then
         mkdir $2
@@ -44,11 +32,13 @@ do
 	fi 
 
 
-  echo "STAR --genomeDir star-genome_ann_Indices --readFilesIn  $my_file $uncompress --outFileNamePrefix $2/star_annotated_$filename --outSAMtype BAM SortedByCoordinate --runThreadN 4" >> commands/STAR_annotated_$1_commands.txt
+  echo "STAR --genomeDir star-genome_ann_Indices --readFilesIn  $my_file $uncompress --outFileNamePrefix $2/star_annotated_$filename --outSAMtype BAM SortedByCoordinate --runThreadN 4" >> commands/$num_cmnds"_STAR_align_"$1_commands.txt
 fi
 done
-sbatch_commandlist -t 12:00:00 -mem 48000 -jobname STAR_array -threads 4 -commands commands/STAR_annotated_$1_commands.txt
+sbatch_commandlist -t 12:00:00 -mem 48000 -jobname STAR_array -threads 4 -commands commands/$num_cmnds"_STAR_align_"$1_commands.txt
 
+mv *_out_*txt OUT
+mv *_err_*txt ERROR
 # This script will print some usage statistics to the
 # end of file: STAR_out
 # Use that to improve your resource request estimate
