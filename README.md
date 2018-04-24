@@ -89,8 +89,8 @@ The first read (read 1) is from the original RNA strand/template, second read (r
 Source : [Directional RNA-seq data -which parameters to choose?](http://chipster.csc.fi/manual/library-type-summary.html)
 
 To align to a reference genome 
-* __Star:__  
-  Set the parameter --sjdbOverhang (## sjdbOverhang should be (Max_Read_length - 1). Additionally set path to reference genome and gtf files.  
+* __[STAR](https://github.com/alexdobin/STAR):__  
+  Set the parameter --sjdbOverhang (## sjdbOverhang should be (Max_Read_length - 1). Additionally set path to reference genome and gtf files in scripts/star_aligner_annotated.sh .  
   Input: good  ( set the path to reference genome and gtf files)  
   Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/star-genome_annotated.sh good star_output   
   Output: star_output (contains bam files and quality report star_output.html)
