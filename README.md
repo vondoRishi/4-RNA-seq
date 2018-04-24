@@ -36,12 +36,15 @@ Input : directory rawReads with fastq or fastq.gz files
 execution:
 ```bash
 sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh rawReads  
-```  
+```
 Output : directory rawReads  
 
 2. Filter/trimminging with  
      a) [AfterQC](https://github.com/OpenGene/AfterQC)  
-Execution : sbatch -D $PWD --mail-user ur_email_at_domain scripts/afterqc_batch.sh rawReads  
+Execution : 
+```bash
+sbatch -D $PWD --mail-user ur_email_at_domain scripts/afterqc_batch.sh rawReads  
+```   
 Output : directory good, bad and QC  
      b) AfterQC can not trim adapters from [single end reads](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1469-3). Hence Trimmomatic to cut adapters \[ check for trimming parameters ] \[ Tips for filename ]  
 		Input : directory good with fastq or fastq.gz files   
