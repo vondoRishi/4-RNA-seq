@@ -5,11 +5,11 @@ The purpose of this project to develop a easily customizable commandline based s
 
 ## Installation
 __Download__   
-		```bash
-		*wget https://github.com/vondoRishi/4-RNA-seq/archive/master.zip*  
-		mkdir target_directory  
-		unzip master.zip -d target_directory   
-		```
+```bash
+wget https://github.com/vondoRishi/4-RNA-seq/archive/master.zip
+mkdir target_directory  
+unzip master.zip -d target_directory   
+```
 
 # RNA-seq pipeline
 
@@ -31,9 +31,12 @@ Need to install afterqc by the user.
 * [AfterQC](https://github.com/OpenGene/AfterQC)  { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/AfterQC%20install.md) .}
 
 ## QC and Filtering
-1.	Start QC with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  and [Multiqc](http://multiqc.info/)
+1.	Start QC with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  and [Multiqc](http://multiqc.info/)  
 Input : directory rawReads with fastq or fastq.gz files  
-execution : “sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh rawReads”  
+execution:
+```bash
+sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh rawReads  
+```  
 Output : directory rawReads  
 
 2. Filter/trimminging with  
