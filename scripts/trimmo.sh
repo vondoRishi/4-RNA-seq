@@ -7,7 +7,7 @@
 #SBATCH -e ERROR/Trimmomatic_err_%j.txt
 #SBATCH -p serial
 #SBATCH -n 1
-#SBATCH -t 00:20:00
+#SBATCH -t 00:40:00
 #SBATCH --mem-per-cpu=8000
 #SBATCH --cpus-per-task=8
 #SBATCH --mail-type=END
