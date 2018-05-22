@@ -32,7 +32,7 @@ do
 	fi 
 
 
-  echo "STAR --genomeDir star-genome_ann_Indices --readFilesIn  $my_file $uncompress --outFileNamePrefix $2/$filename"_star_annotated" --outSAMtype BAM SortedByCoordinate --runThreadN 4" >> commands/$num_cmnds"_STAR_align_"$1_commands.txt
+  echo "STAR --genomeDir star-genome_ann_Indices --readFilesIn  $my_file $uncompress --outFileNamePrefix $2/star_annotated_$filename --outSAMtype BAM SortedByCoordinate --runThreadN 4" >> commands/$num_cmnds"_STAR_align_"$1_commands.txt
 fi
 done
 sbatch_commandlist -t 12:00:00 -mem 48000 -jobname STAR_array -threads 4 -commands commands/$num_cmnds"_STAR_align_"$1_commands.txt
