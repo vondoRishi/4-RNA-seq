@@ -11,17 +11,12 @@
 
 module load biopython-env
 
-export PYTHONPATH=$HOME/.local/lib/python2.7/site-packages
-
-export PATH=$HOME/.local/bin:$PATH
-
-
 if [ -d "$1" ]
 then
-	multiqc -f -d $1 -o $1 -n $1
+	multiqc -f $1 -o $1 -n $1
 fi
 
 if [ ! -d "$1" ]
 then
-	multiqc -f -d .
+	multiqc -f .
 fi
