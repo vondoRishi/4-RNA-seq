@@ -126,6 +126,14 @@ Or Tophat output
   Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2_htseq-count.sh tophat2_output
   Output: tophat2_output/htseq_*txt
 
+## Final report
+Till now we have generated multiqc reports for every command or folder. Now to summarize all in one place execute.
+Edit multiqc [configuration](https://github.com/vondoRishi/4-RNA-seq/blob/master/multiqc_config.yaml) file if requires 
+
+```bash
+sbatch -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh
+```
+
 
 # EXTRA
 
