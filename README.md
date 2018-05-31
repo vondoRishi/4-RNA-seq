@@ -7,8 +7,9 @@ The purpose of this project to develop a easily customizable commandline based s
 __Download__   
 ```bash
 wget https://github.com/vondoRishi/4-RNA-seq/archive/master.zip
-mkdir target_directory  
-unzip master.zip -d target_directory   
+unzip master.zip 
+# Let's rename it to more meaningful work directory
+mv 4-RNA-seq-master new_work_directory
 ```
 
 # RNA-seq pipeline
