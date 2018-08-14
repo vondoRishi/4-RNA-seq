@@ -7,7 +7,7 @@
 #SBATCH -e ERROR/fastqc_err_%j.txt
 #SBATCH -p serial
 #SBATCH -n 1
-#SBATCH -t 00:20:00
+#SBATCH -t 00:50:00
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
 
