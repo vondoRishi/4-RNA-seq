@@ -56,8 +56,8 @@ extra_fn_clean_exts:
     - type: regex_keep
       pattern: '[A-Z]{3}[1-9]{4}[A,B][1-9]'
 extra_fn_clean_trim:
-    - 'htseq_ensemble_gtf_star_annotated_trimmed_'
-    - 'star_annotated_trimmed_'
+    - 'htseq_ensemble_gtf_star_annotated_'
+    - 'star_annotated_'
     - 'trimmed_'
 # Ignore these files / directories / paths when searching for logs
 fn_ignore_files:
