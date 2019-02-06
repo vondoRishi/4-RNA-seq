@@ -36,7 +36,7 @@ Need to install afterqc by the user.
 Input : directory rawReads with fastq or fastq.gz files  
 execution:
 ```bash
-sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh rawReads  
+sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh rawReads  # Don't use "rawReads/" 
 ```
 Output : directory rawReads  
 
