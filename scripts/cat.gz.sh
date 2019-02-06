@@ -11,19 +11,6 @@
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
 
-# commands to manage the batch script
-#   submission command
-#     sbatch [script-file]
-#   status command
-#     squeue -u dasroy
-#   termination command
-#     scancel [jobid]
-
-# For more information
-#   man sbatch
-#   more examples in Taito guide in
-#   http://research.csc.fi/taito-user-guide
-
 # example run commands
 sbatch_commandlist -jobname cat -commands commands/cat_gz.txt
 
