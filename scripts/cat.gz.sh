@@ -14,6 +14,9 @@
 # example run commands
 sbatch_commandlist -jobname cat -commands commands/cat_gz.txt
 
+mv *_out_*txt OUT
+mv *_err_*txt ERROR
+
 # This script will print some usage statistics to the
 # end of file: cat_gz_out
 # Use that to improve your resource request estimate
