@@ -14,6 +14,9 @@
 source scripts/command_utility.sh
 num_cmnds=$( cmnds_in_file )
 
+# First run  ./indexdb_rna --ref db.fasta,db.idx
+# where db.fasta is a collection of rRNA
+
 module load qiime/1.9.1
   
 if [ ! -d "$2" ]
