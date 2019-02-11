@@ -57,7 +57,7 @@ Output : directory good, bad and QC
 3. [Sortmerna.sh](http://bioinfo.lifl.fr/RNA/sortmerna/) \[ We can also execute this at the very beginning (optional) ]  
 	Sometimes ribosomal or any other unwanted RNAs may present in the library. Sortmerna could be used to filterout them.  
 	Input: good   
-	Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/sortmerna.sh trimmed_reads sortMeRna   
+	Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/sortmerna.sh good sortMeRna   
 	Output: sortMeRna  
 	Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh sortMeRna  
 	Output: sortMeRna  
