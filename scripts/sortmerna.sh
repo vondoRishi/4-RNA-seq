@@ -14,9 +14,6 @@
 source scripts/command_utility.sh
 num_cmnds=$( cmnds_in_file )
 
-# First run  ./indexdb_rna --ref db.fasta,db.idx
-# where db.fasta is a collection of rRNA
-
 module load qiime/1.9.1
   
 if [ ! -d "$2" ]
@@ -24,7 +21,8 @@ if [ ! -d "$2" ]
         mkdir "$2"
 fi
 
-for my_file in $1/*.{fastq*,fq*}
+
+for my_file in $1/*.{fastq.gz,fq.gz}
 do
   if [  -f "$my_file" ]
    then
@@ -32,12 +30,33 @@ do
         extension="${filename##*.}"
         filename="${filename%.*}"
 
-  echo "sortmerna  --ref $WRKDIR/DONOTREMOVE/Mouse_genome/miscRNA/miscRNA_rRna_id_mouse.fasta,$WRKDIR/DONOTREMOVE/Mouse_genome/miscRNA/miscRNA_rRna_id_mouse.idx --reads $my_file --fastx  -a 8 --aligned $2/rRna_miscRNA_$filename --other $2/no_miscRna_$filename" >> commands/$num_cmnds"_sortmerna_"$1_commands.txt
+  echo "zcat $my_file > $1/$filename" >> commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt
   
 fi
 done
-sbatch_commandlist -t 12:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/$num_cmnds"_sortmerna_"$1_commands.txt
+
+sbatch_commandlist -t 12:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt
+
+
+
+
+for my_file in $1/*.{fastq,fq}
+do
+  if [  -f "$my_file" ]
+   then
+        filename="${my_file##*/}"
+        extension="${filename##*.}"
+        filename="${filename%.*}"
+
+  echo "sortmerna  --ref $WRKDIR/DONOTREMOVE/Norppa/Norppa_ribosomal_operon_20190208.fasta,$WRKDIR/DONOTREMOVE/Norppa/Norppa_ribosomal_operon_20190208.idx --reads $my_file --fastx  -a 8 --aligned $2/rRna_miscRNA_$filename --other $2/no_miscRna_$filename --log -v" >> commands/$num_cmnds"_sortmerna_"$1_commands.txt
+  
+fi
+done
+ sbatch_commandlist -t 12:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/$num_cmnds"_sortmerna_"$1_commands.txt
 rm -rf $2/rRna_*
+
+
+rm -rf $1/*.fq
 
 mv *_out_*txt OUT
 mv *_err_*txt ERROR
