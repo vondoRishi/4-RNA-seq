@@ -25,6 +25,7 @@ then
 	echo "samtools index  $my_file " >> commands/$num_cmnds"_samtools_"$1.txt
 fi
 done
+
 sbatch_commandlist -t 12:00:00 -mem 4000 -jobname samtools_array -threads 4 -commands  commands/$num_cmnds"_samtools_"$1.txt
 
 
