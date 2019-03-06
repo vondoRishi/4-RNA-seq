@@ -6,6 +6,8 @@ The purpose of this project to develop a easily customizable commandline based s
 ## Installation
 __Download__   
 ```bash
+ALTERNATIVE : git clone https://github.com/vondoRishi/4-RNA-seq test
+
 wget https://github.com/vondoRishi/4-RNA-seq/archive/master.zip
 unzip master.zip 
 # Let's rename it to more meaningful work directory
