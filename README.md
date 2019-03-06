@@ -5,13 +5,17 @@ The purpose of this project to develop a easily customizable commandline based s
 
 ## Installation
 __Download__   
-```bash
-ALTERNATIVE : git clone https://github.com/vondoRishi/4-RNA-seq test
+For each experiment 4-RNA-seq pipeline needs to be downloaded separately. Let us downloat it to a directory named  "myWorkingDir" with following commands
 
-wget https://github.com/vondoRishi/4-RNA-seq/archive/master.zip
-unzip master.zip 
-# Let's rename it to more meaningful work directory
-mv 4-RNA-seq-master new_work_directory
+```bash
+git clone https://github.com/vondoRishi/4-RNA-seq myWorkingDir
+```
+
+__Prepare the workspace__   
+Make a directory "rawreads" inside  "myWorkingDir" and copy fastq files there.
+
+```bash
+mkdir myWorkingDir/rawReads
 ```
 
 # RNA-seq pipeline
