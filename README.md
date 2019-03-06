@@ -55,7 +55,7 @@ sbatch -D $PWD --mail-user ur_email_at_domain scripts/afterqc_batch.sh rawReads
 Output : directory good, bad and QC  
      b) AfterQC can not trim adapters from [single end reads](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1469-3). Hence Trimmomatic to cut adapters \[ check for trimming parameters ] \[ Tips for filename ]  
 		Input : directory good with fastq or fastq.gz files   
-		Execution :  
+		Execution:  
 		```bash
 		sbatch -D $PWD --mail-user ur_email_at_domain scripts/trimmo.sh good trimmed_reads  
 		```  
@@ -71,7 +71,10 @@ _{ Run step 1 review effect of trimming }_
 	sbatch -D $PWD --mail-user ur_email_at_domain scripts/sortmerna.sh good sortMeRna   
 	```  
 	Output: sortMeRna  
-	Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh sortMeRna  
+	Execution: 
+	```bash
+	sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh sortMeRna  
+	```  
 	Output: sortMeRna  
 
  ## Alignment 
@@ -113,7 +116,10 @@ To align to a reference genome
 * __[STAR](https://github.com/alexdobin/STAR):__  
   Set the parameter --sjdbOverhang (## sjdbOverhang should be (Max_Read_length - 1). Additionally set path to reference genome and gtf files in scripts/star_aligner_annotated.sh .  
   Input: good  ( set the path to reference genome and gtf files)  
-  Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/star-genome_annotated.sh good star_output   
+  Execution: 
+  ```bash
+  sbatch -D $PWD --mail-user ur_email_at_domain scripts/star-genome_annotated.sh good star_output   
+  ```  
   Output: star_output (contains bam files and quality report star_output.html)
 	
 	OR
@@ -121,7 +127,10 @@ To align to a reference genome
 * __Tophat2:__ run \[ change your parameters for stranded ]  
 	Set path to reference genome in the script.
   Input: good  
-  Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2.sh good tophat2_output   
+  Execution: 
+  ```bash
+  sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2.sh good tophat2_output   
+  ```
   Output: tophat2_output (contains bam files and quality report tophat2_output.html)  
   
  ## Counting
@@ -130,13 +139,19 @@ Stranded?? Set the parameter
 For Star output
   + Set path to GTF file  
   Input: star_output   
-  Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star_output   
+  Execution: 
+  ```bash
+  sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star_output   
+  ```  
   Output: star_output/htseq_*txt   
   
 Or Tophat output   
   + Set path to GTF file  
   Input: tophat2_output   
-  Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2_htseq-count.sh tophat2_output
+  Execution: 
+  ```bash
+  sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2_htseq-count.sh tophat2_output
+  ```  
   Output: tophat2_output/htseq_*txt
 
 ## Final report
@@ -152,10 +167,17 @@ sbatch -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh
 
 ## Alignment read viewer
 Need to sort (uncomment for tophat output bams) and index.
-* sbatch -D $PWD --mail-user ur_email_at_domain scripts/samtools_index.sh bam_directory
+*
+```bash
+sbatch -D $PWD --mail-user ur_email_at_domain scripts/samtools_index.sh bam_directory
+```  
 
 ## Compressing fastq files
-* sbatch -D $PWD --mail-user ur_email_at_domain scripts/compress_fastq.sh old_data
-
+*```bash
+sbatch -D $PWD --mail-user ur_email_at_domain scripts/compress_fastq.sh old_data
+```
 ## Cufflink 
-* sbatch scripts/cuffdiff_batch.sh Derm Ctrl Fgf20 star-genome_annotated 
+*```bash
+sbatch scripts/cuffdiff_batch.sh Derm Ctrl Fgf20 star-genome_annotated 
+```
+
