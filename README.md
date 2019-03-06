@@ -40,30 +40,36 @@ Need to install afterqc by the user.
 ## QC and Filtering
 1.	Start QC with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  and [Multiqc](http://multiqc.info/)  
 Input : directory rawReads with fastq or fastq.gz files  
-execution:
+Execution:
 ```bash
 sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh rawReads  # Don't use "rawReads/" 
 ```
 Output : directory rawReads  
 
-2. Filter/trimminging with  
+2.	Filter/trimminging with  
      a) [AfterQC](https://github.com/OpenGene/AfterQC)  
-Execution : 
+Execution :
 ```bash
 sbatch -D $PWD --mail-user ur_email_at_domain scripts/afterqc_batch.sh rawReads  
 ```   
 Output : directory good, bad and QC  
      b) AfterQC can not trim adapters from [single end reads](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1469-3). Hence Trimmomatic to cut adapters \[ check for trimming parameters ] \[ Tips for filename ]  
 		Input : directory good with fastq or fastq.gz files   
-		execution : sbatch -D $PWD --mail-user ur_email_at_domain scripts/trimmo.sh good trimmed_reads  
+		Execution :  
+		```bash
+		sbatch -D $PWD --mail-user ur_email_at_domain scripts/trimmo.sh good trimmed_reads  
+		```  
 		Output : directory trimmed_reads  
 
-{ Run step 1 review effect of trimming }
+_{ Run step 1 review effect of trimming }_
 
 3. [Sortmerna.sh](http://bioinfo.lifl.fr/RNA/sortmerna/) \[ We can also execute this at the very beginning (optional) ]  
 	Sometimes ribosomal or any other unwanted RNAs may present in the library. Sortmerna could be used to filterout them.  
 	Input: good   
-	Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/sortmerna.sh good sortMeRna   
+	Execution:  
+	```bash
+	sbatch -D $PWD --mail-user ur_email_at_domain scripts/sortmerna.sh good sortMeRna   
+	```  
 	Output: sortMeRna  
 	Execution: sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh sortMeRna  
 	Output: sortMeRna  
