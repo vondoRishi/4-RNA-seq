@@ -1,6 +1,7 @@
 If you use biopython-env module, you can easily install multiqc for your own use. Try commands:
 
-  module load biopython-env   
+  module load biopython-env  
+  pip install --upgrade pip  
   pip install multiqc   
 
 After that you can start the program with command:   
