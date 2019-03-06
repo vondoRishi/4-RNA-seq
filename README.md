@@ -167,17 +167,19 @@ sbatch -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh
 
 ## Alignment read viewer
 Need to sort (uncomment for tophat output bams) and index.
-*
+
 ```bash
 sbatch -D $PWD --mail-user ur_email_at_domain scripts/samtools_index.sh bam_directory
 ```  
 
 ## Compressing fastq files
-*```bash
+
+```bash
 sbatch -D $PWD --mail-user ur_email_at_domain scripts/compress_fastq.sh old_data
 ```
 ## Cufflink 
-*```bash
+
+```bash
 sbatch scripts/cuffdiff_batch.sh Derm Ctrl Fgf20 star-genome_annotated 
 ```
 
