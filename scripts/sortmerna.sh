@@ -48,7 +48,7 @@ do
         extension="${filename##*.}"
         filename="${filename%.*}"
 
-  echo "sortmerna  --ref $WRKDIR/DONOTREMOVE/Norppa/Norppa_ribosomal_operon_20190208.fasta,$WRKDIR/DONOTREMOVE/Norppa/Norppa_ribosomal_operon_20190208.idx --reads $my_file --fastx  -a 8 --aligned $2/rRna_miscRNA_$filename --other $2/no_miscRna_$filename --log -v" >> commands/$num_cmnds"_sortmerna_"$1_commands.txt
+  echo "sortmerna  --ref $WRKDIR/DONOTREMOVE/Norppa/Norppa_ribosomal_operon_20190208.fasta,$WRKDIR/DONOTREMOVE/Norppa/Norppa_ribosomal_operon_20190208.idx --reads $my_file --fastx  -a 8 --aligned $2/rRna_miscRNA_$filename --other $2/no_miscRna_$filename  --sam --SQ --log -v" >> commands/$num_cmnds"_sortmerna_"$1_commands.txt
   
 fi
 done
