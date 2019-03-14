@@ -12,10 +12,11 @@ git clone https://github.com/vondoRishi/4-RNA-seq myWorkingDir
 ```
 
 __Prepare the workspace__   
-Make a directory "rawreads" inside  "myWorkingDir" and copy fastq files there.
+Make a directory "rawreads" inside  "myWorkingDir" and copy fastq(.gz) files there.
 
 ```bash
 mkdir myWorkingDir/rawReads
+cp sourceDir/*fastq.gz myWorkingDir/rawReads
 ```
 
 # RNA-seq pipeline
@@ -36,6 +37,11 @@ Run “ls -lrth” after every step to find the last modified file
 Need to install afterqc by the user.
 * [Multiqc](http://multiqc.info/) ( run almost after all the commands) { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/Multiqc%20install.md)}   
 * [AfterQC](https://github.com/OpenGene/AfterQC)  { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/AfterQC%20install.md) .}
+
+# Execution
+```bash
+cd myWorkingDir
+```  
 
 ## QC and Filtering
 1.	Start QC with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  and [Multiqc](http://multiqc.info/)  
