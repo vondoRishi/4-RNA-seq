@@ -53,8 +53,9 @@ do
 fi
 done
  sbatch_commandlist -t 12:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/$num_cmnds"_sortmerna_"$1_commands.txt
-rm -rf $2/rRna_*
 
+
+rm -rf $2/rRna_*{fastq,fq}
 
 rm -rf $1/*.fq
 
