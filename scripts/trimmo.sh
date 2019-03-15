@@ -26,11 +26,10 @@ do
 	filename="${my_file##*/}"
 	extension="${filename##*.}"
 	filename="${filename%.*}"
-	echo $filename ;
-	echo $extension ;
   echo "trimmomatic SE -phred33 -threads 8  $my_file $2/trimmed_$filename.$extension \
 ILLUMINACLIP:/appl/bio/trimmomatic/adapters/TruSeq3-SE.fa:2:30:10   " >> commands/$num_cmnds"_Trimmomatic_"$1_commands.txt
 done
+ 
  sbatch_commandlist -t 1:00:00 -mem 4000 -jobname trimo_array -threads 8 -commands commands/$num_cmnds"_Trimmomatic_"$1_commands.txt
 
 mv *_out_*txt OUT
