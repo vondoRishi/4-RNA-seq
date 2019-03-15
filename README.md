@@ -62,13 +62,13 @@ sbatch -D $PWD --mail-user ur_email_at_domain scripts/afterqc_batch.sh rawReads
 
 Output : directory good, bad and QC  
 
-   b) ALERT for *"single end reads"* users!! AfterQC can not trim adapters from [single end reads](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1469-3). Hence use Trimmomatic to cut adapters \[ check for trimming parameters ] \[ Tips for filename ]  
+b) ALERT for *"single end reads"* users!! AfterQC can not trim adapters from [single end reads](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1469-3). Hence use Trimmomatic to cut adapters \[ check for trimming parameters ] \[ Tips for filename ]  
 		Input : directory good with fastq or fastq.gz files   
 Execution:  
 ```bash
 sbatch -D $PWD --mail-user ur_email_at_domain scripts/trimmo.sh good trimmed_reads  
 ```  
-		Output : directory trimmed_reads  
+Output : directory trimmed_reads  
 
 _{ Run step 1 review effect of trimming }_
 
