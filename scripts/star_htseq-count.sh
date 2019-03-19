@@ -10,9 +10,14 @@
 #SBATCH -t 12:20:00
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
+#SBATCH --mail-user=rishi.dasroy@helsinki.fi
 
 source scripts/command_utility.sh
 
+  if [ ! -d "$2" ]
+   then
+        mkdir $2
+   fi
 
 module load biokit
 for my_file in $1/*.bam
@@ -25,11 +30,11 @@ then
   
 	echo "samtools view $my_file | \
 	htseq-count -s $stranded -t exon -i gene_id - $gene_annotation > \
-	$1/htseq_ensemble_gtf_$filename.txt" >> commands/$num_cmnds"_htseq_"$1.txt
+	$2/htseq_ensemble_gtf_$filename.txt" >> commands/$num_cmnds"_htseq_"$2.txt
 
 fi
 done
-sbatch_commandlist -t 12:00:00 -mem 4000 -jobname htseq_star -threads 1 -commands  commands/$num_cmnds"_htseq_"$1.txt
+sbatch_commandlist -t 12:00:00 -mem 4000 -jobname htseq_star -threads 1 -commands  commands/$num_cmnds"_htseq_"$2.txt
 
 mv *_out_*txt OUT
 mv *_err_*txt ERROR
