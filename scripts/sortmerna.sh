@@ -12,10 +12,11 @@
 #SBATCH --mail-type=END
 
 source scripts/command_utility.sh
-num_cmnds=$( cmnds_in_file )
+source scripts/sortMeRNA_indexdb.sh
 
 module load qiime/1.9.1
   
+
 if [ ! -d "$2" ]
    then
         mkdir "$2"
@@ -48,7 +49,9 @@ do
         extension="${filename##*.}"
         filename="${filename%.*}"
 
-  echo "sortmerna  --ref $WRKDIR/DONOTREMOVE/Norppa/Norppa_ribosomal_operon_20190208.fasta,$WRKDIR/DONOTREMOVE/Norppa/Norppa_ribosomal_operon_20190208.idx --reads $my_file --fastx  -a 8 --aligned $2/rRna_miscRNA_$filename --other $2/no_miscRna_$filename  --sam --SQ --log -v" >> commands/$num_cmnds"_sortmerna_"$1_commands.txt
+  echo "sortmerna  --ref  $sortMeRNA_ref,$index_file --reads $my_file \
+	--aligned $2/rRna_miscRNA_$filename --other $2/no_miscRna_$filename \
+	--sam --SQ --log -v  --fastx  -a 8 " >> commands/$num_cmnds"_sortmerna_"$1_commands.txt
   
 fi
 done
