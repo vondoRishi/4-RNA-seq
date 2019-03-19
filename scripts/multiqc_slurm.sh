@@ -8,7 +8,7 @@
 #SBATCH -p serial
 #SBATCH --mail-type=END
 
-
+source scripts/command_utility.sh
 module load biopython-env
 
 if [ -d "$1" ]
@@ -18,5 +18,5 @@ fi
 
 if [ ! -d "$1" ]
 then
-	multiqc -f .
+	multiqc -n $project_name -f .
 fi
