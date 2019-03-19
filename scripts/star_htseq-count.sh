@@ -10,7 +10,6 @@
 #SBATCH -t 12:20:00
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
-#SBATCH --mail-user=rishi.dasroy@helsinki.fi
 
 source scripts/command_utility.sh
 num_cmnds=$( cmnds_in_file )
@@ -23,7 +22,10 @@ then
 	filename="${my_file##*/}"
         extension="${filename##*.}"
         filename="${filename%%.*}" 
-  echo "samtools view $my_file | htseq-count -s yes -t exon -i gene_id - $WRKDIR/DONOTREMOVE/Mouse_genome/Mus_musculus.GRCm38.79.gtf > $1/htseq_ensemble_gtf_$filename.txt" >> commands/$num_cmnds"_htseq_"$1.txt
+  
+	echo "samtools view $my_file | \
+	htseq-count -s $stranded -t exon -i gene_id - $gene_annotation > \
+	$1/htseq_ensemble_gtf_$filename.txt" >> commands/$num_cmnds"_htseq_"$1.txt
 
 fi
 done
