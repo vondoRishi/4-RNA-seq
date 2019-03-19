@@ -50,7 +50,7 @@ do
         filename="${filename%.*}"
 
   echo "sortmerna  --ref  $sortMeRNA_ref,$index_file --reads $my_file \
-	--aligned $2/rRna_miscRNA_$filename --other $2/no_miscRna_$filename \
+	--aligned $2/rRna_$filename --other $2/non_rRna_$filename \
 	--sam --SQ --log -v  --fastx  -a 8 " >> commands/$num_cmnds"_sortmerna_"$1_commands.txt
   
 fi
