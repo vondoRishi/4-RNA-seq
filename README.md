@@ -4,14 +4,14 @@ A [slurm](https://slurm.schedmd.com/) based schema for RNA-seq analysis to execu
 The purpose of this project to develop a easily customizable commandline based schema. Additionally it has basic linux scripts for file manipulation which is key to execute command line pipeline.
 
 ## Installation
-4-RNA-seq is required to download every new project.
+4-RNA-seq is required to download every new project.  
 __Download__   
 For each experiment 4-RNA-seq pipeline needs to be downloaded separately. Let us download it to a directory named  "myWorkingDir" with following commands
 
 ```bash
 git clone https://github.com/vondoRishi/4-RNA-seq myWorkingDir
 ```
-From now on *myWorkingDir* is the project space
+From now on __myWorkingDir__ is the project space
 
 __Prepare the workspace__   
 Make a directory "rawreads" inside  "myWorkingDir" and copy fastq(.gz) files there.
@@ -85,7 +85,17 @@ _{ Run step 1 review effect of trimming }_
 	```bash
 	sbatch -D $PWD --mail-user ur_email_at_domain scripts/sortmerna.sh good sortMeRna   
 	```  
-	Output: sortMeRna  
+	Output: sortMeRna, the folder contains many different types of file. Fastq/fq files starting with non_Rna will be used in downstream analysis. Files with .log will be used by multiqc to summarize. The "rRna" fastq/fq and ".sam" files should be (re)moved from __sortMeRna__ before next step.
+	
+	After (re)moving "rRna*.fq" files, the rest of the .fq files could be compressed.
+	
+	Execution: 
+	```bash
+	sbatch -D $PWD --mail-user ur_email_at_domain scripts/compress_fastq.sh sortMeRna  
+	```  
+	Output: sortMeRna 
+	
+	Now summarize the presence of rRNA.  
 	Execution: 
 	```bash
 	sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh sortMeRna  
@@ -94,65 +104,26 @@ _{ Run step 1 review effect of trimming }_
 
  ## Alignment 
  Depending upon the library preparation kit the parameters of alignment software need to set. 
- Below is few example of different popular library kit. \[ please report any missing library type and parameters]    
-### **Unstranded:**
-Information regarding the strand is not conserved (it is lost during the amplification of the mRNA fragments).  
-**Kits:** TruSeq RNA Sample Prep kit  
-**Parameters:**  
-* TopHat / Cufflinks / Cuffdiff: library-type fr-unstranded  
-*  HTSeq: stranded -- no  
-### **Directional, first strand:**
-The second read (read 2) is from the original RNA strand/template, first read (read 1) is from the opposite strand. The information of the strand is preserved as the original RNA strand is degradated due to the dUTPs incorporated in the second synthesis step.  
-**Kits:**  
-* All dUTP methods, NSR, NNSR  
-* TruSeq Stranded Total RNA Sample Prep Kit  
-* TruSeq Stranded mRNA Sample Prep Kit  
-* NEB Ultra Directional RNA Library Prep Kit   
-* Agilent SureSelect Strand-Specific  
-  
-**Parameters:**  
-* TopHat / Cufflinks / Cuffdiff: library-type fr-firststrand  
-* HTSeq: stranded -- reverse  
-### **Directional, second strand:**
-The first read (read 1) is from the original RNA strand/template, second read (read 2) is from the opposite strand. The directionality is preserved, as different adapters are ligated to different ends of the fragment.   
-**Kits:**  
-* Directional Illumina (Ligation), Standard SOLiD  
-* ScriptSeq v2 RNA-Seq Library Preparation Kit  
-* SMARTer Stranded Total RNA   
-* Encore Complete RNA-Seq Library Systems  
-* Ovation® SoLo RNA-Seq Systems \[ checked through IGV tools ]
-  
-**Parameters:**  
-* TopHat / Cufflinks / Cuffdiff: library-type fr-secondstrand  
-*  HTSeq: stranded -- yes  
-Source : [Directional RNA-seq data -which parameters to choose?](http://chipster.csc.fi/manual/library-type-summary.html)
+ Here are few examples of different popular [library kits](https://github.com/vondoRishi/4-RNA-seq/blob/master/Parameters_for_Library_kits.md). \[ please report any missing library type and parameters]    
+
 
 To align to a reference genome 
 * __[STAR](https://github.com/alexdobin/STAR):__  
   Set the parameter --sjdbOverhang (## sjdbOverhang should be (Max_Read_length - 1). Additionally set path to reference genome and gtf files in scripts/star_aligner_annotated.sh .  
-  Input: good  ( set the path to reference genome and gtf files)  
+  Input: folder which contains the filtered reads; ex. __good__ or  __sortMeRna__   
   Execution: 
   ```bash
-  sbatch -D $PWD --mail-user ur_email_at_domain scripts/star-genome_annotated.sh good star_output   
+  sbatch -D $PWD --mail-user ur_email_at_domain scripts/star.sh good star_output   
   ```  
   Output: star_output (contains bam files and quality report star_output.html)
 	
-	OR
 
-* __Tophat2:__ run \[ change your parameters for stranded ]  
-	Set path to reference genome in the script.
-  Input: good  
-  Execution: 
-  ```bash
-  sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2.sh good tophat2_output   
-  ```
-  Output: tophat2_output (contains bam files and quality report tophat2_output.html)  
   
  ## Counting
 Stranded?? Set the parameter
 \[ STAR can also give count values of htseq-count’s default parameter ]   
 For Star output
-  + Set path to GTF file  
+  + Set path to GTF file  in 4-rna-seq.config file
   Input: star_output   
   Execution: 
   ```bash
@@ -160,14 +131,6 @@ For Star output
   ```  
   Output: star_output/htseq_*txt   
   
-Or Tophat output   
-  + Set path to GTF file  
-  Input: tophat2_output   
-  Execution: 
-  ```bash
-  sbatch -D $PWD --mail-user ur_email_at_domain scripts/tophat2_htseq-count.sh tophat2_output
-  ```  
-  Output: tophat2_output/htseq_*txt
 
 ## Final report
 Till now we have generated multiqc reports for every command or folder. Now to summarize all in one place execute.
