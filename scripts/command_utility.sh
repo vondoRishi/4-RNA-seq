@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source 4-rna-seq.config
 cmnds_in_file () {
 	ls commands  | wc -l
 }
