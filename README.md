@@ -127,9 +127,9 @@ For Star output
   Input: star_output   
   Execution: 
   ```bash
-  sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star_output   
+  sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star_output star_count   
   ```  
-  Output: star_output/htseq_*txt   
+  Output: star_count/htseq_*txt   
   
 
 ## Final report
