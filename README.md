@@ -4,12 +4,14 @@ A [slurm](https://slurm.schedmd.com/) based schema for RNA-seq analysis to execu
 The purpose of this project to develop a easily customizable commandline based schema. Additionally it has basic linux scripts for file manipulation which is key to execute command line pipeline.
 
 ## Installation
+4-RNA-seq is required to download every new project.
 __Download__   
-For each experiment 4-RNA-seq pipeline needs to be downloaded separately. Let us downloat it to a directory named  "myWorkingDir" with following commands
+For each experiment 4-RNA-seq pipeline needs to be downloaded separately. Let us download it to a directory named  "myWorkingDir" with following commands
 
 ```bash
 git clone https://github.com/vondoRishi/4-RNA-seq myWorkingDir
 ```
+From now on *myWorkingDir* is the project space
 
 __Prepare the workspace__   
 Make a directory "rawreads" inside  "myWorkingDir" and copy fastq(.gz) files there.
@@ -21,7 +23,7 @@ cp sourceDir/*fastq.gz myWorkingDir/rawReads
 
 # RNA-seq pipeline
 
-This pipeline and workflow is based on [Taito.csc server batch scripts](https://research.csc.fi/taito-batch-jobs). The objective of this documentation is to make execution faster and reproducible as much as possible. The project folder ( should be in $WRKDIR path) should contain these folders before starting
+This pipeline and workflow is based on [Taito.csc server batch scripts](https://research.csc.fi/taito-batch-jobs). The objective of this documentation is to make execution faster and reproducible as much as possible. The project folder ( should be in $WRKDIR path and in this example "myWorkingDir" ) should contain these folders before starting
 * scripts : contains all scripts to run in taito server
 * OUT : contains  output files from all scripts 
 * ERROR : contains error files from all scripts 
@@ -33,12 +35,16 @@ This pipeline and workflow is based on [Taito.csc server batch scripts](https://
 **Additional info** :  Library type, sequencing platform
 Input: Reference Genome (DNA sequences) fasta and annotation file (GTF)
 Run “ls -lrth” after every step to find the last modified file
+
 ## Dependency   
 Need to install afterqc by the user.
 * [Multiqc](http://multiqc.info/) ( run almost after all the commands) { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/Multiqc%20install.md)}   
 * [AfterQC](https://github.com/OpenGene/AfterQC)  { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/AfterQC%20install.md) .}
 
 # Execution
+Before execution please define the project in the variables of 4-rna-seq.config file.
+These values will be used by different scripts of this pipeline
+
 ```bash
 cd myWorkingDir
 ```  
