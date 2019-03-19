@@ -39,7 +39,7 @@ done
 sbatch_commandlist -t 12:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt
 
 
-
+num_cmnds=$( cmnds_in_file )
 
 for my_file in $1/*.{fastq,fq}
 do
