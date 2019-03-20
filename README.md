@@ -122,8 +122,7 @@ To align to a reference genome
  ## Counting
 *__[htseq-count](https://htseq.readthedocs.io/en/release_0.11.1/count.html)__  
 \[ STAR can also give count values of htseq-count’s default parameter ]   
-For Star output
-  + Set path to GTF file and the parameter "stranded" in 4-rna-seq.config file
+  + Set path to GTF file and the parameter "stranded" in 4-rna-seq.config file  
   Input: star_output   
   Execution: 
   ```bash
