@@ -59,6 +59,7 @@ extra_fn_clean_trim:
     - 'htseq_ensemble_gtf_star_annotated_'
     - 'star_annotated_'
     - 'trimmed_'
+    - 'non_rRna_trimmed_'
 # Ignore these files / directories / paths when searching for logs
 fn_ignore_files:
     - .DS_Store
