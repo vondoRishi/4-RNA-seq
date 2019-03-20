@@ -109,7 +109,11 @@ _{ Run step 1 review effect of trimming }_
 
 To align to a reference genome 
 * __[STAR](https://github.com/alexdobin/STAR):__  
-  Set the parameter --sjdbOverhang (## sjdbOverhang should be (Max_Read_length - 1). Additionally set path to reference genome and gtf files in scripts/star_aligner_annotated.sh .  
+	Confirm the parameters in file 4-rna-seq.config  
+	+ "maxReadLength" to maximum read length  
+	+ "genome_file" to path to reference genome  
+	+ "gene_annotation" path to gtf file  
+
   Input: folder which contains the filtered reads; ex. __good__ or  __sortMeRna__   
   Execution: 
   ```bash
@@ -121,8 +125,11 @@ To align to a reference genome
   
  ## Counting
 *__[htseq-count](https://htseq.readthedocs.io/en/release_0.11.1/count.html)__  
-\[ STAR can also give count values of htseq-count’s default parameter ]   
-  + Set path to GTF file and the parameter "stranded" in 4-rna-seq.config file  
+\[ STAR can also give count values of htseq-count’s default parameter but htseq-count will be used separately]   
+	Confirm the parameters in file 4-rna-seq.config  
+	+ "stranded" depending upon the library type  
+	+ "gene_annotation" path to gtf file  
+
   Input: star_output   
   Execution: 
   ```bash
