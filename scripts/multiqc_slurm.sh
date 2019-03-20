@@ -18,5 +18,5 @@ fi
 
 if [ ! -d "$1" ]
 then
-	multiqc -n $project_name -f .
+	multiqc -i $project_name -n $project_name -f .
 fi
