@@ -16,7 +16,7 @@
 
 ---
 # Title to use for the report.
-title: null
+title: 4-RNA-seq
 
 # Prepend sample names with their directory. Useful if analysing the
 # sample samples with different parameters.
@@ -107,10 +107,9 @@ intro_text: null          # Set to False to remove, or your own text
 
 # Add generic information to the top of reports
 report_header_info:
-    - Example Config:: 'This is arbitrary'
-    - Another field:: 'Loaded from <code>multiqc_config_example.yaml</code>'
-    - Something different:: 'You can put any key-value pairs here'
+    - 4-RNA-seq:: 'This report is geberated by 4-rna-seq, an RNA-seq pipeline for slurm environment. Details <a href="https://github.com/vondoRishi/4-RNA-seq" target="_blank">here</a>'
     - Want to know more?: 'See the <a href="http://multiqc.info/docs" target="_blank">MultiQC docs</a>'
+
 
 # Overwrite the defaults of which table columns are visible by default
 table_columns_visible:
