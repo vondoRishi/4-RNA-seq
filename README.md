@@ -50,7 +50,8 @@ cd myWorkingDir
 ```  
 
 ## QC and Filtering
-1.	Start QC with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  and [Multiqc](http://multiqc.info/)  
+1.	Start QC ( quality checking) with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  and [Multiqc](http://multiqc.info/). The scripts/fastqc.sh executes first Fastqc and then Multiqc internally.
+
 Input : directory rawReads with fastq or fastq.gz files  
 Execution:
 ```bash
