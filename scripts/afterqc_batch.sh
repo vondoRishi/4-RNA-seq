@@ -15,6 +15,10 @@ source scripts/command_utility.sh
 num_cmnds=$( cmnds_in_file )
 
 module load biokit
+if [ -d good ]
+then
+        mkdir good bad QC
+fi
 
 for my_file in $1/*.{fastq,fastq.gz,fq,fq.gz}
 do
