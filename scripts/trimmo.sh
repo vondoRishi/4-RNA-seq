@@ -20,7 +20,7 @@ source scripts/command_utility.sh
 	mkdir $2
    fi
 
-for my_file in $1/*..{fastq,fastq.gz,fq,fq.gz}
+for my_file in $1/*.{fastq,fastq.gz,fq,fq.gz}
 do
 	filename="${my_file##*/}"
 	extension="${filename##*.}"
