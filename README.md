@@ -118,9 +118,9 @@ To align to a reference genome
   Input: folder which contains the filtered reads; ex. __good__ or  __sortMeRna__   
   Execution: 
   ```bash
-  sbatch -D $PWD --mail-user ur_email_at_domain scripts/star.sh good star_output   
+  sbatch -D $PWD --mail-user ur_email_at_domain scripts/star.sh good star_alignment   
   ```  
-  Output: star_output (contains bam files and quality report star_output.html)
+  Output: star_alignment (contains bam files and quality report star_alignment.html)
 	
 
   
@@ -131,12 +131,12 @@ To align to a reference genome
 	+ "stranded" depending upon the library type  
 	+ "gene_annotation" path to gtf file  
 
-  Input: star_output   
+  Input: star_alignment   
   Execution: 
   ```bash
-  sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star_output star_count   
+  sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star_alignment star_count   
   ```  
-  Output: star_count/htseq_*txt   
+  Output: star_alignment/htseq_*txt   
   
 
 ## Final report
