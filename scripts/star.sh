@@ -38,7 +38,7 @@ fi
         mkdir $2
    fi
 
-for my_file in $1/*.{fastq*,fq,fq.gz}
+for my_file in $1/*.{fastq,fastq.gz,fq,fq.gz}
 do
   if [  -f "$my_file" ]
    then
