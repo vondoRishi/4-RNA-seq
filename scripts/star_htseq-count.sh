@@ -39,7 +39,7 @@ sbatch_commandlist -t 12:00:00 -mem 4000 -jobname htseq_star -threads 1 -command
 mv *_out_*txt OUT
 mv *_err_*txt ERROR
 
-source scripts/multiqc_slurm.sh
+source scripts/multiqc_slurm.sh $2
 # This script will print some usage statistics to the
 # end of file: htseq_out
 # Use that to improve your resource request estimate
