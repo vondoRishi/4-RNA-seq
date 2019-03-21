@@ -65,6 +65,7 @@ sbatch_commandlist -t 12:00:00 -mem 48000 -jobname STAR_alignment_array \
 mv *_out_*txt OUT
 mv *_err_*txt ERROR
 
+source scripts/multiqc_slurm.sh $2
 ## Alignment of each fastq file starts here
 
 
