@@ -17,7 +17,7 @@ num_cmnds=$( cmnds_in_file )
 module load biokit
 rm commands/$num_cmnds"_fastqc_"$1_commands.txt
 
-for my_file in $1/*.{fastq*,fq*}
+for my_file in $1/*.{fastq,fastq.gz,fq,fq.gz}
 do
 if [  -f $my_file ]
 then
