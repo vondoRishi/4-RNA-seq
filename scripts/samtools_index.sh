@@ -12,7 +12,6 @@
 #SBATCH --mail-type=END
 
 source scripts/command_utility.sh
-num_cmnds=$( cmnds_in_file )
 
 module load biokit
 
