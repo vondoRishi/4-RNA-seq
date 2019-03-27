@@ -136,7 +136,7 @@ To align to a reference genome
   ```bash
   sbatch -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star_alignment star_count   
   ```  
-  Output: star_alignment/htseq_*txt   
+  Output: count values at star_count/htseq_\*txt and quality report at star_count.html  
   
 
 ## Final report
