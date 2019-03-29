@@ -6,24 +6,24 @@ The purpose of this project to develop a easily customizable commandline based s
 ## Installation
 4-RNA-seq is required to download every new project.  
 __Download__   
-For each experiment 4-RNA-seq pipeline needs to be downloaded separately. Let us download it to a directory named  "myWorkingDir" with following commands
+For each experiment 4-RNA-seq pipeline needs to be downloaded separately. Let us download it to a directory named  "myProjectDir" with following commands
 
 ```bash
-git clone https://github.com/vondoRishi/4-RNA-seq myWorkingDir
+git clone https://github.com/vondoRishi/4-RNA-seq myProjectDir
 ```
-From now on __myWorkingDir__ is the project space
+From now on __myProjectDir__ is the project space
 
 __Prepare the workspace__   
-Make a directory "rawreads" inside  "myWorkingDir" and copy fastq(.gz) files there.
+Make a directory "rawreads" inside  "myProjectDir" and copy fastq(.gz) files there.
 
 ```bash
-mkdir myWorkingDir/rawReads
-cp sourceDir/*fastq.gz myWorkingDir/rawReads
+mkdir myProjectDir/rawReads
+cp sourceDir/*fastq.gz myProjectDir/rawReads
 ```
 
 # RNA-seq pipeline
 
-This pipeline and workflow is based on [Taito.csc server batch scripts](https://research.csc.fi/taito-batch-jobs). The objective of this documentation is to make execution faster and reproducible as much as possible. The project folder ( should be in $WRKDIR path and in this example "myWorkingDir" ) should contain these folders before starting
+This pipeline and workflow is based on [Taito.csc server batch scripts](https://research.csc.fi/taito-batch-jobs). The objective of this documentation is to make execution faster and reproducible as much as possible. The project folder ( should be in $WRKDIR path and in this example "myProjectDir" ) should contain these folders before starting
 * scripts : contains all scripts to run in taito server
 * OUT : contains  output files from all scripts 
 * ERROR : contains error files from all scripts 
@@ -46,7 +46,7 @@ Before execution please define the project in the variables of 4-rna-seq.config 
 These values will be used by different scripts of this pipeline
 
 ```bash
-cd myWorkingDir
+cd myProjectDir
 ```  
 
 ## QC and Filtering
