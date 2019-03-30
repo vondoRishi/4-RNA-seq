@@ -60,6 +60,7 @@ extra_fn_clean_trim:
     - 'star_annotated_'
     - 'trimmed_'
     - 'non_rRna_trimmed_'
+    - 'non_rRna_'
 # Ignore these files / directories / paths when searching for logs
 fn_ignore_files:
     - .DS_Store
