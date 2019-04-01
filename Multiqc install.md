@@ -4,7 +4,7 @@ If you use biopython-env module, you can easily install multiqc for your own use
   > pip install --upgrade pip  
   > pip install multiqc  
   
-if there are arrors related to "numpy" then try  
+if there are errors related to "numpy" then try  
   > pip install numpy --upgrade
 
 After that you can start the program with command:   
