@@ -10,7 +10,7 @@
 #SBATCH -t 12:20:00
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
-#SBATCH --mail-user=rishi.dasroy@helsinki.fi
+
 
 source scripts/command_utility.sh
 
