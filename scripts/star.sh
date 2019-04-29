@@ -23,7 +23,7 @@ if [ ! -d star-genome_ann_Indices ]; then
 		--genomeFastaFiles $genome_file --sjdbGTFfile  $gene_annotation \
 		--runThreadN 6 --sjdbOverhang $overhang" >> commands/$num_cmnds"_star-genome_annotated".txt 
 
-	sbatch_commandlist -t 12:00:00 -mem 64000 -jobname star-genome \
+	sbatch_commandlist -t 12:00:00 -mem 64000 -jobname star-indexing \
 	-threads 6  -commands commands/$num_cmnds"_star-genome_annotated".txt 
 
 	mv *_out_*txt OUT
