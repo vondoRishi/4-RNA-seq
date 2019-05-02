@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Exercises - Day 8 | A Minimal RNA-seq Book Example</title>
+  <meta name="description" content="This is a minimal example of how to process RNA-seq" />
+  <meta name="generator" content="bookdown  and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Exercises - Day 8 | A Minimal RNA-seq Book Example" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a minimal example of how to process RNA-seq" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Exercises - Day 8 | A Minimal RNA-seq Book Example" />
+  
+  <meta name="twitter:description" content="This is a minimal example of how to process RNA-seq" />
+  
+
+<meta name="author" content="Rishi Das Roy" />
+
+
+<meta name="date" content="2019-05-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="exercises-day-7.html">
+<link rel="next" href="read-count-analysis.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#acknowledgement"><i class="fa fa-check"></i><b>1.1</b> Acknowledgement</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="exercises-day-7.html"><a href="exercises-day-7.html"><i class="fa fa-check"></i><b>2</b> Exercises - Day 7</a><ul>
+<li class="chapter" data-level="2.1" data-path="exercises-day-7.html"><a href="exercises-day-7.html#getting-your-share-of-the-data"><i class="fa fa-check"></i><b>2.1</b> Getting your share of the data</a></li>
+<li class="chapter" data-level="2.2" data-path="exercises-day-7.html"><a href="exercises-day-7.html#workflow"><i class="fa fa-check"></i><b>2.2</b> Workflow</a></li>
+<li class="chapter" data-level="2.3" data-path="exercises-day-7.html"><a href="exercises-day-7.html#step-1.-qa-of-raw-reads"><i class="fa fa-check"></i><b>2.3</b> Step 1. QA of raw reads</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="exercises-day-7.html"><a href="exercises-day-7.html#fastqc-on-rest-of-the-fastq-files"><i class="fa fa-check"></i><b>2.3.1</b> FastQC on rest of the fastq files</a></li>
+<li class="chapter" data-level="2.3.2" data-path="exercises-day-7.html"><a href="exercises-day-7.html#summerize"><i class="fa fa-check"></i><b>2.3.2</b> Summerize</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="exercises-day-7.html"><a href="exercises-day-7.html#step-2.-filtering-rrna"><i class="fa fa-check"></i><b>2.4</b> Step 2. Filtering rRNA</a></li>
+<li class="chapter" data-level="2.5" data-path="exercises-day-7.html"><a href="exercises-day-7.html#step-3.-quality-trimming-and-adapter-removal"><i class="fa fa-check"></i><b>2.5</b> Step 3. Quality trimming and adapter removal</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="exercises-day-7.html"><a href="exercises-day-7.html#trimmed-data-fastqc"><i class="fa fa-check"></i><b>2.5.1</b> Trimmed data FastQC</a></li>
+<li class="chapter" data-level="2.5.2" data-path="exercises-day-7.html"><a href="exercises-day-7.html#final-filtering-report"><i class="fa fa-check"></i><b>2.5.2</b> Final filtering report</a></li>
+<li class="chapter" data-level="2.5.3" data-path="exercises-day-7.html"><a href="exercises-day-7.html#discussion"><i class="fa fa-check"></i><b>2.5.3</b> Discussion</a></li>
+<li class="chapter" data-level="2.5.4" data-path="exercises-day-7.html"><a href="exercises-day-7.html#about-directory-structure"><i class="fa fa-check"></i><b>2.5.4</b> About Directory Structure</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="exercises-day-7.html"><a href="exercises-day-7.html#step-4.-alignment-with-reference-genome"><i class="fa fa-check"></i><b>2.6</b> Step 4. Alignment with reference genome</a></li>
+<li class="chapter" data-level="2.7" data-path="exercises-day-7.html"><a href="exercises-day-7.html#step-5.-read-count"><i class="fa fa-check"></i><b>2.7</b> Step 5. Read count</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="exercises-day-8.html"><a href="exercises-day-8.html"><i class="fa fa-check"></i><b>3</b> Exercises - Day 8</a><ul>
+<li class="chapter" data-level="3.1" data-path="exercises-day-8.html"><a href="exercises-day-8.html#step-4.-alignment-of-reads"><i class="fa fa-check"></i><b>3.1</b> Step 4. Alignment of reads</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="exercises-day-8.html"><a href="exercises-day-8.html#alignment-to-the-genome"><i class="fa fa-check"></i><b>3.1.1</b> Alignment to the genome</a></li>
+<li class="chapter" data-level="3.1.2" data-path="exercises-day-8.html"><a href="exercises-day-8.html#now-align-the-reads"><i class="fa fa-check"></i><b>3.1.2</b> Now align the reads</a></li>
+<li class="chapter" data-level="3.1.3" data-path="exercises-day-8.html"><a href="exercises-day-8.html#post-processing-the-alignment-result-files"><i class="fa fa-check"></i><b>3.1.3</b> Post-processing the alignment result files</a></li>
+<li class="chapter" data-level="3.1.4" data-path="exercises-day-8.html"><a href="exercises-day-8.html#visualization"><i class="fa fa-check"></i><b>3.1.4</b> Visualization</a></li>
+<li class="chapter" data-level="3.1.5" data-path="exercises-day-8.html"><a href="exercises-day-8.html#quality-check-of-alignment"><i class="fa fa-check"></i><b>3.1.5</b> Quality check of alignment</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="exercises-day-8.html"><a href="exercises-day-8.html#step-5.-read-count-1"><i class="fa fa-check"></i><b>3.2</b> Step 5. Read count</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="exercises-day-8.html"><a href="exercises-day-8.html#counting-reads-per-feature"><i class="fa fa-check"></i><b>3.2.1</b> Counting reads per feature</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="exercises-day-8.html"><a href="exercises-day-8.html#step-6.-final-report"><i class="fa fa-check"></i><b>3.3</b> Step 6. Final report</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="read-count-analysis.html"><a href="read-count-analysis.html"><i class="fa fa-check"></i><b>4</b> Read count analysis</a><ul>
+<li class="chapter" data-level="4.0.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#data-from-taito"><i class="fa fa-check"></i><b>4.0.1</b> Data from Taito</a></li>
+<li class="chapter" data-level="4.0.2" data-path="read-count-analysis.html"><a href="read-count-analysis.html#reading-the-metadata"><i class="fa fa-check"></i><b>4.0.2</b> Reading the metadata</a></li>
+<li class="chapter" data-level="4.0.3" data-path="read-count-analysis.html"><a href="read-count-analysis.html#summarizing-an-rna-seq-experiment-as-a-count-matrix"><i class="fa fa-check"></i><b>4.0.3</b> Summarizing an RNA-seq experiment as a count matrix</a></li>
+<li class="chapter" data-level="4.0.4" data-path="read-count-analysis.html"><a href="read-count-analysis.html#installation"><i class="fa fa-check"></i><b>4.0.4</b> Installation</a></li>
+<li class="chapter" data-level="4.0.5" data-path="read-count-analysis.html"><a href="read-count-analysis.html#htseq-count"><i class="fa fa-check"></i><b>4.0.5</b> htseq-count</a></li>
+<li class="chapter" data-level="4.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#qc"><i class="fa fa-check"></i><b>4.1</b> QC</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#expression"><i class="fa fa-check"></i><b>4.1.1</b> Expression</a></li>
+<li class="chapter" data-level="4.1.2" data-path="read-count-analysis.html"><a href="read-count-analysis.html#visual-exploration"><i class="fa fa-check"></i><b>4.1.2</b> Visual Exploration</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="read-count-analysis.html"><a href="read-count-analysis.html#differential-expression-analysis"><i class="fa fa-check"></i><b>4.2</b> Differential expression analysis</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#diagnostic-plots"><i class="fa fa-check"></i><b>4.2.1</b> Diagnostic plots</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="rna-seq-pipeline.html"><a href="rna-seq-pipeline.html"><i class="fa fa-check"></i><b>5</b> 4-RNA-seq pipeline</a><ul>
+<li class="chapter" data-level="5.0.1" data-path="rna-seq-pipeline.html"><a href="rna-seq-pipeline.html#dependency"><i class="fa fa-check"></i><b>5.0.1</b> Dependency</a></li>
+<li class="chapter" data-level="5.0.2" data-path="rna-seq-pipeline.html"><a href="rna-seq-pipeline.html#installation-1"><i class="fa fa-check"></i><b>5.0.2</b> Installation</a></li>
+<li class="chapter" data-level="5.1" data-path="rna-seq-pipeline.html"><a href="rna-seq-pipeline.html#how-to-run"><i class="fa fa-check"></i><b>5.1</b> How to run</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="rna-seq-pipeline.html"><a href="rna-seq-pipeline.html#download-public-resources"><i class="fa fa-check"></i><b>5.1.1</b> Download public resources</a></li>
+<li class="chapter" data-level="5.1.2" data-path="rna-seq-pipeline.html"><a href="rna-seq-pipeline.html#step-1-3.-qc-and-filtering"><i class="fa fa-check"></i><b>5.1.2</b> Step 1-3. QC and Filtering</a></li>
+<li class="chapter" data-level="5.1.3" data-path="rna-seq-pipeline.html"><a href="rna-seq-pipeline.html#step-4.-alignment-of-reads-1"><i class="fa fa-check"></i><b>5.1.3</b> Step 4. Alignment of reads</a></li>
+<li class="chapter" data-level="5.1.4" data-path="rna-seq-pipeline.html"><a href="rna-seq-pipeline.html#step-5.-read-count-2"><i class="fa fa-check"></i><b>5.1.4</b> Step 5. Read count</a></li>
+<li class="chapter" data-level="5.1.5" data-path="rna-seq-pipeline.html"><a href="rna-seq-pipeline.html#final-report"><i class="fa fa-check"></i><b>5.1.5</b> Final report</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="rna-seq-pipeline.html"><a href="rna-seq-pipeline.html#extra"><i class="fa fa-check"></i><b>5.2</b> EXTRA</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="rna-seq-pipeline.html"><a href="rna-seq-pipeline.html#alignment-read-viewer"><i class="fa fa-check"></i><b>5.2.1</b> Alignment read viewer</a></li>
+<li class="chapter" data-level="5.2.2" data-path="rna-seq-pipeline.html"><a href="rna-seq-pipeline.html#compressing-fastq-files"><i class="fa fa-check"></i><b>5.2.2</b> Compressing fastq files</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal RNA-seq Book Example</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="exercises---day-8" class="section level1">
+<h1><span class="header-section-number">3</span> Exercises - Day 8</h1>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="bu">cd</span> <span class="va">$WRKDIR</span>
+<span class="bu">cd</span> DONOTREMOVE/day7/
+
+<span class="co">### How much data we have generated till now</span>
+<span class="fu">du</span> -h RNAseq_exercise
+
+<span class="co"># Why rawRead is taking so much disk space</span>
+<span class="fu">ls</span> -lh RNAseq_exercise/rawReads/
+<span class="co">## May be we can delete some unnecessary files </span>
+
+<span class="bu">cd</span> RNAseq_exercise</code></pre></div>
+<div id="step-4.-alignment-of-reads" class="section level2">
+<h2><span class="header-section-number">3.1</span> Step 4. Alignment of reads</h2>
+<p>Once the raw read quality has been assessed and determined to be sufficient, or the data has been filtered and trimmed to acceptable standards, the reads can be aligned to a reference. This process is an extremely active field of research and novel aligners are frequently published. There is, sadly, no “silver bullet” and the choice of aligners will be dependent on the reference to be used (genome or transcriptome), the data type (short vs. longer reads) and the available computational power, among other factors. Most recent aligners use either BWT (Burrows M 1994) (Burrows-Wheeler transformation) or MEM (Khan et al. 2009) (Maximum Exact Matches) to perform alignment. Older generation alignment algorithms relied on a spliced-seed approach (Heng Li and Homer 2010). The numerous implementations of these different strategies all come with a myriad of options that may significantly affect the alignment outcome. <strong>Selecting the most accurate aligner and determining the optimal parameter set for a project can often represent a small project in itself.</strong> At the time of writing this guide there was no guideline available as to which aligner is most appropriate for a given situation (read length, type of reference, etc.). Hence, in the following, we exemplify using aligners that we have incorporated in our processing pipeline based on internal benchmarking for our most common experimental setup: mouse/drosophila transcriptome, Illumina HiSeq 2500, 76bp SE sequencing. The aligner of choice varies based on the type of reference available for the project: For genome based alignment of RNA-Seq data we use STAR, a MEM based aligner - it actually uses MMP (maximum mappable prefix, a variation of MEM).</p>
+<div id="alignment-to-the-genome" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Alignment to the genome</h3>
+<p>Here in this class, the STAR programm will be used for mapping. This programm is available by default which means no need to load any module.</p>
+<div id="indexing-the-genome" class="section level4">
+<h4><span class="header-section-number">3.1.1.1</span> Indexing the genome</h4>
+<p><strong>NOTE: The command line below is shown for exemplary purposes, NOT to be executed :-)</strong></p>
+<p>First, the genome needs to be indexed. This is performed using the following command:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">STAR</span> --runMode genomeGenerate --genomeDir GENOME/Indices --genomeFastaFiles \
+GENOME/FASTA/genome.fa --runThreadN 8 --sjdbOverhang 75 \
+--sjdbGTFfile GENOME/GTF/genome.gtf</code></pre></div>
+<p>where the <code>genomeDir</code> parameter specifies the output directory for the index, <code>genomeFastaFiles</code> specifies the genome FASTA file path and <code>sjdbGTFfile</code> the file path of the gene annotation file, which can typically be retrieved from EnsEMBL (in gtf format) or UCSC (in gff3 format, to be converted in gtf format). We also provide an additional option that would need to be edited depending on your sequencing read length (<code>sjdbOverhang</code> 75); we selected 75 as our longuest reads are 76 bp long - see the STAR manual for the rationale behind this.</p>
+<p>For indexing the genome we need the “genome” (fasta) and “gene annotation” (GTF) files from public repositories first. Let us check from the “2.2 Advanced options.” of STAR <a href="https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf">manuals</a>.</p>
+<p>We will use Ensembl <a href="http://www.ensembl.org/info/data/ftp/index.html">FTP site</a></p>
+<div class="figure">
+<img src="Ensemble.png" />
+
+</div>
+<p>Now we will download the rference genome and annotation files.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Create directory to store this reference files.</span>
+<span class="fu">mkdir</span> mouse_genome_release-96
+
+<span class="co">## Copy the link of gtf file and download </span>
+<span class="fu">wget</span> -P mouse_genome_release-96/  ftp://ftp.ensembl.org/pub/release-96/gtf/mus_musculus/Mus_musculus.GRCm38.96.gtf.gz
+
+<span class="co"># Unzip the file</span>
+<span class="fu">gunzip</span> mouse_genome_release-96/Mus_musculus.GRCm38.96.gtf.gz
+<span class="fu">ls</span> mouse_genome_release-96/
+
+<span class="co">### Now similarly download and unzip the reference genome using the above commands</span>
+
+<span class="co">## After downloading these files we need their absolute paths</span>
+<span class="fu">find</span> <span class="va">$PWD</span>/mouse_genome_release-96/*</code></pre></div>
+<p>STAR takes lots of <strong>memory</strong> and <strong>disk space</strong> to index the genome. It may take long time also. Copy the following code to <strong>star_index.sh</strong></p>
+<pre><code>#!/bin/bash -l
+# author: dasroy
+#SBATCH -J StarIndex
+#SBATCH --constraint=&quot;snb|hsw&quot;
+#SBATCH -o StarIndex_out_%j.txt
+#SBATCH -e StarIndex_err_%j.txt
+#SBATCH -p hugemem
+#SBATCH -n 1
+#SBATCH --cpus-per-task=8
+#SBATCH -t 12:00:00
+#SBATCH --mem=32000 ## 32GB memory
+
+
+genomeGtf=&quot;/wrk/student041/day7_rishi/RNAseq_exercise/mouse_genome_release-96/Mus_musculus.GRCm38.96.gtf&quot;
+if [ ! -f &quot;$genomeGtf&quot; ]
+then
+        echo &quot;gtf not found&quot;
+fi
+
+genomeFasta=&quot;/wrk/student041/day7_rishi/RNAseq_exercise/mouse_genome_release-96/Mus_musculus.GRCm38.dna.primary_assembly.fa&quot;
+if [ ! -f &quot;$genomeFasta&quot; ]
+then
+        echo &quot;genome not found&quot;
+fi
+
+mkdir GENOME_Indices
+
+STAR --runMode genomeGenerate --genomeDir GENOME_Indices \
+--genomeFastaFiles $genomeFasta \
+--sjdbGTFfile $genomeGtf \
+--runThreadN $SLURM_CPUS_PER_TASK --sjdbOverhang 65</code></pre>
+<p>Submit the job with following coomand</p>
+<blockquote>
+<p>sbatch star_index.sh</p>
+</blockquote>
+</div>
+</div>
+<div id="now-align-the-reads" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> Now align the reads</h3>
+<p>Once the genome index is built, we can align our sample reads to it. This is achieved as follows:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">du</span> -h GENOME_Indices
+
+<span class="co">## Directory for alignment results</span>
+<span class="fu">mkdir</span> starAlign
+
+<span class="co">## Not to Execute</span>
+<span class="ex">STAR</span> --genomeDir GENOME_Indices \
+     --readFilesIn  input.fastq.gz --readFilesCommand zcat \
+         --outFileNamePrefix starAlign/star_annotated_input.fastq.gz \
+         --outSAMtype BAM SortedByCoordinate
+
+<span class="co">## We need the absolute path of INdexed_Genome directory</span>
+<span class="fu">find</span> <span class="va">$PWD</span>/GENOME_Indices</code></pre></div>
+<p>where there are a number of additional parameters: The parameter <code>--outFileNamePrefix</code> sets the path and prefix to where the results will be written. Our sample files are GZip compressed so we inform STAR how to read it (<code>readFilesCommand zcat</code>). The <code>outSAMtype</code> BAM <code>SortedByCoordinate</code> ensures that the final result is already converted to the “BAM” format and sorted by coordinate, saving a few additional steps doing this via samtools. As you can see, we provide many more arguments, which you can lookup in the STAR manual; STAR is highly configurable!</p>
+<p>Copy the following code to <strong>star_align.sh</strong></p>
+<pre><code>#!/bin/bash -l
+# author: dasroy
+#SBATCH -J Star_align
+#SBATCH --constraint=&quot;snb|hsw&quot;
+#SBATCH -o StarAlign_out_%j.txt
+#SBATCH -e StarAlign_err_%j.txt
+#SBATCH -p hugemem
+#SBATCH -n 1
+#SBATCH --cpus-per-task=8
+#SBATCH -t 12:00:00
+#SBATCH --mem=32000
+
+genome_indexed=&quot;/wrk/student041/day7_rishi/RNAseq_exercise/GENOME_Indices&quot;
+
+if [ ! -f &quot;$genome_indexed&quot; ]
+then
+        echo &quot;genome indexed not found&quot;
+fi
+
+
+STAR --genomeDir $genome_indexed \
+        --readFilesIn trimmomatic/trimmed_non_rRna_Derm5Ctrl_run032119.fastq.gz  --readFilesCommand zcat \
+        --outFileNamePrefix starAlign/star_annotated_trimmed_non_rRna_Derm5Ctrl_run032119.fastq \
+        --outSAMtype BAM SortedByCoordinate --runThreadN $SLURM_CPUS_PER_TASK
+        
+### Now need to index the BAM files
+module load biokit
+samtools index starAlign/star_annotated_trimmed_non_rRna_Derm5Ctrl_run032119.fastqAligned.sortedByCoord.out.bam</code></pre>
+<p>Submit the job with following coomand</p>
+<blockquote>
+<p>sbatch star_align.sh</p>
+</blockquote>
+</div>
+<div id="post-processing-the-alignment-result-files" class="section level3">
+<h3><span class="header-section-number">3.1.3</span> Post-processing the alignment result files</h3>
+<p>STAR returns a number of result files:</p>
+<ol style="list-style-type: decimal">
+<li><p>a star_annotated_trimmed_non_rRna_Derm5Ctrl_run032119.fastqAligned.sortedByCoord.out.bam SAM file that contains the alignment in SAM format (Li et al, 2009).</p></li>
+<li><p>a number of star_annotated_trimmed_non_rRna_Derm5Ctrl_run032119.fastq<strong>Log</strong>.* log files</p></li>
+<li><p>a number of star_annotated_trimmed_non_rRna_Derm5Ctrl_run032119.fastq<strong>SJ</strong>.* files containing splice junction information.</p></li>
+</ol>
+<p>Among the log files, <code>Log.final.out</code> and <code>SJ.out.tab</code> are of particular interest. The first details the alignment rate, percentage of uniquely/multiple aligning reads, rate of mismatches, INDELs identified in the reads, etc. The second file describes, in a tabular format, all the EEJs identified by STAR and whether these exist in the provided gff3 file or if they are novel.</p>
+</div>
+<div id="visualization" class="section level3">
+<h3><span class="header-section-number">3.1.4</span> Visualization</h3>
+<p>The BAM format is very efficient for computers to work with, but as a binary file format, it is unreadble to humans. However we can use tools like IGV to visualize the alignments. For that we also need to index the bam files, which is <strong>alraedy done</strong> in the previous slurm script.</p>
+<p>Example command</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">samtools</span> index input.bam</code></pre></div>
+<p>Now copy the bam and bam.bai files using winscp to your local computer. And open in the IGV tool.</p>
+<p>Copy the rest of the pre-aligned data.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">cp</span> /wrk/dasroy/DONOTREMOVE/GMB-203_rnaSeq/star_alignment/* starAlign/</code></pre></div>
+</div>
+<div id="quality-check-of-alignment" class="section level3">
+<h3><span class="header-section-number">3.1.5</span> Quality check of alignment</h3>
+<p>Again we will use MultiQC to generate the alignment report.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">module</span> load biopython-env
+<span class="ex">multiqc</span> -o qa/ -n starAlignment starAlign
+
+<span class="co"># unload unnecessary module</span>
+<span class="ex">module</span> unload biopython-env</code></pre></div>
+</div>
+</div>
+<div id="step-5.-read-count-1" class="section level2">
+<h2><span class="header-section-number">3.2</span> Step 5. Read count</h2>
+<p>This step varies depending on whether expression at the gene or the transcript level is required. In our case, we are interested in gene expression, as we would like to perform a differential gene expression study.</p>
+<p>One major caveat estimating gene expression using aligned RNA-Seq reads is that a single read, which originated from a single mRNA molecule, can be aligned to several features ( transcripts or genes) if those alignments are of equivalent quality. This happens as a result of gene duplication and the presence of repetitive or common domains, for example. To avoid this, it is best practice to adopt a conservative approach by collapsing all existing transcripts of a single gene locus into a “synthetic” transcript containing every exon of that gene.</p>
+<div id="counting-reads-per-feature" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Counting reads per feature</h3>
+<p>The second step is to perform the intersection between the aligned position of reads (contained in the alignment BAM file) and the gene coordinates obtained in the previous step, to count the number of reads overlapping a gene. There are two primary caveats here: First the annotation collapsing process detailed above works on a gene-by-gene basis and hence is oblivious to the existence of genes that may overlap another gene encoded on the opposite strand. Second, aligners may return multiple mapping positions for a single read.</p>
+<p>A de-facto standard for counting is the htseq-count tool supplied as part of the HTSeq python library (Anders, Pyl, and Huber 2014). This associated <a href="https://htseq.readthedocs.io/en/release_0.11.1/count.html">webpage</a> illustrates in greater detail the issues discussed above. We have to provide “htseq-count” whether the data is from a strand-specific assay or not. Which depends on different library protocol and a good source of that is available from <a href="http://chipster.csc.fi/manual/library-type-summary.html">chipster</a>.</p>
+<div id="not-to-run" class="section level4">
+<h4><span class="header-section-number">3.2.1.1</span> Not to run</h4>
+<p>Example command for stranded data</p>
+<pre><code>samtools view input.bam | \
+htseq-count -m union -s reverse -t exon -i gene_id - input.gtf &gt; \
+output.txt</code></pre>
+<p>We will store the output of htseq-count in readCount directory.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">mkdir</span> readCount</code></pre></div>
+<p>Copy-paste the following commands to <strong>htseq_count.sh</strong> to submit another slurm job.</p>
+<pre><code>#!/bin/bash -l
+# author: dasroy
+#SBATCH -J htseq-counting
+#SBATCH --constraint=&quot;snb|hsw&quot;
+#SBATCH -o htseq_out_%j.txt
+#SBATCH -e htseq_err_%j.txt
+#SBATCH -p serial
+#SBATCH -n 1
+#SBATCH --cpus-per-task=8
+#SBATCH -t 01:00:00
+#SBATCH --mem=4000
+
+genomeGtf=&quot;/wrk/student041/day7_rishi/RNAseq_exercise/mouse_genome_release-96/Mus_musculus.GRCm38.96.gtf&quot;
+
+
+module load biokit
+
+samtools view starAlign/star_annotated_trimmed_non_rRna_Derm5Ctrl_run032119.fastqAligned.sortedByCoord.out.bam | \
+htseq-count -s reverse -t exon -i gene_id - $genomeGtf &gt; \
+readCount/htseq_star_annotated_trimmed_non_rRna_Derm5Ctrl_run032119.fastq.gz.txt</code></pre>
+<p>Submit the job with following coomand</p>
+<blockquote>
+<p>sbatch htseq_count.sh</p>
+</blockquote>
+<p>Copy the rest of the data and check quality</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">cp</span> /wrk/dasroy/DONOTREMOVE/GMB-203_rnaSeq/star_count/* readCount/
+
+<span class="co"># QC</span>
+<span class="ex">module</span> load biopython-env
+<span class="ex">multiqc</span> -o qa/ -n htseqCount readCount
+
+<span class="co"># unload unnecessary module</span>
+<span class="ex">module</span> unload biopython-env</code></pre></div>
+</div>
+</div>
+</div>
+<div id="step-6.-final-report" class="section level2">
+<h2><span class="header-section-number">3.3</span> Step 6. Final report</h2>
+<p>Till now we have used MultiQC to generate the report corresponding to each tool separately by scanning individual folders. Previous MultiQC commands were :</p>
+<div id="not-to-run-1" class="section level4">
+<h4><span class="header-section-number">3.3.0.1</span> Not to run</h4>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">1.</span> multiqc -o qa/ -n rawReads qa/rawReads_fastqc
+
+<span class="ex">2.</span> multiqc -o qa/ -n sortMeRna qa/sortMeRna
+
+<span class="ex">3.</span> multiqc -o qa/ -n trimmomatic qa/trimmomatic_fastqc
+
+<span class="ex">4.</span> multiqc -o qa/ -n starAlignment starAlign
+
+<span class="ex">5.</span> multiqc -o qa/ -n htseqCount readCount</code></pre></div>
+<p>Let us try to combine them to a single report</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">## Delete the extra file in readCount directory</span>
+<span class="fu">rm</span> readCount/htseq_star_annotated_trimmed_non_rRna_Derm5Ctrl_run032119.fastq.gz.txt
+
+<span class="ex">module</span> load biopython-env
+<span class="ex">multiqc</span> -o qa/ -n finalReport ./ <span class="co"># scanning the whole project directory</span></code></pre></div>
+<p>There are solution to this in MultiQC <a href="https://multiqc.info/docs/#save-settings">manuals</a>.</p>
+<p>Due to mismatch in filenames in different output directories( like sortMeRna, starAlign and others), there are too many rows instead of six rows in ‘General Statistics’ section of <strong>qa/finalReport.html</strong>. MultiQC is higly configurable and filenames can be fixed by configuring ‘multiqc_config.yaml’. See the <a href="https://multiqc.info/docs/#configuring-multiqc">documentation</a>. Pay attention to <code>extra_fn_clean_exts</code> and <code>extra_fn_clean_trim</code>:</p>
+<p>Now we will try to configure ‘multiqc_config.yaml’</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Download the example config file </span>
+<span class="fu">wget</span> https://raw.githubusercontent.com/ewels/MultiQC/master/test/config_example.yaml
+
+<span class="co">#rename it to </span>
+<span class="fu">mv</span> config_example.yaml multiqc_config.yaml
+
+<span class="fu">nano</span> multiqc_config.yaml</code></pre></div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="exercises-day-7.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="read-count-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

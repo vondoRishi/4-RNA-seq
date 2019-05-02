@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Quality control | A Minimal RNA-seq Book Example</title>
+  <meta name="description" content="This is a minimal example of how to process RNA-seq" />
+  <meta name="generator" content="bookdown  and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Quality control | A Minimal RNA-seq Book Example" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a minimal example of how to process RNA-seq" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Quality control | A Minimal RNA-seq Book Example" />
+  
+  <meta name="twitter:description" content="This is a minimal example of how to process RNA-seq" />
+  
+
+<meta name="author" content="Rishi Das Roy" />
+
+
+<meta name="date" content="2019-05-02" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html">
+<link rel="next" href="alignment-and-count.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#acknowledgement"><i class="fa fa-check"></i><b>1.1</b> Acknowledgement</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="quality-control.html"><a href="quality-control.html"><i class="fa fa-check"></i><b>2</b> Quality control</a><ul>
+<li class="chapter" data-level="2.1" data-path="quality-control.html"><a href="quality-control.html#getting-your-share-of-the-data"><i class="fa fa-check"></i><b>2.1</b> Getting your share of the data</a></li>
+<li class="chapter" data-level="2.2" data-path="quality-control.html"><a href="quality-control.html#workflow"><i class="fa fa-check"></i><b>2.2</b> Workflow</a></li>
+<li class="chapter" data-level="2.3" data-path="quality-control.html"><a href="quality-control.html#step-1.-qa-of-raw-reads"><i class="fa fa-check"></i><b>2.3</b> Step 1. QA of raw reads</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="quality-control.html"><a href="quality-control.html#fastqc-on-rest-of-the-fastq-files"><i class="fa fa-check"></i><b>2.3.1</b> FastQC on rest of the fastq files</a></li>
+<li class="chapter" data-level="2.3.2" data-path="quality-control.html"><a href="quality-control.html#summerize"><i class="fa fa-check"></i><b>2.3.2</b> Summerize</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="quality-control.html"><a href="quality-control.html#step-2.-filtering-rrna"><i class="fa fa-check"></i><b>2.4</b> Step 2. Filtering rRNA</a></li>
+<li class="chapter" data-level="2.5" data-path="quality-control.html"><a href="quality-control.html#step-3.-quality-trimming-and-adapter-removal"><i class="fa fa-check"></i><b>2.5</b> Step 3. Quality trimming and adapter removal</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="quality-control.html"><a href="quality-control.html#trimmed-data-fastqc"><i class="fa fa-check"></i><b>2.5.1</b> Trimmed data FastQC</a></li>
+<li class="chapter" data-level="2.5.2" data-path="quality-control.html"><a href="quality-control.html#final-filtering-report"><i class="fa fa-check"></i><b>2.5.2</b> Final filtering report</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="alignment-and-count.html"><a href="alignment-and-count.html"><i class="fa fa-check"></i><b>3</b> Alignment and count</a><ul>
+<li class="chapter" data-level="3.1" data-path="alignment-and-count.html"><a href="alignment-and-count.html#step-4.-alignment-of-reads"><i class="fa fa-check"></i><b>3.1</b> Step 4. Alignment of reads</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="alignment-and-count.html"><a href="alignment-and-count.html#alignment-to-the-genome"><i class="fa fa-check"></i><b>3.1.1</b> Alignment to the genome</a></li>
+<li class="chapter" data-level="3.1.2" data-path="alignment-and-count.html"><a href="alignment-and-count.html#now-align-the-reads"><i class="fa fa-check"></i><b>3.1.2</b> Now align the reads</a></li>
+<li class="chapter" data-level="3.1.3" data-path="alignment-and-count.html"><a href="alignment-and-count.html#post-processing-the-alignment-result-files"><i class="fa fa-check"></i><b>3.1.3</b> Post-processing the alignment result files</a></li>
+<li class="chapter" data-level="3.1.4" data-path="alignment-and-count.html"><a href="alignment-and-count.html#visualization"><i class="fa fa-check"></i><b>3.1.4</b> Visualization</a></li>
+<li class="chapter" data-level="3.1.5" data-path="alignment-and-count.html"><a href="alignment-and-count.html#quality-check-of-alignment"><i class="fa fa-check"></i><b>3.1.5</b> Quality check of alignment</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="alignment-and-count.html"><a href="alignment-and-count.html#step-5.-read-count"><i class="fa fa-check"></i><b>3.2</b> Step 5. Read count</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="alignment-and-count.html"><a href="alignment-and-count.html#counting-reads-per-feature"><i class="fa fa-check"></i><b>3.2.1</b> Counting reads per feature</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="alignment-and-count.html"><a href="alignment-and-count.html#step-6.-final-report"><i class="fa fa-check"></i><b>3.3</b> Step 6. Final report</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="read-count-analysis.html"><a href="read-count-analysis.html"><i class="fa fa-check"></i><b>4</b> Read count analysis</a><ul>
+<li class="chapter" data-level="4.0.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#data-from-taito"><i class="fa fa-check"></i><b>4.0.1</b> Data from Taito</a></li>
+<li class="chapter" data-level="4.0.2" data-path="read-count-analysis.html"><a href="read-count-analysis.html#reading-the-metadata"><i class="fa fa-check"></i><b>4.0.2</b> Reading the metadata</a></li>
+<li class="chapter" data-level="4.0.3" data-path="read-count-analysis.html"><a href="read-count-analysis.html#summarizing-an-rna-seq-experiment-as-a-count-matrix"><i class="fa fa-check"></i><b>4.0.3</b> Summarizing an RNA-seq experiment as a count matrix</a></li>
+<li class="chapter" data-level="4.0.4" data-path="read-count-analysis.html"><a href="read-count-analysis.html#installation"><i class="fa fa-check"></i><b>4.0.4</b> Installation</a></li>
+<li class="chapter" data-level="4.0.5" data-path="read-count-analysis.html"><a href="read-count-analysis.html#htseq-count"><i class="fa fa-check"></i><b>4.0.5</b> htseq-count</a></li>
+<li class="chapter" data-level="4.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#qc"><i class="fa fa-check"></i><b>4.1</b> QC</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#expression"><i class="fa fa-check"></i><b>4.1.1</b> Expression</a></li>
+<li class="chapter" data-level="4.1.2" data-path="read-count-analysis.html"><a href="read-count-analysis.html#visual-exploration"><i class="fa fa-check"></i><b>4.1.2</b> Visual Exploration</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="read-count-analysis.html"><a href="read-count-analysis.html#differential-expression-analysis"><i class="fa fa-check"></i><b>4.2</b> Differential expression analysis</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#diagnostic-plots"><i class="fa fa-check"></i><b>4.2.1</b> Diagnostic plots</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html"><i class="fa fa-check"></i><b>5</b> Pipeline 4-RNA-seq</a><ul>
+<li class="chapter" data-level="5.0.1" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#dependency"><i class="fa fa-check"></i><b>5.0.1</b> Dependency</a></li>
+<li class="chapter" data-level="5.0.2" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#installation-1"><i class="fa fa-check"></i><b>5.0.2</b> Installation</a></li>
+<li class="chapter" data-level="5.1" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#how-to-run"><i class="fa fa-check"></i><b>5.1</b> How to run</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#download-public-resources"><i class="fa fa-check"></i><b>5.1.1</b> Download public resources</a></li>
+<li class="chapter" data-level="5.1.2" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#step-1-3.-qc-and-filtering"><i class="fa fa-check"></i><b>5.1.2</b> Step 1-3. QC and Filtering</a></li>
+<li class="chapter" data-level="5.1.3" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#step-4.-alignment-of-reads-1"><i class="fa fa-check"></i><b>5.1.3</b> Step 4. Alignment of reads</a></li>
+<li class="chapter" data-level="5.1.4" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#step-5.-read-count-1"><i class="fa fa-check"></i><b>5.1.4</b> Step 5. Read count</a></li>
+<li class="chapter" data-level="5.1.5" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#final-report"><i class="fa fa-check"></i><b>5.1.5</b> Final report</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#extra"><i class="fa fa-check"></i><b>5.2</b> EXTRA</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#alignment-read-viewer"><i class="fa fa-check"></i><b>5.2.1</b> Alignment read viewer</a></li>
+<li class="chapter" data-level="5.2.2" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#compressing-fastq-files"><i class="fa fa-check"></i><b>5.2.2</b> Compressing fastq files</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal RNA-seq Book Example</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="quality-control" class="section level1">
+<h1><span class="header-section-number">2</span> Quality control</h1>
+<div id="getting-your-share-of-the-data" class="section level2">
+<h2><span class="header-section-number">2.1</span> Getting your share of the data</h2>
+<p><img src="Dermis.jpg" /> The data used in this RNA-seq practice session are taken from published artcile (Biggs et. al. 2018). In this study, E13.5 mouse dermis (skin) was cut into two halves along the midline and one half was incubated in recombinant FGF20 protein and the other with protein vehicle. The objective was to identify up- and down-regulated genes through RNA-sequencing to reveal FGF20 signalling target genes. The cDNA libraries were prepared with TruSeq <em>Stranded</em> Total RNA kit with RiboZero (Illumina, San Diego, CA) ribosomal RNA eliminator kit, and single ends of samples were sequenced with NextSeq500 (Illumina, San Diego, CA).</p>
+<p>Open putty and login to server. Run following commands one by one.</p>
+<div id="first-we-will-copy-the-fastq-files-generated-by-the-sequencing-unit." class="section level4">
+<h4><span class="header-section-number">2.1.0.1</span> First we will copy the fastq files generated by the sequencing unit.</h4>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="bu">cd</span> <span class="va">$WRKDIR</span>
+<span class="bu">cd</span> DONOTREMOVE
+<span class="fu">mkdir</span> day7
+<span class="bu">cd</span> day7
+
+<span class="co"># copy raw fastq files</span>
+<span class="fu">cp</span> /wrk/dasroy/DONOTREMOVE/GMB-203_rnaSeq/RNAseq_exercise.tar.gz ./
+<span class="co">## Extract the data</span>
+<span class="fu">tar</span> -xvf RNAseq_exercise.tar.gz
+
+<span class="bu">cd</span> RNAseq_exercise/
+<span class="fu">ls</span> -lrth rawReads/*
+<span class="co"># [Remember: FASTQ  or FQ file formats are same]</span></code></pre></div>
+</div>
+</div>
+<div id="workflow" class="section level2">
+<h2><span class="header-section-number">2.2</span> Workflow</h2>
+<ul>
+<li>Day 7</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Quality Assessment (QA) of raw reads using FastQC<br />
+</li>
+<li>rRNA filtering using SortMeRna
+<ul>
+<li>QA of filtered reads using MultiQC</li>
+</ul></li>
+<li>Quality trimming and adapter removal using Trimmomatic
+<ul>
+<li>QA using FastQC</li>
+</ul></li>
+</ol>
+<ul>
+<li>Day 8</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>Trimmed reads alignment using STAR
+<ul>
+<li>QA with MultiQC</li>
+</ul></li>
+<li>Read count summarization using HTSeq htseq-count
+<ul>
+<li>QA with MultiQC</li>
+</ul></li>
+</ol>
+<p>Step 2 and 3 can be done in any order.</p>
+</div>
+<div id="step-1.-qa-of-raw-reads" class="section level2">
+<h2><span class="header-section-number">2.3</span> Step 1. QA of raw reads</h2>
+<p>The first pre-processing step is to assess the quality of the raw data received from the sequencing facility. This data is commonly delivered in FASTQ format ( file extension fastq or fq).</p>
+<p>Upon receiving the RNA-Seq FASTQ files from the sequencing facility, it is essential that some initial QC assessments be performed. Most importantly, one should check the overall sequence quality, the GC percentage distribution ( the proportion of guanine and cytosine bp across the reads) and the presence / absence of overrepresented sequences. FastQC has become a de-facto standard for performing this task <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/" class="uri">http://www.bioinformatics.babraham.ac.uk/projects/fastqc/</a>. A FastQC command line example is as follows:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
+<span class="co"># First, make an output directory called &quot;qa&quot; (to collect all quality assessment reports) and a sub-directory of that called &quot;rawReads&quot;</span>
+<span class="fu">mkdir</span> -p qa/rawReads_fastqc
+
+<span class="co"># First we load biokit module to access FastQC.</span>
+<span class="ex">module</span> load biokit
+<span class="ex">fastqc</span> --help
+
+<span class="co"># Sample command to execute on a single file</span>
+<span class="ex">fastqc</span> -o qa/rawReads_fastqc rawReads/Derm5Ctrl_run032119.fastq.gz 
+
+<span class="co"># What are the output files. </span>
+<span class="fu">ls</span> -lrth qa/rawReads/</code></pre></div>
+<p>The output of FastQC is a zip archive and an HTML document, which is sub-divided into sections describing the specific metrics that were analyzed. <strong>Login to sui.csc.fi</strong> and view any single report and go through the following categories.</p>
+<div id="fastqc-on-rest-of-the-fastq-files" class="section level3">
+<h3><span class="header-section-number">2.3.1</span> FastQC on rest of the fastq files</h3>
+<p>There are so many fastq files to process. However FastQC can run a number of files in parallel (see the -t option).</p>
+<ul>
+<li>fastqc -o qa/raw -t 16 raw/*.fastq.gz</li>
+</ul>
+<p>But let us run through by submitting as SLURM job. [ SLURM is a popular job scheduling system, another <a href="https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/lessons/02_assessing_quality.html">example</a> ]</p>
+<p>Copy following text to a file <strong>fastqc_parallel.sh</strong> with <em>nano</em> editor.</p>
+<pre><code>#!/bin/bash -l
+#SBATCH -J fastqc
+#SBATCH --constraint=&quot;snb|hsw&quot;
+#SBATCH -o fastqc_out_%j.txt
+#SBATCH -e fastqc_err_%j.txt
+#SBATCH -p serial
+#SBATCH -n 1
+#SBATCH --cpus-per-task=6 ## *Number of fastq files*
+#SBATCH -t 00:50:00
+#SBATCH --mem-per-cpu=2000
+#SBATCH --mail-type=END
+
+module load biokit
+
+## mkdir -p qa/rawReads
+fastqc -o qa/rawReads_fastqc -t $SLURM_CPUS_PER_TASK rawReads/*.fastq.gz</code></pre>
+<p>Submit this job with following command</p>
+<blockquote>
+<p>sbatch fastqc_parallel.sh ## --mail-user <a href="mailto:your@email.com">your@email.com</a> [using email is optional]</p>
+</blockquote>
+<p>Check status of job</p>
+<blockquote>
+<p>watch &quot;squeue -u $USER&quot;</p>
+</blockquote>
+<p>To exit “Watch” press</p>
+<blockquote>
+<p>Ctrl+C</p>
+</blockquote>
+<p>The metrics are explained in the slides.</p>
+<p><em>Check the out and error files</em> fastqc_out_*.txt and fastqc_err_*.txt . These are the files which will contain any execution errors.</p>
+</div>
+<div id="summerize" class="section level3">
+<h3><span class="header-section-number">2.3.2</span> Summerize</h3>
+<p>Finally, also run <a href="https://multiqc.info/"><strong>multiqc</strong></a> to summarize all data in one file. First we need to install multiqc which is not available in taito.csc.fi . Executes the following commands only once</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Execute this command only once in your account</span>
+<span class="ex">module</span> load biopython-env
+<span class="ex">pip</span> install --upgrade pip
+<span class="ex">pip</span> install multiqc
+<span class="ex">pip</span> install numpy --upgrade
+
+<span class="co">## Check the installation and manual</span>
+<span class="ex">multiqc</span> -h</code></pre></div>
+<p>Now summarize all fastqc reports from qa/rawReads directory to a single html file.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">module</span> load biopython-env
+<span class="ex">multiqc</span> -o qa/ -n rawReads qa/rawReads_fastqc
+
+<span class="co"># unload unnecessary module</span>
+<span class="ex">module</span> unload biopython-env</code></pre></div>
+<p>Now open the file qa/rawReads.html in the browser</p>
+</div>
+</div>
+<div id="step-2.-filtering-rrna" class="section level2">
+<h2><span class="header-section-number">2.4</span> Step 2. Filtering rRNA</h2>
+<p>Typically, wet-lab protocols to extract mRNA include a step to deplete the sample of rRNA or to enrich it for poly-adenylated transcripts (rRNA is not poly-adenylated). Common approaches to achieve this are to use commercial kits or poly-dT beads, respectively. No approach will be fully sensitive and, as a result, some rRNA carryover is to be expected. This is not a problem per se as long as the remaining proportion accounts for a low percentage of the reads (commonly between 0.1 and 3%). Larger proportions will have an effect on the usable number of reads obtained from the samples, as fewer sequence reads would originate from expressed mRNAs. This is not to be overlooked as these rRNAs will produce valid alignments (in all reference genomes and for most de novo assembled transcriptomes and genomes) and hence other metrics (such as the alignment rate) will fail to identify such a bias. To control for the rRNA quantity in our sample FastQ files, we use <a href="https://bioinfo.lifl.fr/RNA/sortmerna/">SortMeRna</a>, a tool originally developed to identify rRNA in metagenomics analyses (Kopylova, Noé, and Touzet 2012). The tool accepts FASTQ files (SE (single ended) or PE (paired ended)) as input and includes a set of <em>reference libraries</em> containing the most common rRNAs (5,5.8,16, 18, 23 and 26-28S). One of the sources of rRNA sequnces in fasta format is available <a href="https://github.com/biocore/sortmerna/tree/master/rRNA_databases">here</a>.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Store rRna filtered reads in &quot;sortMeRna&quot; directory</span>
+<span class="fu">mkdir</span> sortMeRna 
+
+<span class="ex">module</span> load qiime/1.9.1
+<span class="ex">sortmerna</span> -h</code></pre></div>
+<p>At first it is important to index once the reference libraries ( provided in fasta format) with following command. <strong>BUT do not execute</strong> it now as it is a time and memory consuming process.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">## Example command to index reference library</span>
+<span class="ex">indexdb_rna</span> --ref path_to_reference_file.fasta,path_to_indexed_file.idx
+
+<span class="co">## Example command to filter out rRNA reads</span>
+<span class="ex">sortmerna</span>  --ref  path_to_reference_file.fasta,path_to_indexed_file.idx  \
+ --reads input.fastq  \
+ --aligned rRNA_reads.fastq \
+ --other non_rRna_reads.fastq \
+ --sam --SQ --log -v  --fastx  -a 4 <span class="co"># Number of cpus</span></code></pre></div>
+<p>Later you can try to index it yourself.</p>
+<p>Here we will use pre-indexed <em>reference libraries</em> (combined in a single fasta file all_rfam_arc_bac_5_16_18_23_28s.fasta ).</p>
+<p>Copy following text to a file <strong>sortmerna_script.sh</strong> with <em>nano</em> editor.</p>
+<pre><code>#!/bin/bash -l
+#SBATCH -J sortmerna
+#SBATCH --constraint=&quot;snb|hsw&quot;
+#SBATCH -o sortmerna_out_%j.txt
+#SBATCH -e sortmerna_err_%j.txt
+#SBATCH -p serial
+#SBATCH -n 1
+#SBATCH --cpus-per-task=4 
+#SBATCH -t 01:00:00
+#SBATCH --mem-per-cpu=2000
+#SBATCH --mail-type=END
+
+# First uncompress  reads:
+zcat rawReads/Derm5Ctrl_run032119.fastq.gz &gt; rawReads/Derm5Ctrl_run032119.fastq
+
+module load qiime/1.9.1
+# Run sortmerna
+sortmerna  --ref  /wrk/dasroy/DONOTREMOVE/GMB-203_rnaSeq/sortmerna_rRNA_database/all_rfam_arc_bac_5_16_18_23_28s.fasta,/wrk/dasroy/DONOTREMOVE/GMB-203_rnaSeq/sortmerna_rRNA_database/all_rfam_arc_bac_5_16_18_23_28s.idx \
+--reads rawReads/Derm5Ctrl_run032119.fastq  \
+--aligned sortMeRna/rRna_Derm5Ctrl_run032119 \
+--other sortMeRna/non_rRna_Derm5Ctrl_run032119 \
+--sam --SQ --log -v  --fastx  -a $SLURM_CPUS_PER_TASK 
+
+
+# Compress the files
+gzip sortMeRna/non_rRna_Derm5Ctrl_run032119.fastq</code></pre>
+<p>The batch job could be launched with command:</p>
+<blockquote>
+<p>sbatch sortmerna_script.sh</p>
+</blockquote>
+<p>The quantity of found rRNAs are given in the last line of log files</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># What are the out put files</span>
+<span class="fu">ls</span> -lrth sortMeRna
+
+<span class="co"># reads/sam files correspond to rRna  could be deleted, we only need them for when there are high % of rRNA</span>
+<span class="fu">rm</span> sortMeRna/rRna_Derm5Ctrl_run032119.fastq sortMeRna/rRna_Derm5Ctrl_run032119.sam
+
+<span class="co"># What is the %rRNA in one of the sample files?</span>
+<span class="fu">less</span> sortMeRna/rRna_Derm5Ctrl_run032119.log
+
+<span class="co"># unload unnecessary module</span>
+<span class="ex">module</span> unload qiime/1.9.1</code></pre></div>
+<p>The above script should be used for each fastq file individually by editing every time. However to save time we will copy the rest of the files.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">cp</span> /wrk/dasroy/DONOTREMOVE/GMB-203_rnaSeq/sortMeRna/* sortMeRna/
+
+<span class="co"># These log files should also exist in qa directory, hence make a shortut link of &quot;sortMeRna&quot; there </span>
+
+<span class="fu">ln</span> -s <span class="va">$WRKDIR</span>/DONOTREMOVE/day7/RNAseq_exercise/sortMeRna/ qa/sortMeRna
+
+
+<span class="co"># Summarize the result with after processing all the fastq files with sortmerna</span>
+<span class="ex">module</span> load biopython-env
+<span class="ex">multiqc</span> -o qa/ -n sortMeRna qa/sortMeRna
+
+<span class="ex">module</span> unload biopython-env</code></pre></div>
+</div>
+<div id="step-3.-quality-trimming-and-adapter-removal" class="section level2">
+<h2><span class="header-section-number">2.5</span> Step 3. Quality trimming and adapter removal</h2>
+<p>It is a fact that on Illumina sequencers, the quality of a base pair is linked to its position in the read, bases in the later cycles of the sequencing process have a lower average quality than the earliest cycles (as was observed in the QC report above). This effect depends on the sequencing facility and on the chemistry used and it is only recently that sequencing aligners have integrated methods to correct for this - and not all alignment software does so. A common approach to increase the mapping rate of reads is to <em>trim (remove) low quality bases</em> from the 3’ end until the quality reaches a user-selected Phred-quality threshold. A threshold of 20 is widely accepted as it corresponds to a base call error of 1 in a 100, which is approximately the inherent technical error rate of the Illumina sequencing platform.</p>
+<p>An additional issue encountered with Illumina sequencing is the <em>presence of partial adapter sequences</em> within sequenced reads. This arises when the sample fragment size has a large variance and fragments shorter than the sequencer read-length are sequenced. As the resulting reads may contain a significant part of the adapter - a bp sequence of artificial origin - earlier generation alignment software ( those that do not use Maximum Exact Matching and require global alignment of an entire read) may not be able to map such reads. Being able to identify the adapter-like sequences at the end of the read and clip/trim them - a process termed adapter removal - may consequently significantly increase the aligned read proportion.</p>
+<p>There are numerous tools available to perform either or both of these tasks (quality trimming and adapter removal). Here, we exemplify using Trimmomatic (Bolger, Lohse, and Usadel 2014), a tool that does both.</p>
+<p>The selection of trimming steps and their associated parameters are supplied on the trimmomatic command line.</p>
+<p>The current trimming steps are:</p>
+<ul>
+<li>ILLUMINACLIP: Cut adapter and other illumina-specific sequences from the read.</li>
+<li>SLIDINGWINDOW: Perform a sliding window trimming, cutting once the average quality within the window falls below a threshold.</li>
+<li>LEADING: Cut bases off the start of a read, if below a threshold quality</li>
+<li>TRAILING: Cut bases off the end of a read, if below a threshold quality</li>
+<li>CROP: Cut the read to a specified length</li>
+<li>HEADCROP: Cut the specified number of bases from the start of the read</li>
+<li>MINLEN: Drop the read if it is below a specified length</li>
+<li>TOPHRED33: Convert quality scores to Phred-33</li>
+<li>TOPHRED64: Convert quality scores to Phred-64</li>
+</ul>
+<p><font size="3" color="blue"> !!!WARNING!!! </font> Note that by default Trimmomatic tries to use all the computing cores of the server where it is launched. In Taito this approach is not feasible and <em>you should always use command line option -threads to limit the number of cores to be used</em>. Note that the -threads option should be given immediately after the mode selection (SE or PE).</p>
+<p>A sample trimmomatic command for taito-shell ( character: “\” indicates that the command line continues to the next row) :</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Not to execute</span>
+<span class="ex">trimmomatic</span> SE -threads 4 -phred33 input.fq.gz output.fq.gz \
+ILLUMINACLIP:/appl/bio/trimmomatic/adapters/TruSeq3-SE.fa:2:30:1 \
+LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36</code></pre></div>
+<p>This will perform the following:</p>
+<ul>
+<li>Remove adapters (ILLUMINACLIP:TruSeq3-PE.fa:2:30:1)</li>
+<li>Remove leading low quality or N bases (below quality 3) (LEADING:3)</li>
+<li>Remove trailing low quality or N bases (below quality 3) (TRAILING:3)</li>
+<li>Scan the read with a 4-base wide sliding window, cutting when the average quality per base drops below 15 (SLIDINGWINDOW:4:15)</li>
+<li>Drop reads below the 36 bases long (MINLEN:36)</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># make directory for trimmomatic outputs</span>
+<span class="fu">mkdir</span> -p trimmomatic</code></pre></div>
+<p>Here in the class we will use slurm scripts to use trimmomatic , also check taito <a href="https://research.csc.fi/-/trimmomatic">documentation</a>. Copy below lines to a file <em>trimmomatic_script.sh</em> with nano editor.</p>
+<p>This script will perform as a batch job reserving 4 cores, 12 hours and 4 GB of memory:</p>
+<pre><code>#!/bin/bash
+#SBATCH -J trimmomatic
+#SBATCH -N 1
+#SBATCH -p serial
+#SBATCH -t 01:00:00
+#SBATCH --mem=4000
+#SBATCH -o trimmomatic_out_%j.txt
+#SBATCH -e trimmomatic_err_%j.txt
+#SBATCH --cpus-per-task=8
+
+trimmomatic SE -phred33 -threads $SLURM_CPUS_PER_TASK  \
+sortMeRna/non_rRna_Derm5Ctrl_run032119.fastq.gz \
+trimmomatic/trimmed_non_rRna_Derm5Ctrl_run032119.fastq.gz \
+ILLUMINACLIP:/appl/bio/trimmomatic/adapters/TruSeq3-SE.fa:2:30:1 \
+LEADING:35</code></pre>
+<p>The batch job could be launched with command:</p>
+<blockquote>
+<p>sbatch trimmomatic_script.sh</p>
+</blockquote>
+<p>Now we can copy the rest of the files and run MultiQC.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">cp</span> /wrk/dasroy/DONOTREMOVE/GMB-203_rnaSeq/trimmed_reads/* trimmomatic/</code></pre></div>
+<div id="trimmed-data-fastqc" class="section level3">
+<h3><span class="header-section-number">2.5.1</span> Trimmed data FastQC</h3>
+<p>A final FastQC run is performed to ensure that the previous rRNA filtering, quality trimming and/or adapter removal steps successfully conserved high quality reads without being too stringent and without introducing any newly apparent technical biases.</p>
+<p>Redo the FastQC on the Trimmomatic files you have generated.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">mkdir</span> -p qa/trimmomatic_fastqc
+
+<span class="co">## Make another slurm script similar to fastqc_parallel.sh by replacing &quot;rawReads&quot; with &quot;trimmomatic&quot;</span>
+<span class="fu">sed</span> <span class="st">&#39;s/rawReads/trimmomatic/g&#39;</span> fastqc_parallel.sh <span class="op">&gt;</span> trimo_fastqc_parallel.sh
+
+<span class="co">## inspect the difference</span>
+<span class="fu">diff</span> fastqc_parallel.sh trimo_fastqc_parallel.sh</code></pre></div>
+<p>Now execute it</p>
+<blockquote>
+<p>sbatch trimo_fastqc_parallel.sh</p>
+</blockquote>
+<p>Check status of job</p>
+<blockquote>
+<p>watch “squeue -u $USER”</p>
+</blockquote>
+</div>
+<div id="final-filtering-report" class="section level3">
+<h3><span class="header-section-number">2.5.2</span> Final filtering report</h3>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">module</span> load biopython-env
+<span class="ex">multiqc</span> -o qa/ -n trimmomatic qa/trimmomatic_fastqc
+
+<span class="co"># unload unnecessary module</span>
+<span class="ex">module</span> unload biopython-env</code></pre></div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="alignment-and-count.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
