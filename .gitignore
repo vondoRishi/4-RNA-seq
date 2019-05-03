@@ -1,0 +1,13 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+4-RNA-seq
+4-rna-seq*
+*.odp
+*.pdf
+_*/
+Day*
+*.html
+Workshop
+rRNAFasta

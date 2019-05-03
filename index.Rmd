@@ -1,0 +1,21 @@
+---
+title: "A Minimal RNA-seq cook book"
+author: "Rishi Das Roy, Postdoctoral Fellow, Evo-Devo lab, University of Helsinki"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+description: "This is a minimal example of how to process RNA-seq"
+---
+
+# Preface
+
+This book is a collection of the study materials which has been used in RNA-seq section of the course [Advanced course in genomics and gene regulation 2019](https://moodle.helsinki.fi/course/view.php?id=31702) by me. 
+
+## Acknowledgement 
+
+Most of the study material are motivated from **[Rna-seq data analysis, Workshop II](http://www.finbionet.fi/ils/ngg2016/ws_ngg.html) ** 1-3.11.2016. 
+This could not be possible without the encouragement and permission from the istructor/author of the workshop. I like to thank  
+* Nicolas DelHomme, Umeå University, Sweden  
+* Bastian Schiffthaler, Umeå University, Sweden  
+* Charlotte Soneson, Friedrich Miescher Institute for Biomedical Research  

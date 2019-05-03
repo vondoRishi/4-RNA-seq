@@ -1,0 +1,55 @@
+---
+title: "Submit_Github"
+author: "Rishi Das Roy"
+date: "2 May 2019"
+output: html_notebook
+---
+
+Following the tutorial [Creating Project Pages using the command line](https://help.github.com/en/articles/creating-project-pages-using-the-command-line)
+
+[few git commands](https://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html)
+
+# Update the website
+
+## List the changes
+
+```{bash eval=FALSE}
+cd 4-RNA-seq
+
+## Check the active brunch
+git branch
+## * gh-pages
+#   master
+
+# if it is not "gh-pages" 
+git checkout  'gh-pages'
+```
+
+
+```{bash eval=FALSE}
+git status
+# On branch gh-pages
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+# 	modified:   index.html
+# 	modified:   search_index.json
+
+```
+
+These changes will only be applied to this branch when they’re committed. You can 'git add' changed files, but until you commit they won’t belong to any particular branch.
+
+## Stage your changes
+```{bash eval=FALSE}
+# You can do git add -u so that it will stage the modified and deleted files.
+git add -u
+```
+
+## Commit your changes
+
+```{bash eval=FALSE}
+git commit -m "Updating title"
+git push origin gh-pages
+```
+

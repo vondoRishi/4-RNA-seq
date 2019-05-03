@@ -1,0 +1,2 @@
+rmd_files: ["index.Rmd", "Chapter_1.Rmd", "Chapter_2.Rmd", "Chapter_3.Rmd", "Chapter_4.Rmd"]
+output_dir: "4-RNA-seq"
