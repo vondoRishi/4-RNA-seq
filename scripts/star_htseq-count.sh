@@ -28,8 +28,8 @@ then
         extension="${filename##*.}"
         filename="${filename%%.*}" 
   
-	echo "samtools view $my_file | \
-	htseq-count -s $stranded -t exon -i gene_id - $gene_annotation > \
+	echo "htseq-count -f bam -s $stranded -t exon -i gene_id \
+              $my_file $gene_annotation > \
 	$2/htseq_ensemble_gtf_$filename.txt" >> commands/$num_cmnds"_htseq_"$2.txt
 
 fi
