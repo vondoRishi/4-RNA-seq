@@ -222,8 +222,7 @@ A de-facto standard for counting is the htseq-count tool supplied as part of the
 Example command for stranded data
 
 
-    samtools view input.bam | \
-    htseq-count -m union -s reverse -t exon -i gene_id - input.gtf > \
+    htseq-count -f bam -m union -s reverse -t exon -i gene_id input.bam input.gtf > \
     output.txt
     
 
@@ -256,8 +255,8 @@ Copy-paste the following commands to **htseq_count.sh** to submit another slurm 
     
     module load biokit
     
-    samtools view starAlign/star_annotated_trimmed_non_rRna_Derm5Ctrl_run032119.fastqAligned.sortedByCoord.out.bam | \
-    htseq-count -s reverse -t exon -i gene_id - $genomeGtf > \
+    htseq-count -s reverse -t exon -i gene_id \
+    starAlign/star_annotated_trimmed_non_rRna_Derm5Ctrl_run032119.fastqAligned.sortedByCoord.out.bam $genomeGtf > \
     readCount/htseq_star_annotated_trimmed_non_rRna_Derm5Ctrl_run032119.fastq.gz.txt
     
     

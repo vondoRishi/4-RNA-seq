@@ -26,13 +26,13 @@ The fact that the values in the matrix are counts of sequencing reads (in the ca
 
 First we will install Bioconductor and DESeq2 packages.
 
-```{r warning=FALSE,echo=TRUE,message=FALSE,eval=FALSE}
+```{r warning=FALSE,echo=TRUE,message=FALSE,eval=TRUE}
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager",repos = "http://cran.us.r-project.org")
 }
 
 if (!requireNamespace("DESeq2", quietly = TRUE)) {
-    BiocManager::install("DESeq2", version = "3.8")
+    BiocManager::install("DESeq2")
 }
 
 ```

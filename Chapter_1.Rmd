@@ -13,8 +13,8 @@ Open putty and login to server. Run following commands one by one.
 ```{bash eval=FALSE}
 cd $WRKDIR
 cd DONOTREMOVE
-mkdir day7
-cd day7
+mkdir practice
+cd practice
 
 # copy raw fastq files
 cp /wrk/dasroy/DONOTREMOVE/GMB-203_rnaSeq/RNAseq_exercise.tar.gz ./
@@ -29,17 +29,17 @@ ls -lrth rawReads/*
 
 ## Workflow 
 
-- Day 7
 1. Quality Assessment (QA) of raw reads using FastQC  
 2. rRNA filtering using SortMeRna  
     * QA of filtered reads using MultiQC
 3. Quality trimming and adapter removal using Trimmomatic
     * QA using FastQC
-- Day 8
 4. Trimmed reads alignment using STAR
     * QA with MultiQC
 5. Read count summarization using HTSeq htseq-count
     * QA with MultiQC
+6. Report compilation with MultiQC
+7. Expression Analysis
 
 Step 2 and 3 can be done in any order.
 
@@ -239,7 +239,7 @@ cp /wrk/dasroy/DONOTREMOVE/GMB-203_rnaSeq/sortMeRna/* sortMeRna/
 
 # These log files should also exist in qa directory, hence make a shortut link of "sortMeRna" there 
 
-ln -s $WRKDIR/DONOTREMOVE/day7/RNAseq_exercise/sortMeRna/ qa/sortMeRna
+ln -s $WRKDIR/DONOTREMOVE/practice/RNAseq_exercise/sortMeRna/ qa/sortMeRna
 
 
 # Summarize the result with after processing all the fastq files with sortmerna
