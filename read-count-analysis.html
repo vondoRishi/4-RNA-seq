@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html >
+
 <head>
 
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4 Read count analysis | A Minimal RNA-seq Book Example</title>
-  <meta name="description" content="This is a minimal example of how to process RNA-seq" />
-  <meta name="generator" content="bookdown  and GitBook 2.6.7" />
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>3 Read count analysis | Pipeline:4-RNA-seq and a minimal RNA-seq cook book</title>
+  <meta name="description" content="This is a minimal example of how to process RNA-seq">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="4 Read count analysis | A Minimal RNA-seq Book Example" />
+  <meta property="og:title" content="3 Read count analysis | Pipeline:4-RNA-seq and a minimal RNA-seq cook book" />
   <meta property="og:type" content="book" />
   
   
@@ -16,19 +17,19 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4 Read count analysis | A Minimal RNA-seq Book Example" />
+  <meta name="twitter:title" content="3 Read count analysis | Pipeline:4-RNA-seq and a minimal RNA-seq cook book" />
   
   <meta name="twitter:description" content="This is a minimal example of how to process RNA-seq" />
   
 
-<meta name="author" content="Rishi Das Roy" />
+<meta name="author" content="Rishi Das Roy, Postdoctoral Fellow, Evo-Devo lab, University of Helsinki">
 
 
-<meta name="date" content="2019-05-02" />
+<meta name="date" content="2019-05-23">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
 <link rel="prev" href="alignment-and-count.html">
@@ -99,62 +100,68 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a><ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#acknowledgement"><i class="fa fa-check"></i><b>1.1</b> Acknowledgement</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#structure-of-the-book"><i class="fa fa-check"></i>Structure of the book</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#chapter-1-quality-control"><i class="fa fa-check"></i>Chapter 1: Quality Control</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#chapter-2-alignment-and-count"><i class="fa fa-check"></i>Chapter 2: Alignment and count</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#chapter-3-read-count-analysis"><i class="fa fa-check"></i>Chapter 3: Read count analysis</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#chapter-4-pipeline4-rna-seq"><i class="fa fa-check"></i>Chapter 4: Pipeline:4-RNA-seq</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="quality-control.html"><a href="quality-control.html"><i class="fa fa-check"></i><b>2</b> Quality control</a><ul>
-<li class="chapter" data-level="2.1" data-path="quality-control.html"><a href="quality-control.html#getting-your-share-of-the-data"><i class="fa fa-check"></i><b>2.1</b> Getting your share of the data</a></li>
-<li class="chapter" data-level="2.2" data-path="quality-control.html"><a href="quality-control.html#workflow"><i class="fa fa-check"></i><b>2.2</b> Workflow</a></li>
-<li class="chapter" data-level="2.3" data-path="quality-control.html"><a href="quality-control.html#step-1.-qa-of-raw-reads"><i class="fa fa-check"></i><b>2.3</b> Step 1. QA of raw reads</a><ul>
-<li class="chapter" data-level="2.3.1" data-path="quality-control.html"><a href="quality-control.html#fastqc-on-rest-of-the-fastq-files"><i class="fa fa-check"></i><b>2.3.1</b> FastQC on rest of the fastq files</a></li>
-<li class="chapter" data-level="2.3.2" data-path="quality-control.html"><a href="quality-control.html#summerize"><i class="fa fa-check"></i><b>2.3.2</b> Summerize</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgement"><i class="fa fa-check"></i>Acknowledgement</a></li>
 </ul></li>
-<li class="chapter" data-level="2.4" data-path="quality-control.html"><a href="quality-control.html#step-2.-filtering-rrna"><i class="fa fa-check"></i><b>2.4</b> Step 2. Filtering rRNA</a></li>
-<li class="chapter" data-level="2.5" data-path="quality-control.html"><a href="quality-control.html#step-3.-quality-trimming-and-adapter-removal"><i class="fa fa-check"></i><b>2.5</b> Step 3. Quality trimming and adapter removal</a><ul>
-<li class="chapter" data-level="2.5.1" data-path="quality-control.html"><a href="quality-control.html#trimmed-data-fastqc"><i class="fa fa-check"></i><b>2.5.1</b> Trimmed data FastQC</a></li>
-<li class="chapter" data-level="2.5.2" data-path="quality-control.html"><a href="quality-control.html#final-filtering-report"><i class="fa fa-check"></i><b>2.5.2</b> Final filtering report</a></li>
+<li class="chapter" data-level="1" data-path="quality-control.html"><a href="quality-control.html"><i class="fa fa-check"></i><b>1</b> Quality control</a><ul>
+<li class="chapter" data-level="1.1" data-path="quality-control.html"><a href="quality-control.html#getting-your-share-of-the-data"><i class="fa fa-check"></i><b>1.1</b> Getting your share of the data</a></li>
+<li class="chapter" data-level="1.2" data-path="quality-control.html"><a href="quality-control.html#workflow"><i class="fa fa-check"></i><b>1.2</b> Workflow</a></li>
+<li class="chapter" data-level="1.3" data-path="quality-control.html"><a href="quality-control.html#step-1.-qa-of-raw-reads"><i class="fa fa-check"></i><b>1.3</b> Step 1. QA of raw reads</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="quality-control.html"><a href="quality-control.html#fastqc-on-rest-of-the-fastq-files"><i class="fa fa-check"></i><b>1.3.1</b> FastQC on rest of the fastq files</a></li>
+<li class="chapter" data-level="1.3.2" data-path="quality-control.html"><a href="quality-control.html#summerize"><i class="fa fa-check"></i><b>1.3.2</b> Summerize</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="alignment-and-count.html"><a href="alignment-and-count.html"><i class="fa fa-check"></i><b>3</b> Alignment and count</a><ul>
-<li class="chapter" data-level="3.1" data-path="alignment-and-count.html"><a href="alignment-and-count.html#step-4.-alignment-of-reads"><i class="fa fa-check"></i><b>3.1</b> Step 4. Alignment of reads</a><ul>
-<li class="chapter" data-level="3.1.1" data-path="alignment-and-count.html"><a href="alignment-and-count.html#alignment-to-the-genome"><i class="fa fa-check"></i><b>3.1.1</b> Alignment to the genome</a></li>
-<li class="chapter" data-level="3.1.2" data-path="alignment-and-count.html"><a href="alignment-and-count.html#now-align-the-reads"><i class="fa fa-check"></i><b>3.1.2</b> Now align the reads</a></li>
-<li class="chapter" data-level="3.1.3" data-path="alignment-and-count.html"><a href="alignment-and-count.html#post-processing-the-alignment-result-files"><i class="fa fa-check"></i><b>3.1.3</b> Post-processing the alignment result files</a></li>
-<li class="chapter" data-level="3.1.4" data-path="alignment-and-count.html"><a href="alignment-and-count.html#visualization"><i class="fa fa-check"></i><b>3.1.4</b> Visualization</a></li>
-<li class="chapter" data-level="3.1.5" data-path="alignment-and-count.html"><a href="alignment-and-count.html#quality-check-of-alignment"><i class="fa fa-check"></i><b>3.1.5</b> Quality check of alignment</a></li>
-</ul></li>
-<li class="chapter" data-level="3.2" data-path="alignment-and-count.html"><a href="alignment-and-count.html#step-5.-read-count"><i class="fa fa-check"></i><b>3.2</b> Step 5. Read count</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="alignment-and-count.html"><a href="alignment-and-count.html#counting-reads-per-feature"><i class="fa fa-check"></i><b>3.2.1</b> Counting reads per feature</a></li>
-</ul></li>
-<li class="chapter" data-level="3.3" data-path="alignment-and-count.html"><a href="alignment-and-count.html#step-6.-final-report"><i class="fa fa-check"></i><b>3.3</b> Step 6. Final report</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="read-count-analysis.html"><a href="read-count-analysis.html"><i class="fa fa-check"></i><b>4</b> Read count analysis</a><ul>
-<li class="chapter" data-level="4.0.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#data-from-taito"><i class="fa fa-check"></i><b>4.0.1</b> Data from Taito</a></li>
-<li class="chapter" data-level="4.0.2" data-path="read-count-analysis.html"><a href="read-count-analysis.html#reading-the-metadata"><i class="fa fa-check"></i><b>4.0.2</b> Reading the metadata</a></li>
-<li class="chapter" data-level="4.0.3" data-path="read-count-analysis.html"><a href="read-count-analysis.html#summarizing-an-rna-seq-experiment-as-a-count-matrix"><i class="fa fa-check"></i><b>4.0.3</b> Summarizing an RNA-seq experiment as a count matrix</a></li>
-<li class="chapter" data-level="4.0.4" data-path="read-count-analysis.html"><a href="read-count-analysis.html#installation"><i class="fa fa-check"></i><b>4.0.4</b> Installation</a></li>
-<li class="chapter" data-level="4.0.5" data-path="read-count-analysis.html"><a href="read-count-analysis.html#htseq-count"><i class="fa fa-check"></i><b>4.0.5</b> htseq-count</a></li>
-<li class="chapter" data-level="4.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#qc"><i class="fa fa-check"></i><b>4.1</b> QC</a><ul>
-<li class="chapter" data-level="4.1.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#expression"><i class="fa fa-check"></i><b>4.1.1</b> Expression</a></li>
-<li class="chapter" data-level="4.1.2" data-path="read-count-analysis.html"><a href="read-count-analysis.html#visual-exploration"><i class="fa fa-check"></i><b>4.1.2</b> Visual Exploration</a></li>
-</ul></li>
-<li class="chapter" data-level="4.2" data-path="read-count-analysis.html"><a href="read-count-analysis.html#differential-expression-analysis"><i class="fa fa-check"></i><b>4.2</b> Differential expression analysis</a><ul>
-<li class="chapter" data-level="4.2.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#diagnostic-plots"><i class="fa fa-check"></i><b>4.2.1</b> Diagnostic plots</a></li>
+<li class="chapter" data-level="1.4" data-path="quality-control.html"><a href="quality-control.html#step-2.-filtering-rrna"><i class="fa fa-check"></i><b>1.4</b> Step 2. Filtering rRNA</a></li>
+<li class="chapter" data-level="1.5" data-path="quality-control.html"><a href="quality-control.html#step-3.-quality-trimming-and-adapter-removal"><i class="fa fa-check"></i><b>1.5</b> Step 3. Quality trimming and adapter removal</a><ul>
+<li class="chapter" data-level="1.5.1" data-path="quality-control.html"><a href="quality-control.html#trimmed-data-fastqc"><i class="fa fa-check"></i><b>1.5.1</b> Trimmed data FastQC</a></li>
+<li class="chapter" data-level="1.5.2" data-path="quality-control.html"><a href="quality-control.html#final-filtering-report"><i class="fa fa-check"></i><b>1.5.2</b> Final filtering report</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html"><i class="fa fa-check"></i><b>5</b> Pipeline 4-RNA-seq</a><ul>
-<li class="chapter" data-level="5.0.1" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#dependency"><i class="fa fa-check"></i><b>5.0.1</b> Dependency</a></li>
-<li class="chapter" data-level="5.0.2" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#installation-1"><i class="fa fa-check"></i><b>5.0.2</b> Installation</a></li>
-<li class="chapter" data-level="5.1" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#how-to-run"><i class="fa fa-check"></i><b>5.1</b> How to run</a><ul>
-<li class="chapter" data-level="5.1.1" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#download-public-resources"><i class="fa fa-check"></i><b>5.1.1</b> Download public resources</a></li>
-<li class="chapter" data-level="5.1.2" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#step-1-3.-qc-and-filtering"><i class="fa fa-check"></i><b>5.1.2</b> Step 1-3. QC and Filtering</a></li>
-<li class="chapter" data-level="5.1.3" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#step-4.-alignment-of-reads-1"><i class="fa fa-check"></i><b>5.1.3</b> Step 4. Alignment of reads</a></li>
-<li class="chapter" data-level="5.1.4" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#step-5.-read-count-1"><i class="fa fa-check"></i><b>5.1.4</b> Step 5. Read count</a></li>
-<li class="chapter" data-level="5.1.5" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#final-report"><i class="fa fa-check"></i><b>5.1.5</b> Final report</a></li>
+<li class="chapter" data-level="2" data-path="alignment-and-count.html"><a href="alignment-and-count.html"><i class="fa fa-check"></i><b>2</b> Alignment and count</a><ul>
+<li class="chapter" data-level="2.1" data-path="alignment-and-count.html"><a href="alignment-and-count.html#step-4.-alignment-of-reads"><i class="fa fa-check"></i><b>2.1</b> Step 4. Alignment of reads</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="alignment-and-count.html"><a href="alignment-and-count.html#alignment-to-the-genome"><i class="fa fa-check"></i><b>2.1.1</b> Alignment to the genome</a></li>
+<li class="chapter" data-level="2.1.2" data-path="alignment-and-count.html"><a href="alignment-and-count.html#now-align-the-reads"><i class="fa fa-check"></i><b>2.1.2</b> Now align the reads</a></li>
+<li class="chapter" data-level="2.1.3" data-path="alignment-and-count.html"><a href="alignment-and-count.html#post-processing-the-alignment-result-files"><i class="fa fa-check"></i><b>2.1.3</b> Post-processing the alignment result files</a></li>
+<li class="chapter" data-level="2.1.4" data-path="alignment-and-count.html"><a href="alignment-and-count.html#visualization"><i class="fa fa-check"></i><b>2.1.4</b> Visualization</a></li>
+<li class="chapter" data-level="2.1.5" data-path="alignment-and-count.html"><a href="alignment-and-count.html#quality-check-of-alignment"><i class="fa fa-check"></i><b>2.1.5</b> Quality check of alignment</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#extra"><i class="fa fa-check"></i><b>5.2</b> EXTRA</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#alignment-read-viewer"><i class="fa fa-check"></i><b>5.2.1</b> Alignment read viewer</a></li>
-<li class="chapter" data-level="5.2.2" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#compressing-fastq-files"><i class="fa fa-check"></i><b>5.2.2</b> Compressing fastq files</a></li>
+<li class="chapter" data-level="2.2" data-path="alignment-and-count.html"><a href="alignment-and-count.html#step-5.-read-count"><i class="fa fa-check"></i><b>2.2</b> Step 5. Read count</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="alignment-and-count.html"><a href="alignment-and-count.html#counting-reads-per-feature"><i class="fa fa-check"></i><b>2.2.1</b> Counting reads per feature</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="alignment-and-count.html"><a href="alignment-and-count.html#step-6.-final-report"><i class="fa fa-check"></i><b>2.3</b> Step 6. Final report</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="read-count-analysis.html"><a href="read-count-analysis.html"><i class="fa fa-check"></i><b>3</b> Read count analysis</a><ul>
+<li class="chapter" data-level="3.0.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#data-from-taito"><i class="fa fa-check"></i><b>3.0.1</b> Data from Taito</a></li>
+<li class="chapter" data-level="3.0.2" data-path="read-count-analysis.html"><a href="read-count-analysis.html#reading-the-metadata"><i class="fa fa-check"></i><b>3.0.2</b> Reading the metadata</a></li>
+<li class="chapter" data-level="3.0.3" data-path="read-count-analysis.html"><a href="read-count-analysis.html#summarizing-an-rna-seq-experiment-as-a-count-matrix"><i class="fa fa-check"></i><b>3.0.3</b> Summarizing an RNA-seq experiment as a count matrix</a></li>
+<li class="chapter" data-level="3.0.4" data-path="read-count-analysis.html"><a href="read-count-analysis.html#installation"><i class="fa fa-check"></i><b>3.0.4</b> Installation</a></li>
+<li class="chapter" data-level="3.0.5" data-path="read-count-analysis.html"><a href="read-count-analysis.html#htseq-count"><i class="fa fa-check"></i><b>3.0.5</b> htseq-count</a></li>
+<li class="chapter" data-level="3.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#qc"><i class="fa fa-check"></i><b>3.1</b> QC</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#expression"><i class="fa fa-check"></i><b>3.1.1</b> Expression</a></li>
+<li class="chapter" data-level="3.1.2" data-path="read-count-analysis.html"><a href="read-count-analysis.html#visual-exploration"><i class="fa fa-check"></i><b>3.1.2</b> Visual Exploration</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="read-count-analysis.html"><a href="read-count-analysis.html#differential-expression-analysis"><i class="fa fa-check"></i><b>3.2</b> Differential expression analysis</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="read-count-analysis.html"><a href="read-count-analysis.html#diagnostic-plots"><i class="fa fa-check"></i><b>3.2.1</b> Diagnostic plots</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html"><i class="fa fa-check"></i><b>4</b> Pipeline 4-RNA-seq</a><ul>
+<li class="chapter" data-level="4.0.1" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#dependency"><i class="fa fa-check"></i><b>4.0.1</b> Dependency</a></li>
+<li class="chapter" data-level="4.0.2" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#installation-1"><i class="fa fa-check"></i><b>4.0.2</b> Installation</a></li>
+<li class="chapter" data-level="4.1" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#how-to-run"><i class="fa fa-check"></i><b>4.1</b> How to run</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#download-public-resources"><i class="fa fa-check"></i><b>4.1.1</b> Download public resources</a></li>
+<li class="chapter" data-level="4.1.2" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#step-1-3.-qc-and-filtering"><i class="fa fa-check"></i><b>4.1.2</b> Step 1-3. QC and Filtering</a></li>
+<li class="chapter" data-level="4.1.3" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#step-4.-alignment-of-reads-1"><i class="fa fa-check"></i><b>4.1.3</b> Step 4. Alignment of reads</a></li>
+<li class="chapter" data-level="4.1.4" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#step-5.-read-count-1"><i class="fa fa-check"></i><b>4.1.4</b> Step 5. Read count</a></li>
+<li class="chapter" data-level="4.1.5" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#final-report"><i class="fa fa-check"></i><b>4.1.5</b> Final report</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#extra"><i class="fa fa-check"></i><b>4.2</b> EXTRA</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#alignment-read-viewer"><i class="fa fa-check"></i><b>4.2.1</b> Alignment read viewer</a></li>
+<li class="chapter" data-level="4.2.2" data-path="pipeline-4-rna-seq.html"><a href="pipeline-4-rna-seq.html#compressing-fastq-files"><i class="fa fa-check"></i><b>4.2.2</b> Compressing fastq files</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -166,7 +173,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal RNA-seq Book Example</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Pipeline:4-RNA-seq and a minimal RNA-seq cook book</a>
           </h1>
         </div>
 
@@ -175,15 +182,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
             <section class="normal" id="section-">
 <div id="read-count-analysis" class="section level1">
-<h1><span class="header-section-number">4</span> Read count analysis</h1>
+<h1><span class="header-section-number">3</span> Read count analysis</h1>
 <p>In this session, we walk through a gene-level RNA-seq differential expression analysis, as well as a differential exon usage analysis, using Bioconductor packages. Bioconductor has many packages supporting analysis of high-throughput sequence data, including RNA-seq. The packages which we will use in this tutorial include core packages maintained by the Bioconductor core team for importing and processing raw sequencing data and loading gene annotations. We will also use contributed packages for statistical analysis and visualization of sequencing data.</p>
 <div id="data-from-taito" class="section level3">
-<h3><span class="header-section-number">4.0.1</span> Data from Taito</h3>
+<h3><span class="header-section-number">3.0.1</span> Data from Taito</h3>
 <p>First we nead to transfer the <code>$WRKDIR/DONOTREMOVE/day7/RNAseq_exercise/readCount</code> directory from Taito to local computer. We can do it by login to sui.csc.fi or winscp. First create a directory <code>GMB-203</code> in your local computer and copy the <code>readCount</code> directory in this folder. Also download <a href="https://moodle.helsinki.fi/mod/resource/view.php?id=1584905"><code>Resource for exercise</code></a> file to <code>GMB-203</code> directory to define the experiment.<br />
 Now open <code>Rstudio</code> and set working directory from “Session &gt; Set Working Directory &gt; Choose Directory” to <code>GMB-203</code></p>
 </div>
 <div id="reading-the-metadata" class="section level3">
-<h3><span class="header-section-number">4.0.2</span> Reading the metadata</h3>
+<h3><span class="header-section-number">3.0.2</span> Reading the metadata</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## The first column is the sample name, the second column is the file name 
 ## of the count files generated by htseq-count, and the remaining columns 
 ## are sample metadata which will be stored in colData
@@ -191,23 +198,23 @@ Now open <code>Rstudio</code> and set working directory from “Session &gt; Set
 sampleMetaData &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;sample_description.csv&quot;</span>,<span class="dt">header =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
 <div id="summarizing-an-rna-seq-experiment-as-a-count-matrix" class="section level3">
-<h3><span class="header-section-number">4.0.3</span> Summarizing an RNA-seq experiment as a count matrix</h3>
+<h3><span class="header-section-number">3.0.3</span> Summarizing an RNA-seq experiment as a count matrix</h3>
 <p>Count-based statistical methods such as DESeq2 (Love, Huber, and Anders 2014), edgeR (M. D. Robinson, McCarthy, and Smyth 2009), limma with the voom method (Law et al. 2014), DSS (H. Wu, Wang, and Wu 2013), EBSeq (Leng et al. 2013), BaySeq (Hardcastle and Kelly 2010) and DEXSeq (Anders, Reyes, and Huber 2012) expect input data as obtained, e.g., from RNA-seq or another high-throughput sequencing experiment in the form of a matrix of integer values, or “counts”. The value in the i-th row and the j-th column of the matrix tells how many reads (or fragments, for paired-end RNA-seq) have been assigned to feature i in sample j. For RNA-seq, a feature is typically a gene, a transcript or an exon.</p>
 <p>The fact that the values in the matrix are counts of sequencing reads (in the case of single-end sequencing) or fragments (for paired-end sequencing) is important for the count-based statistical models, e.g. <code>DESeq2</code> or <code>edgeR</code>, as only the counts allow assessing the measurement precision correctly. It is important to <strong>never provide counts</strong> that have been normalized for sequencing depth/library size to these packages, as the statistical model is most powerful when applied to counts, and is designed to account for library size differences internally.</p>
 </div>
 <div id="installation" class="section level3">
-<h3><span class="header-section-number">4.0.4</span> Installation</h3>
+<h3><span class="header-section-number">3.0.4</span> Installation</h3>
 <p>First we will install Bioconductor and DESeq2 packages.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {
     <span class="kw">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>,<span class="dt">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)
 }
 
 <span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;DESeq2&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {
-    BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="st">&quot;DESeq2&quot;</span>, <span class="dt">version =</span> <span class="st">&quot;3.8&quot;</span>)
+    BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="st">&quot;DESeq2&quot;</span>)
 }</code></pre></div>
 </div>
 <div id="htseq-count" class="section level3">
-<h3><span class="header-section-number">4.0.5</span> htseq-count</h3>
+<h3><span class="header-section-number">3.0.5</span> htseq-count</h3>
 <p><code>htseq-count</code> outputs a text file for each sample, containing the observed read count for each gene. It is worth noticing that the last five rows in these text files do not correspond to genes, but summarize the number of reads that were not assigned to genes for various reasons. We do not want to include these lines in the count matrix.</p>
 <p>It is of course possible to manually read the text files into R, remove the lines not corresponding to genes and merging the count vectors for all the samples into one count matrix. However, the <code>DESeq2</code> package contains a function for constructing a DESeqDataSet directly from the output of <code>htseq-count</code>, and we will illustrate the use of it here (a more thorough description of the DESeqDataSet class is given below, for now it is enough to know that it is an example of a class where one can store all the information associated with an RNA-seq experiment). We need to provide the function with a sample table, where the <strong>first column</strong> is the sample name and the <strong>second</strong> is the name of the corresponding output file from htseq-count. Additional columns can be specified as well, and will be stored in the DESeqDataSet object.</p>
 <p>In this example we have already made the sample table <strong>sampleMetaData</strong>.</p>
@@ -229,7 +236,7 @@ ddsHTSeq</code></pre></div>
 ## colData names(2): pair condition</code></pre>
 </div>
 <div id="qc" class="section level2">
-<h2><span class="header-section-number">4.1</span> QC</h2>
+<h2><span class="header-section-number">3.1</span> QC</h2>
 <p>We have seen in <code>fastqc</code> reports the presence of dual peaks in <strong>Per Sequence GC Content</strong> and high GC rich reads. We will measure the median expression of each gene and its corresponding “gc percentage”.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### Obtaining log transformed count values and calculating median of each gene.
 rlogMat&lt;-<span class="kw">as.data.frame</span>(<span class="kw">assay</span>(<span class="kw">rlog</span>(ddsHTSeq)))
@@ -243,10 +250,27 @@ rlogMat<span class="op">$</span>median &lt;-<span class="st"> </span><span class
 
 <span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;biomaRt&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {
     BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="st">&quot;biomaRt&quot;</span>)
-}
-  
-
-### Use biomart to download gene information from Ensembl
+}</code></pre></div>
+<pre><code>## Bioconductor version 3.8 (BiocManager 1.30.4), R 3.5.0 (2018-04-23)</code></pre>
+<pre><code>## Installing package(s) &#39;biomaRt&#39;</code></pre>
+<pre><code>## also installing the dependencies &#39;hms&#39;, &#39;progress&#39;</code></pre>
+<pre><code>## Updating HTML index of packages in &#39;.Library&#39;</code></pre>
+<pre><code>## Making &#39;packages.html&#39; ... done
+## Update old packages: &#39;AnnotationDbi&#39;, &#39;assertthat&#39;, &#39;backports&#39;, &#39;BH&#39;,
+##   &#39;Biobase&#39;, &#39;BiocInstaller&#39;, &#39;bookdown&#39;, &#39;boot&#39;, &#39;Cairo&#39;, &#39;callr&#39;,
+##   &#39;caTools&#39;, &#39;class&#39;, &#39;cli&#39;, &#39;clipr&#39;, &#39;cluster&#39;, &#39;codetools&#39;,
+##   &#39;colorspace&#39;, &#39;commonmark&#39;, &#39;curl&#39;, &#39;data.table&#39;, &#39;devtools&#39;, &#39;digest&#39;,
+##   &#39;dplyr&#39;, &#39;evaluate&#39;, &#39;fansi&#39;, &#39;foreign&#39;, &#39;formatR&#39;, &#39;ggplot2&#39;, &#39;git2r&#39;,
+##   &#39;glue&#39;, &#39;GO.db&#39;, &#39;gtable&#39;, &#39;hexbin&#39;, &#39;highr&#39;, &#39;htmlwidgets&#39;, &#39;httpuv&#39;,
+##   &#39;httr&#39;, &#39;igraph&#39;, &#39;ini&#39;, &#39;irlba&#39;, &#39;jsonlite&#39;, &#39;knitr&#39;, &#39;later&#39;,
+##   &#39;lattice&#39;, &#39;lazyeval&#39;, &#39;markdown&#39;, &#39;MASS&#39;, &#39;Matrix&#39;, &#39;mgcv&#39;, &#39;mime&#39;,
+##   &#39;nlme&#39;, &#39;openssl&#39;, &#39;org.Hs.eg.db&#39;, &#39;org.Mm.eg.db&#39;, &#39;pcaMethods&#39;,
+##   &#39;pillar&#39;, &#39;pkgbuild&#39;, &#39;pkgload&#39;, &#39;plotly&#39;, &#39;purrr&#39;, &#39;R6&#39;, &#39;rcmdcheck&#39;,
+##   &#39;Rcpp&#39;, &#39;RcppArmadillo&#39;, &#39;rlang&#39;, &#39;rmarkdown&#39;, &#39;roxygen2&#39;, &#39;rpart&#39;,
+##   &#39;rstudioapi&#39;, &#39;Rtsne&#39;, &#39;sessioninfo&#39;, &#39;shiny&#39;, &#39;stringi&#39;, &#39;stringr&#39;,
+##   &#39;styler&#39;, &#39;survival&#39;, &#39;testthat&#39;, &#39;tibble&#39;, &#39;tidyr&#39;, &#39;tidyselect&#39;,
+##   &#39;tinytex&#39;, &#39;urltools&#39;, &#39;usethis&#39;, &#39;vioplot&#39;, &#39;xfun&#39;, &#39;xtable&#39;, &#39;yaml&#39;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### Use biomart to download gene information from Ensembl
 <span class="kw">suppressPackageStartupMessages</span>(<span class="kw">require</span>(biomaRt))
 ensMart&lt;-<span class="kw">useMart</span>(<span class="st">&quot;ensembl&quot;</span> )
 
@@ -274,20 +298,20 @@ rlogMat<span class="op">$</span>ensembl_gene_id &lt;-<span class="st"> </span><s
 rlogMat_biotype_gc &lt;-<span class="st"> </span><span class="kw">merge</span>(rlogMat,gene_attribute_data,<span class="dt">by=</span><span class="st">&quot;ensembl_gene_id&quot;</span>)
 
 <span class="kw">head</span>(rlogMat_biotype_gc)</code></pre></div>
-<pre><code>##      ensembl_gene_id  Derm5Ctrl Derm5Fgf20  Derm6Ctrl Derm6Fgf20
-## 1 ENSMUSG00000000001  8.8928811  9.0182708  8.9856921  8.9079000
-## 2 ENSMUSG00000000003 -1.9783942 -1.9790228 -1.9670873 -1.9779642
-## 3 ENSMUSG00000000028  6.6267082  6.5661234  6.6003497  6.5930273
-## 4 ENSMUSG00000000031 15.0212527 15.0295129 15.3359286 15.3490297
-## 5 ENSMUSG00000000037  5.4163466  5.4281514  5.3731305  5.3902636
-## 6 ENSMUSG00000000049  0.1983104  0.1703471  0.1968345  0.2003579
-##    Derm7Ctrl Derm7Fgf20     median external_gene_name   gene_biotype
-## 1  8.8537671  8.8102337  8.9003905              Gnai3 protein_coding
-## 2 -1.9787843 -1.9793395 -1.9785893               Pbsn protein_coding
-## 3  6.4265227  6.4071196  6.5795754              Cdc45 protein_coding
-## 4 15.0666101 15.3122778 15.1894439                H19        lincRNA
-## 5  5.2159912  5.1540986  5.3816970              Scml2 protein_coding
-## 6  0.2461662  0.1939255  0.1975725               Apoh protein_coding
+<pre><code>##      ensembl_gene_id  Derm5Ctrl Derm5Fgf20 Derm6Ctrl Derm6Fgf20  Derm7Ctrl
+## 1 ENSMUSG00000000001  8.8928814  9.0182690  8.985691  8.9079000  8.8537681
+## 2 ENSMUSG00000000003 -1.9783943 -1.9790229 -1.967087 -1.9779643 -1.9787844
+## 3 ENSMUSG00000000028  6.6267080  6.5661234  6.600350  6.5930272  6.4265229
+## 4 ENSMUSG00000000031 15.0212564 15.0295163 15.335925 15.3490263 15.0666127
+## 5 ENSMUSG00000000037  5.4163475  5.4281523  5.373131  5.3902641  5.2159899
+## 6 ENSMUSG00000000049  0.1983099  0.1703455  0.196834  0.2003575  0.2461676
+##   Derm7Fgf20     median external_gene_name   gene_biotype
+## 1  8.8102354  8.9003907              Gnai3 protein_coding
+## 2 -1.9793396 -1.9785894               Pbsn protein_coding
+## 3  6.4071199  6.5795753              Cdc45 protein_coding
+## 4 15.3122752 15.1894439                H19        lincRNA
+## 5  5.1540966  5.3816975              Scml2 protein_coding
+## 6  0.1939248  0.1975719               Apoh protein_coding
 ##   percentage_gene_gc_content
 ## 1                      41.65
 ## 2                      38.23
@@ -296,7 +320,7 @@ rlogMat_biotype_gc &lt;-<span class="st"> </span><span class="kw">merge</span>(r
 ## 5                      37.89
 ## 6                      43.83</code></pre>
 <div id="gene-biotype" class="section level4">
-<h4><span class="header-section-number">4.1.0.1</span> Gene Biotype</h4>
+<h4><span class="header-section-number">3.1.0.1</span> Gene Biotype</h4>
 <p>Plot median expression of different gene biotype. Are there any highly expressed rRNA ?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">require</span>(ggplot2))
 give.n &lt;-<span class="st"> </span><span class="cf">function</span>(x){
@@ -308,7 +332,7 @@ give.n &lt;-<span class="st"> </span><span class="cf">function</span>(x){
 <span class="st">    </span><span class="kw">stat_summary</span>(<span class="dt">fun.data =</span> give.n, <span class="dt">geom =</span> <span class="st">&quot;text&quot;</span>)<span class="op">+</span>
 <span class="st">    </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">5</span>,<span class="dv">25</span>)<span class="op">+</span><span class="kw">theme_bw</span>()<span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>,<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>Which are the highly expressed genes?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rlogMat_biotype_gc[ rlogMat_biotype_gc<span class="op">$</span>median<span class="op">&gt;</span><span class="dv">15</span>,
                     <span class="kw">c</span>(<span class="st">&quot;external_gene_name&quot;</span>, <span class="st">&quot;gene_biotype&quot;</span> ,
@@ -326,9 +350,9 @@ give.n &lt;-<span class="st"> </span><span class="cf">function</span>(x){
 <p>There are Mitochondrial ribosomal RNA (Mt_rRNA) which are higly expressed but they are not gc rich.</p>
 </div>
 <div id="expression" class="section level3">
-<h3><span class="header-section-number">4.1.1</span> Expression</h3>
+<h3><span class="header-section-number">3.1.1</span> Expression</h3>
 <div id="actual-count-values" class="section level4">
-<h4><span class="header-section-number">4.1.1.1</span> Actual Count values</h4>
+<h4><span class="header-section-number">3.1.1.1</span> Actual Count values</h4>
 <p>Log transformed values suppress the actual expression levels. Let us redo the above analysis on count values.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">countData&lt;-<span class="kw">as.data.frame</span>(<span class="kw">counts</span>(ddsHTSeq))
 countData<span class="op">$</span>median &lt;-<span class="st"> </span><span class="kw">apply</span>(countData,<span class="dv">1</span>,median)
@@ -340,7 +364,7 @@ countData_biotype &lt;-<span class="st"> </span><span class="kw">merge</span>(co
 <span class="kw">ggplot</span>(countData_biotype, <span class="kw">aes</span>(<span class="dt">x=</span>percentage_gene_gc_content,<span class="dt">y=</span>median))<span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>()<span class="op">+</span><span class="kw">xlim</span>(<span class="dv">25</span>,<span class="dv">75</span>)</code></pre></div>
 <pre><code>## Warning: Removed 80 rows containing missing values (geom_point).</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">countData_biotype[ countData_biotype<span class="op">$</span>median<span class="op">&gt;</span><span class="dv">10000</span>,
                    <span class="kw">c</span>(<span class="st">&quot;external_gene_name&quot;</span>, <span class="st">&quot;gene_biotype&quot;</span>,
                      <span class="st">&quot;median&quot;</span>,<span class="st">&quot;percentage_gene_gc_content&quot;</span>,<span class="st">&quot;ensembl_gene_id&quot;</span>)]</code></pre></div>
@@ -366,7 +390,7 @@ countData_biotype &lt;-<span class="st"> </span><span class="kw">merge</span>(co
 </div>
 </div>
 <div id="visual-exploration" class="section level3">
-<h3><span class="header-section-number">4.1.2</span> Visual Exploration</h3>
+<h3><span class="header-section-number">3.1.2</span> Visual Exploration</h3>
 <p><strong>Distance of DERMIS samples</strong>: A useful first step in an RNA-Seq analysis is often to assess overall similarity between samples: Which samples are similar to each other, which are different? Does this fit to the expectation from the experiment’s design?</p>
 <p>We use the R function dist to calculate the Euclidean distance between samples. To avoid that the distance measure is dominated by a few highly variable genes, and have a roughly equal contribution from all genes, we use it on the rlog-transformed data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Filtering out low expressed genes
@@ -386,11 +410,11 @@ dermis</code></pre></div>
 sampleDists &lt;-<span class="st"> </span><span class="kw">dist</span>(<span class="kw">t</span>(<span class="kw">assay</span>(rld)))
 sampleDists</code></pre></div>
 <pre><code>##            Derm5Ctrl Derm5Fgf20 Derm6Ctrl Derm6Fgf20 Derm7Ctrl
-## Derm5Fgf20  16.65626                                          
-## Derm6Ctrl   20.51888   21.08852                               
-## Derm6Fgf20  21.52504   20.75272  21.89650                     
-## Derm7Ctrl   18.61694   21.67180  23.18757   21.64976          
-## Derm7Fgf20  22.46988   23.01826  24.57369   21.08195  20.79349</code></pre>
+## Derm5Fgf20  16.65617                                          
+## Derm6Ctrl   20.51871   21.08833                               
+## Derm6Fgf20  21.52486   20.75254  21.89631                     
+## Derm7Ctrl   18.61681   21.67162  23.18736   21.64960          
+## Derm7Fgf20  22.46966   23.01802  24.57344   21.08177  20.79332</code></pre>
 <p>Note the use of the function t to transpose the data matrix. We need this because dist calculates distances between data rows and our samples constitute the columns.</p>
 <p>We visualize the distances in a heatmap, using the function pheatmap from the pheatmap package.</p>
 <p>In order to plot the sample distance matrix with the rows/columns arranged by those distances in the matrix, we manually provide the <code>sampleDists</code> to the <code>clustering_distance</code> argument of the pheatmap function. Otherwise the pheatmap function would assume that the matrix contains the data values themselves, and would calculate distances between the rows/columns of the distance matrix, which is not desired.</p>
@@ -413,15 +437,15 @@ colors &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>( <
          <span class="dt">clustering_distance_rows=</span>sampleDists,
          <span class="dt">clustering_distance_cols=</span>sampleDists,
          <span class="dt">col=</span>colors)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <div id="pca-plot" class="section level4">
-<h4><span class="header-section-number">4.1.2.1</span> PCA plot</h4>
+<h4><span class="header-section-number">3.1.2.1</span> PCA plot</h4>
 <p>Another way to visualize sample-to-sample distances is a principal-components analysis (PCA). In this ordination method, the data points (i.e., here, the samples) are projected onto the 2D plane such that they spread out in the two directions which explain most of the differences in the data. The x-axis is the direction (or principal component) which separates the data points the most. The amount of the total variance which is contained in the direction is printed in the axis label.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pcaData &lt;-<span class="st"> </span><span class="kw">plotPCA</span>(rld, <span class="dt">intgroup =</span> <span class="kw">c</span>(<span class="st">&quot;condition&quot;</span>,<span class="st">&quot;pair&quot;</span>),<span class="dt">returnData=</span><span class="ot">TRUE</span>)
  
 <span class="kw">ggplot</span>(pcaData, <span class="kw">aes</span>(PC1, PC2,  <span class="dt">text=</span>name,<span class="dt">group=</span>pair)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">3</span>,<span class="kw">aes</span>(<span class="dt">color=</span>condition))</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Reformat the plot
 percentVar &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">attr</span>(pcaData, <span class="st">&quot;percentVar&quot;</span>))
 p&lt;-<span class="kw">ggplot</span>(pcaData, <span class="kw">aes</span>(PC1, PC2,  <span class="dt">text=</span>name,<span class="dt">group=</span>pair)) <span class="op">+</span>
@@ -430,7 +454,7 @@ p&lt;-<span class="kw">ggplot</span>(pcaData, <span class="kw">aes</span>(PC1, P
 <span class="st">  </span><span class="kw">ylab</span>(<span class="kw">paste0</span>(<span class="st">&quot;PC2: &quot;</span>,percentVar[<span class="dv">2</span>],<span class="st">&quot;% variance&quot;</span>)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">coord_fixed</span>()<span class="op">+</span><span class="kw">ggtitle</span>(<span class="st">&quot;Dermis &quot;</span>)
 p</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
 <p>Try this for inteactive plot</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;plotly&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {
   <span class="kw">install.packages</span>(<span class="st">&quot;plotly&quot;</span>,<span class="dt">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)
@@ -442,7 +466,7 @@ p</code></pre></div>
 </div>
 </div>
 <div id="differential-expression-analysis" class="section level2">
-<h2><span class="header-section-number">4.2</span> Differential expression analysis</h2>
+<h2><span class="header-section-number">3.2</span> Differential expression analysis</h2>
 <p>It will be convenient to make sure that <code>Ctrl</code> is the first level in the dex factor, so that the default log2 fold changes are calculated as Control over Fgf20. The function relevel achieves this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dermis<span class="op">$</span>condition &lt;-<span class="st"> </span><span class="kw">relevel</span>(dermis<span class="op">$</span>condition,<span class="st">&quot;Ctrl&quot;</span>)
 
@@ -456,32 +480,45 @@ p</code></pre></div>
 <pre><code>## log2 fold change (MLE): condition Ctrl vs Fgf20 
 ## Wald test p-value: condition Ctrl vs Fgf20 
 ## DataFrame with 33113 rows and 6 columns
-##                        baseMean log2FoldChange     lfcSE        stat
-##                       &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;
-## ENSMUSG00000000001   482.589582   -0.001968488 0.1699237 -0.01158455
-## ENSMUSG00000000028    93.288303    0.054137927 0.2823991  0.19170712
-## ENSMUSG00000000031 37589.374754   -0.116978404 0.1315833 -0.88900665
-## ENSMUSG00000000037    40.625507    0.033563369 0.4054707  0.08277631
-## ENSMUSG00000000049     1.161685    1.373759532 2.2951400  0.59855152
-## ...                         ...            ...       ...         ...
-## ENSMUSG00000118389    0.6226259    -1.22182460  3.308730 -0.36927297
-## ENSMUSG00000118390    1.3496536    -0.56401881  2.224458 -0.25355338
-## ENSMUSG00000118391    1.1403282    -0.31144511  2.152180 -0.14471144
-## ENSMUSG00000118392    0.3499147     0.09311308  4.070224  0.02287665
-## ENSMUSG00000118393    0.3350958    -1.64537988  4.039865 -0.40728582
-##                       pvalue      padj
-##                    &lt;numeric&gt; &lt;numeric&gt;
-## ENSMUSG00000000001 0.9907571   0.99987
-## ENSMUSG00000000028 0.8479716   0.99987
-## ENSMUSG00000000031 0.3739995   0.99987
-## ENSMUSG00000000037 0.9340294        NA
-## ENSMUSG00000000049 0.5494720        NA
-## ...                      ...       ...
-## ENSMUSG00000118389 0.7119243        NA
-## ENSMUSG00000118390 0.7998406        NA
-## ENSMUSG00000118391 0.8849387        NA
-## ENSMUSG00000118392 0.9817487        NA
-## ENSMUSG00000118393 0.6837981        NA</code></pre>
+##                             baseMean       log2FoldChange
+##                            &lt;numeric&gt;            &lt;numeric&gt;
+## ENSMUSG00000000001  482.589581951071 -0.00196846898573668
+## ENSMUSG00000000028  93.2883026483124   0.0541378880773732
+## ENSMUSG00000000031  37589.3747537343   -0.116978404552591
+## ENSMUSG00000000037  40.6255065570166   0.0335637483438453
+## ENSMUSG00000000049  1.16168525034731     1.37376747953866
+## ...                              ...                  ...
+## ENSMUSG00000118389 0.622625890309737     -1.2218285808629
+## ENSMUSG00000118390  1.34965364036737   -0.564010979927982
+## ENSMUSG00000118391  1.14032818716345   -0.311443280164532
+## ENSMUSG00000118392 0.349914725382352   0.0931130751735958
+## ENSMUSG00000118393 0.335095765655296    -1.64537987766277
+##                                lfcSE                stat            pvalue
+##                            &lt;numeric&gt;           &lt;numeric&gt;         &lt;numeric&gt;
+## ENSMUSG00000000001 0.169927828508702 -0.0115841472406968 0.990757394481716
+## ENSMUSG00000000028 0.282414164366719   0.191696787584189 0.847979722458958
+## ENSMUSG00000000031  0.13158221918433  -0.889013768560319 0.373995680175779
+## ENSMUSG00000000037  0.40549504870913  0.0827722766299948 0.934032613507353
+## ENSMUSG00000000049  2.29527101906209   0.598520814374253 0.549492474810633
+## ...                              ...                 ...               ...
+## ENSMUSG00000118389  3.30896250238058  -0.369248240191259 0.711942701960871
+## ENSMUSG00000118390  2.22460115087907  -0.253533528787894 0.799855955085032
+## ENSMUSG00000118391  2.15229957334881  -0.144702570228154 0.884945709770831
+## ENSMUSG00000118392  4.07022403992349  0.0228766461649974 0.981748669180653
+## ENSMUSG00000118393  4.03986536923328  -0.407285819521022 0.683798076584825
+##                                 padj
+##                            &lt;numeric&gt;
+## ENSMUSG00000000001 0.999869568398613
+## ENSMUSG00000000028 0.999869568398613
+## ENSMUSG00000000031 0.999869568398613
+## ENSMUSG00000000037                NA
+## ENSMUSG00000000049                NA
+## ...                              ...
+## ENSMUSG00000118389                NA
+## ENSMUSG00000118390                NA
+## ENSMUSG00000118391                NA
+## ENSMUSG00000118392                NA
+## ENSMUSG00000118393                NA</code></pre>
 <p>As res is a DataFrame object, it carries metadata with information on the meaning of the columns:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mcols</span>(res, <span class="dt">use.names=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## DataFrame with 6 rows and 2 columns
@@ -509,10 +546,10 @@ p</code></pre></div>
 <pre><code>## 
 ## out of 33113 with nonzero total read count
 ## adjusted p-value &lt; 0.1
-## LFC &gt; 0 (up)     : 3, 0.0091% 
-## LFC &lt; 0 (down)   : 10, 0.03% 
-## outliers [1]     : 0, 0% 
-## low counts [2]   : 28889, 87% 
+## LFC &gt; 0 (up)       : 3, 0.0091%
+## LFC &lt; 0 (down)     : 10, 0.03%
+## outliers [1]       : 0, 0%
+## low counts [2]     : 28889, 87%
 ## (mean count &lt; 88)
 ## [1] see &#39;cooksCutoff&#39; argument of ?results
 ## [2] see &#39;independentFiltering&#39; argument of ?results</code></pre>
@@ -532,7 +569,7 @@ p</code></pre></div>
   resSig_dermis_annotated &lt;-<span class="st"> </span>resSig_dermis_annotated[ <span class="kw">order</span>( 
                               <span class="op">-</span><span class="kw">abs</span>(resSig_dermis_annotated<span class="op">$</span>log2FoldChange )),]</code></pre></div>
 <div id="list-of-differentially-expressed-genes" class="section level4">
-<h4><span class="header-section-number">4.2.0.1</span> List of differentially expressed genes</h4>
+<h4><span class="header-section-number">3.2.0.1</span> List of differentially expressed genes</h4>
 <p>Rounding of the long decimal values.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resSig_dermis_annotated[,<span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">8</span>,<span class="op">-</span><span class="dv">9</span>)] &lt;-<span class="kw">round</span>(resSig_dermis_annotated[,<span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">8</span>,<span class="op">-</span><span class="dv">9</span>)],<span class="dv">4</span>)
 ## DT::datatable(resSig_dermis_annotated[,c(1:3,6:9)],rownames = FALSE)
@@ -567,15 +604,15 @@ resSig_dermis_annotated[,<span class="kw">c</span>(<span class="dv">1</span><spa
 ## 13               Flnc protein_coding</code></pre>
 </div>
 <div id="diagnostic-plots" class="section level3">
-<h3><span class="header-section-number">4.2.1</span> Diagnostic plots</h3>
+<h3><span class="header-section-number">3.2.1</span> Diagnostic plots</h3>
 <p>A quick way to visualize the counts for a particular gene is to use the plotCounts function, which takes as arguments the DESeqDataSet, a gene name, and the group over which to plot the counts.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">topGene &lt;-<span class="st"> </span><span class="kw">rownames</span>(res)[<span class="kw">which.min</span>(res<span class="op">$</span>padj)]
 <span class="kw">plotCounts</span>(ddsHTSeq, <span class="dt">gene=</span>topGene, <span class="dt">intgroup=</span><span class="kw">c</span>(<span class="st">&quot;condition&quot;</span>))</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>The finishing part of this tutorial has been made following resource “Lab: End-to-end RNA-Seq workflow, Mike Love, Simon Anders, Wolfgang Huber” from bioconductor</p>
 <p>The above plot is not complete , there are other efficient ways to visualize .</p>
 <div id="diy-practice" class="section level4">
-<h4><span class="header-section-number">4.2.1.1</span> DIY : Practice</h4>
+<h4><span class="header-section-number">3.2.1.1</span> DIY : Practice</h4>
 <p>There is a new workflow by <code>Michael I. Love</code>, the developer of DESeq2. It has much more detailed explanations and diagonistic plots. Students are highly encouraged to go through this new <a href="http://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#can-i-use-deseq2-to-analyze-paired-samples">workflow</a></p>
 
 </div>
