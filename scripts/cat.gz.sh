@@ -11,8 +11,23 @@
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
 
-# example run commands
-sbatch_commandlist -jobname cat -commands commands/cat_gz.txt
+source scripts/command_utility.sh
+num_cmnds=$( cmnds_in_file )
+
+if test -f "$1" ; then
+        if test ! -d $2 ; then
+                mkdir $2
+        fi
+        while IFS= read -r line
+        do
+          echo "cat */*$line*fastq.gz > $2/$line.fastq.gz" >> commands/$num_cmnds"_cat.gz".txt
+        done < "$1"
+        
+        sbatch_commandlist -jobname cat -commands commands/$num_cmnds"_cat.gz".txt
+else 
+    echo "sample names is missing"
+        # sbatch_commandlist -jobname cat -commands commands/cat_gz.txt
+fi
 
 mv *_out_*txt OUT
 mv *_err_*txt ERROR
