@@ -25,7 +25,7 @@
 <meta name="author" content="Rishi Das Roy, Postdoctoral Fellow, Evo-Devo lab, University of Helsinki">
 
 
-<meta name="date" content="2019-05-23">
+<meta name="date" content="2019-07-23">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -219,7 +219,6 @@ sampleMetaData &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<s
 <p>It is of course possible to manually read the text files into R, remove the lines not corresponding to genes and merging the count vectors for all the samples into one count matrix. However, the <code>DESeq2</code> package contains a function for constructing a DESeqDataSet directly from the output of <code>htseq-count</code>, and we will illustrate the use of it here (a more thorough description of the DESeqDataSet class is given below, for now it is enough to know that it is an example of a class where one can store all the information associated with an RNA-seq experiment). We need to provide the function with a sample table, where the <strong>first column</strong> is the sample name and the <strong>second</strong> is the name of the corresponding output file from htseq-count. Additional columns can be specified as well, and will be stored in the DESeqDataSet object.</p>
 <p>In this example we have already made the sample table <strong>sampleMetaData</strong>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">require</span>(DESeq2))
-
 ddsHTSeq &lt;-<span class="st"> </span><span class="kw">DESeqDataSetFromHTSeqCount</span>(<span class="dt">sampleTable =</span> sampleMetaData, 
                                         <span class="dt">directory =</span> <span class="st">&quot;readCount/&quot;</span>,
                                        <span class="dt">design=</span> <span class="op">~</span><span class="st"> </span>pair<span class="op">+</span>condition)
@@ -242,35 +241,16 @@ ddsHTSeq</code></pre></div>
 rlogMat&lt;-<span class="kw">as.data.frame</span>(<span class="kw">assay</span>(<span class="kw">rlog</span>(ddsHTSeq)))
 rlogMat<span class="op">$</span>median &lt;-<span class="st"> </span><span class="kw">apply</span>(rlogMat,<span class="dv">1</span>,median)
 
-
 <span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;xml2&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {
     <span class="kw">install.packages</span>(<span class="st">&quot;xml2&quot;</span>,<span class="dt">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)
 }
 <span class="kw">suppressPackageStartupMessages</span>(<span class="kw">require</span>(xml2))
-
 <span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;biomaRt&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {
     BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="st">&quot;biomaRt&quot;</span>)
-}</code></pre></div>
-<pre><code>## Bioconductor version 3.8 (BiocManager 1.30.4), R 3.5.0 (2018-04-23)</code></pre>
-<pre><code>## Installing package(s) &#39;biomaRt&#39;</code></pre>
-<pre><code>## also installing the dependencies &#39;hms&#39;, &#39;progress&#39;</code></pre>
-<pre><code>## Updating HTML index of packages in &#39;.Library&#39;</code></pre>
-<pre><code>## Making &#39;packages.html&#39; ... done
-## Update old packages: &#39;AnnotationDbi&#39;, &#39;assertthat&#39;, &#39;backports&#39;, &#39;BH&#39;,
-##   &#39;Biobase&#39;, &#39;BiocInstaller&#39;, &#39;bookdown&#39;, &#39;boot&#39;, &#39;Cairo&#39;, &#39;callr&#39;,
-##   &#39;caTools&#39;, &#39;class&#39;, &#39;cli&#39;, &#39;clipr&#39;, &#39;cluster&#39;, &#39;codetools&#39;,
-##   &#39;colorspace&#39;, &#39;commonmark&#39;, &#39;curl&#39;, &#39;data.table&#39;, &#39;devtools&#39;, &#39;digest&#39;,
-##   &#39;dplyr&#39;, &#39;evaluate&#39;, &#39;fansi&#39;, &#39;foreign&#39;, &#39;formatR&#39;, &#39;ggplot2&#39;, &#39;git2r&#39;,
-##   &#39;glue&#39;, &#39;GO.db&#39;, &#39;gtable&#39;, &#39;hexbin&#39;, &#39;highr&#39;, &#39;htmlwidgets&#39;, &#39;httpuv&#39;,
-##   &#39;httr&#39;, &#39;igraph&#39;, &#39;ini&#39;, &#39;irlba&#39;, &#39;jsonlite&#39;, &#39;knitr&#39;, &#39;later&#39;,
-##   &#39;lattice&#39;, &#39;lazyeval&#39;, &#39;markdown&#39;, &#39;MASS&#39;, &#39;Matrix&#39;, &#39;mgcv&#39;, &#39;mime&#39;,
-##   &#39;nlme&#39;, &#39;openssl&#39;, &#39;org.Hs.eg.db&#39;, &#39;org.Mm.eg.db&#39;, &#39;pcaMethods&#39;,
-##   &#39;pillar&#39;, &#39;pkgbuild&#39;, &#39;pkgload&#39;, &#39;plotly&#39;, &#39;purrr&#39;, &#39;R6&#39;, &#39;rcmdcheck&#39;,
-##   &#39;Rcpp&#39;, &#39;RcppArmadillo&#39;, &#39;rlang&#39;, &#39;rmarkdown&#39;, &#39;roxygen2&#39;, &#39;rpart&#39;,
-##   &#39;rstudioapi&#39;, &#39;Rtsne&#39;, &#39;sessioninfo&#39;, &#39;shiny&#39;, &#39;stringi&#39;, &#39;stringr&#39;,
-##   &#39;styler&#39;, &#39;survival&#39;, &#39;testthat&#39;, &#39;tibble&#39;, &#39;tidyr&#39;, &#39;tidyselect&#39;,
-##   &#39;tinytex&#39;, &#39;urltools&#39;, &#39;usethis&#39;, &#39;vioplot&#39;, &#39;xfun&#39;, &#39;xtable&#39;, &#39;yaml&#39;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### Use biomart to download gene information from Ensembl
+}
+  
+
+### Use biomart to download gene information from Ensembl
 <span class="kw">suppressPackageStartupMessages</span>(<span class="kw">require</span>(biomaRt))
 ensMart&lt;-<span class="kw">useMart</span>(<span class="st">&quot;ensembl&quot;</span> )
 
@@ -285,7 +265,6 @@ ensembl_ms_mart &lt;-<span class="st"> </span><span class="kw">useMart</span>(<s
 ## grep(&quot;GC&quot;,listAttributes(ensembl_ms_mart)$description,ignore.case = TRUE)
 ## listAttributes(ensembl_ms_mart)[26,]
 
-
 gene_attributes&lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;ensembl_gene_id&quot;</span>,  <span class="st">&quot;external_gene_name&quot;</span>, 
                     <span class="st">&quot;gene_biotype&quot;</span>, <span class="st">&quot;percentage_gene_gc_content&quot;</span>)
 <span class="kw">suppressMessages</span>(
@@ -294,7 +273,6 @@ gene_attributes&lt;-<span class="st"> </span><span class="kw">c</span>(<span cla
                                ensembl_ms_mart, <span class="dt">filters =</span> <span class="st">&quot;ensembl_gene_id&quot;</span>) )
 
 rlogMat<span class="op">$</span>ensembl_gene_id &lt;-<span class="st"> </span><span class="kw">rownames</span>(rlogMat)
-
 rlogMat_biotype_gc &lt;-<span class="st"> </span><span class="kw">merge</span>(rlogMat,gene_attribute_data,<span class="dt">by=</span><span class="st">&quot;ensembl_gene_id&quot;</span>)
 
 <span class="kw">head</span>(rlogMat_biotype_gc)</code></pre></div>
@@ -309,7 +287,7 @@ rlogMat_biotype_gc &lt;-<span class="st"> </span><span class="kw">merge</span>(r
 ## 1  8.8102354  8.9003907              Gnai3 protein_coding
 ## 2 -1.9793396 -1.9785894               Pbsn protein_coding
 ## 3  6.4071199  6.5795753              Cdc45 protein_coding
-## 4 15.3122752 15.1894439                H19        lincRNA
+## 4 15.3122752 15.1894439                H19         lncRNA
 ## 5  5.1540966  5.3816975              Scml2 protein_coding
 ## 6  0.1939248  0.1975719               Apoh protein_coding
 ##   percentage_gene_gc_content
@@ -317,14 +295,14 @@ rlogMat_biotype_gc &lt;-<span class="st"> </span><span class="kw">merge</span>(r
 ## 2                      38.23
 ## 3                      46.23
 ## 4                      55.83
-## 5                      37.89
+## 5                      39.03
 ## 6                      43.83</code></pre>
 <div id="gene-biotype" class="section level4">
 <h4><span class="header-section-number">3.1.0.1</span> Gene Biotype</h4>
 <p>Plot median expression of different gene biotype. Are there any highly expressed rRNA ?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">require</span>(ggplot2))
 give.n &lt;-<span class="st"> </span><span class="cf">function</span>(x){
-  <span class="kw">return</span>(<span class="kw">c</span>(<span class="dt">y =</span> <span class="dv">24</span>, <span class="dt">label =</span> <span class="kw">length</span>(x)))
+  <span class="kw">return</span>(<span class="kw">c</span>(<span class="dt">y =</span> <span class="dv">24</span>, <span class="dt">label =</span> <span class="kw">length</span>(x),<span class="dt">angle=</span><span class="dv">90</span>))
 }
 
 <span class="kw">ggplot</span>(rlogMat_biotype_gc,<span class="kw">aes</span>(<span class="dt">y=</span>median,<span class="dt">x=</span>gene_biotype))<span class="op">+</span>
@@ -338,15 +316,15 @@ give.n &lt;-<span class="st"> </span><span class="cf">function</span>(x){
                     <span class="kw">c</span>(<span class="st">&quot;external_gene_name&quot;</span>, <span class="st">&quot;gene_biotype&quot;</span> ,
                     <span class="st">&quot;median&quot;</span>,<span class="st">&quot;percentage_gene_gc_content&quot;</span>,<span class="st">&quot;ensembl_gene_id&quot;</span>)]</code></pre></div>
 <pre><code>##       external_gene_name gene_biotype   median percentage_gene_gc_content
-## 4                    H19      lincRNA 15.18944                      55.83
-## 17918            mt-Rnr1      Mt_rRNA 16.25223                      35.81
-## 17920            mt-Rnr2      Mt_rRNA 18.87056                      35.40
-## 18329              Rn7sk     misc_RNA 18.73874                      58.01
+## 4                    H19       lncRNA 15.18944                      55.83
+## 17914            mt-Rnr1      Mt_rRNA 16.25223                      35.81
+## 17916            mt-Rnr2      Mt_rRNA 18.87056                      35.40
+## 18325              Rn7sk     misc_RNA 18.73874                      58.01
 ##          ensembl_gene_id
 ## 4     ENSMUSG00000000031
-## 17918 ENSMUSG00000064337
-## 17920 ENSMUSG00000064339
-## 18329 ENSMUSG00000065037</code></pre>
+## 17914 ENSMUSG00000064337
+## 17916 ENSMUSG00000064339
+## 18325 ENSMUSG00000065037</code></pre>
 <p>There are Mitochondrial ribosomal RNA (Mt_rRNA) which are higly expressed but they are not gc rich.</p>
 </div>
 <div id="expression" class="section level3">
@@ -360,32 +338,30 @@ countData<span class="op">$</span>ensembl_gene_id &lt;-<span class="st"> </span>
 
 countData_biotype &lt;-<span class="st"> </span><span class="kw">merge</span>(countData,gene_attribute_data,<span class="dt">by=</span><span class="st">&quot;ensembl_gene_id&quot;</span>)
 
-
 <span class="kw">ggplot</span>(countData_biotype, <span class="kw">aes</span>(<span class="dt">x=</span>percentage_gene_gc_content,<span class="dt">y=</span>median))<span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>()<span class="op">+</span><span class="kw">xlim</span>(<span class="dv">25</span>,<span class="dv">75</span>)</code></pre></div>
-<pre><code>## Warning: Removed 80 rows containing missing values (geom_point).</code></pre>
 <p><img src="_main_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">countData_biotype[ countData_biotype<span class="op">$</span>median<span class="op">&gt;</span><span class="dv">10000</span>,
                    <span class="kw">c</span>(<span class="st">&quot;external_gene_name&quot;</span>, <span class="st">&quot;gene_biotype&quot;</span>,
                      <span class="st">&quot;median&quot;</span>,<span class="st">&quot;percentage_gene_gc_content&quot;</span>,<span class="st">&quot;ensembl_gene_id&quot;</span>)]</code></pre></div>
 <pre><code>##       external_gene_name   gene_biotype   median
-## 4                    H19        lincRNA  36479.0
+## 4                    H19         lncRNA  36479.0
 ## 7388                Actb protein_coding  13993.5
-## 10830             Eef1a1 protein_coding  11296.0
-## 17918            mt-Rnr1        Mt_rRNA  74793.0
-## 17920            mt-Rnr2        Mt_rRNA 484446.0
-## 18329              Rn7sk       misc_RNA 427119.0
-## 21035            Gm10800 protein_coding  10444.5
-## 36463            Gm26917        lincRNA  18214.0
+## 10829             Eef1a1 protein_coding  11296.0
+## 17914            mt-Rnr1        Mt_rRNA  74793.0
+## 17916            mt-Rnr2        Mt_rRNA 484446.0
+## 18325              Rn7sk       misc_RNA 427119.0
+## 21027            Gm10800 protein_coding  10444.5
+## 36413            Gm26917         lncRNA  18214.0
 ##       percentage_gene_gc_content    ensembl_gene_id
 ## 4                          55.83 ENSMUSG00000000031
 ## 7388                       54.56 ENSMUSG00000029580
-## 10830                      46.87 ENSMUSG00000037742
-## 17918                      35.81 ENSMUSG00000064337
-## 17920                      35.40 ENSMUSG00000064339
-## 18329                      58.01 ENSMUSG00000065037
-## 21035                      35.63 ENSMUSG00000075014
-## 36463                      69.12 ENSMUSG00000097971</code></pre>
+## 10829                      46.87 ENSMUSG00000037742
+## 17914                      35.81 ENSMUSG00000064337
+## 17916                      35.40 ENSMUSG00000064339
+## 18325                      58.01 ENSMUSG00000065037
+## 21027                      35.63 ENSMUSG00000075014
+## 36413                      69.12 ENSMUSG00000097971</code></pre>
 <p>There are two genes which have expressed a lot with with compared to other genes.</p>
 </div>
 </div>
@@ -427,7 +403,6 @@ sampleDists</code></pre></div>
   <span class="kw">install.packages</span>(<span class="st">&quot;pheatmap&quot;</span>,<span class="dt">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)
 }
 <span class="kw">suppressPackageStartupMessages</span>(<span class="kw">library</span>(<span class="st">&quot;pheatmap&quot;</span>))
-
 
 sampleDistMatrix &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(sampleDists)
 <span class="kw">rownames</span>(sampleDistMatrix) &lt;-<span class="st"> </span>rld<span class="op">$</span>condition
