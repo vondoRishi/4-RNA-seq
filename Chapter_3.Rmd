@@ -48,7 +48,6 @@ In this example we have already made the sample table **sampleMetaData**.
 
 ```{r DESeq2}
 suppressPackageStartupMessages(require(DESeq2))
-
 ddsHTSeq <- DESeqDataSetFromHTSeqCount(sampleTable = sampleMetaData, 
                                         directory = "readCount/",
                                        design= ~ pair+condition)
@@ -68,12 +67,10 @@ We have seen in `fastqc` reports the presence of dual peaks in **Per Sequence GC
 rlogMat<-as.data.frame(assay(rlog(ddsHTSeq)))
 rlogMat$median <- apply(rlogMat,1,median)
 
-
 if (!requireNamespace("xml2", quietly = TRUE)) {
     install.packages("xml2",repos = "http://cran.us.r-project.org")
 }
 suppressPackageStartupMessages(require(xml2))
-
 if (!requireNamespace("biomaRt", quietly = TRUE)) {
     BiocManager::install("biomaRt")
 }
@@ -94,7 +91,6 @@ ensembl_ms_mart <- useMart(biomart="ensembl", dataset="mmusculus_gene_ensembl")
 ## grep("GC",listAttributes(ensembl_ms_mart)$description,ignore.case = TRUE)
 ## listAttributes(ensembl_ms_mart)[26,]
 
-
 gene_attributes<- c("ensembl_gene_id",  "external_gene_name", 
                     "gene_biotype", "percentage_gene_gc_content")
 suppressMessages(
@@ -103,7 +99,6 @@ suppressMessages(
                                ensembl_ms_mart, filters = "ensembl_gene_id") )
 
 rlogMat$ensembl_gene_id <- rownames(rlogMat)
-
 rlogMat_biotype_gc <- merge(rlogMat,gene_attribute_data,by="ensembl_gene_id")
 
 head(rlogMat_biotype_gc)
@@ -116,7 +111,7 @@ Plot median expression of different gene biotype. Are there any highly expressed
 ```{r fig.height=5}
 suppressPackageStartupMessages(require(ggplot2))
 give.n <- function(x){
-  return(c(y = 24, label = length(x)))
+  return(c(y = 24, label = length(x),angle=90))
 }
 
 ggplot(rlogMat_biotype_gc,aes(y=median,x=gene_biotype))+
@@ -142,13 +137,12 @@ There are Mitochondrial ribosomal RNA (Mt_rRNA) which are higly expressed but th
 
 Log transformed values suppress the actual expression levels. Let us redo the above analysis on count values.
 
-```{r fig.height=5}
+```{r fig.height=5,warning=FALSE}
 countData<-as.data.frame(counts(ddsHTSeq))
 countData$median <- apply(countData,1,median)
 countData$ensembl_gene_id <- rownames(countData)
 
 countData_biotype <- merge(countData,gene_attribute_data,by="ensembl_gene_id")
-
 
 ggplot(countData_biotype, aes(x=percentage_gene_gc_content,y=median))+
   geom_point()+xlim(25,75)
@@ -193,7 +187,6 @@ if (!requireNamespace("pheatmap", quietly = TRUE)) {
   install.packages("pheatmap",repos = "http://cran.us.r-project.org")
 }
 suppressPackageStartupMessages(library("pheatmap"))
-
 
 sampleDistMatrix <- as.matrix(sampleDists)
 rownames(sampleDistMatrix) <- rld$condition
