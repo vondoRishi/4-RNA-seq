@@ -157,7 +157,28 @@ Need to sort (uncomment for tophat output bams) and index.
 ```bash
 sbatch -D $PWD --mail-user ur_email_at_domain scripts/samtools_index.sh bam_directory
 ```  
+## Concatenating fastq files
+There are, some times, multiple copies of same sample from multiple runs. It will be easier to concatenate all these multiple copies in single fastq.gz files before starting any workflow or 4-RNA-seq. Let us assume there are two samples control_1 and treated_1 and they have two copies from two separate runs, **run_1** and **run_2**. Therefore, in the project directory there should have two sub-directories 
+* run_1
+	+ control_1_run2019.fastq.gz  
+	+ treated_1_run2019.fastq.gz  
 
+* run_2
+	+ control_1_run2020.fastq.gz  
+	+ treated_1_run2020.fastq.gz  
+
+Additionally another file, such as, sample_names.txt containing each sample names in a separate line. In this case the sample file should look like this
+```
+control_1  
+treated_1  
+```
+Now we can use 
+```bash
+sbatch -D $PWD --mail-user ur_email_at_domain scripts/cat.gz.sh sample_names.txt rawReads
+```
+
+**cat.gz.sh** will search any fastq.gz files with "sample names" in all sub-directories and concatenate them. The output files can be found in **rawReads** directory.
+  
 ## Compressing fastq files
 
 ```bash
