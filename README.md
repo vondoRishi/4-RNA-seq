@@ -177,7 +177,7 @@ Now we can use
 sbatch -D $PWD --mail-user ur_email_at_domain scripts/cat.gz.sh sample_names.txt rawReads
 ```
 
-**cat.gz.sh** will search any fastq.gz files with "sample names" in all sub-directories and concatenate them. The output files can be found in **rawReads** directory.
+**cat.gz.sh** will search any fastq.gz files matching with names given in **sample_names.txt** in ALL sub-directories and concatenate them. The output files can be found in **rawReads** directory.
   
 ## Compressing fastq files
 
