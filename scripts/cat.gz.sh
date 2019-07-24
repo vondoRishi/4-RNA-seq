@@ -17,7 +17,11 @@ num_cmnds=$( cmnds_in_file )
 if test -f "$1" ; then
         if test ! -d $2 ; then
                 mkdir $2
+        else
+                echo "Output directory exists!!"
+                exit 1 
         fi
+
         while IFS= read -r line
         do
           echo "cat */*$line*fastq.gz > $2/$line.fastq.gz" >> commands/$num_cmnds"_cat.gz".txt
