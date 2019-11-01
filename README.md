@@ -124,9 +124,9 @@ To align to a reference genome
 	
 
   
- ## Counting
-*__[htseq-count](https://htseq.readthedocs.io/en/release_0.11.1/count.html)__  
-\[ STAR can also give count values of htseq-count’s default parameter but htseq-count will be used separately]   
+ ## Counting  
+* __[htseq-count](https://htseq.readthedocs.io/en/release_0.11.1/count.html)__  
+\[ STAR can also give count values of htseq-count’s default parameter but htseq-count will be used separately\]   
 	Confirm the parameters in file 4-rna-seq.config  
 	+ "stranded" depending upon the library type  
 	+ "gene_annotation" path to gtf file  
