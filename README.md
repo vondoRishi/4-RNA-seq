@@ -87,9 +87,8 @@ _{ Run step 1 review effect of trimming }_
 	```bash
 	sbatch -D $PWD --mail-user ur_email_at_domain scripts/sortmerna.sh good sortMeRna   
 	```  
-	Output: sortMeRna, the folder contains many different types of file. Fastq/fq files starting with non_Rna will be used in downstream analysis. Files with .log will be used by multiqc to summarize. The "rRna" fastq/fq and ".sam" files should be (re)moved from __sortMeRna__ before next step.
+	Output: sortMeRna, the folder contains many different types of file. Fastq/fq files starting with non_Rna will be used in downstream analysis. Files with .log will be used by multiqc to summarize. The "rRna" fastq/fq and ".sam" files are removed by default from __sortMeRna__ before next step. To retailn these files comment out "rm -rf $2/rRna_*{fastq,fq}"
 	
-	After (re)moving "rRna*.fq" files, the rest of the .fq files could be compressed.
 	
 	Execution: 
 	```bash
