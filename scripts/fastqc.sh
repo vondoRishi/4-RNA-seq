@@ -7,7 +7,7 @@
 #SBATCH -e ERROR/fastqc_err_%j.txt
 #SBATCH -p serial
 #SBATCH -n 1
-#SBATCH -t 00:50:00
+#SBATCH -t 02:50:00
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
 
@@ -24,7 +24,7 @@ then
   echo "fastqc -o $1 $my_file " >> commands/$num_cmnds"_fastqc_"$1_commands.txt
 fi
 done
-sbatch_commandlist -t 1:00:00 -mem 4000 -jobname fastqc_array -threads 1  -commands commands/$num_cmnds"_fastqc_"$1_commands.txt
+sbatch_commandlist -t 2:00:00 -mem 4000 -jobname fastqc_array -threads 1  -commands commands/$num_cmnds"_fastqc_"$1_commands.txt
 
 
 mv *_out_*txt OUT
