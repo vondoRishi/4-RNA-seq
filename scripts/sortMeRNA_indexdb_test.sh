@@ -1,19 +1,19 @@
 #!/bin/bash -l
 #SBATCH -J sortmerna_idex
-#SBATCH -o OUT/sortmerna_idx_out_%j.txt
-#SBATCH -e ERROR/sortmerna_idx_err_%j.txt
+#SBATCH -o OUT/sortmerna_idx_out_test_%j.txt
+#SBATCH -e ERROR/sortmerna_idx_err_test_%j.txt
 #SBATCH --account=Project_2002302
-#SBATCH -p large 
+#SBATCH -p test 
 #SBATCH -n 1
 #SBATCH --cpus-per-task=2 ## *Number of fastq files*
-#SBATCH -t 12:50:00
-#SBATCH --mem-per-cpu=2G
+#SBATCH -t 00:15:00##12:50:00
+#SBATCH --mem-per-cpu=4G
 #SBATCH --mail-type=END
 
 
-source scripts/command_utility.sh
 
-my_file=$sortMeRNA_ref
+
+my_file="$HOME/rRNA_databases/rRNA_all.fasta"
 
 filename="${my_file%.*}"
 echo $filename
