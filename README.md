@@ -61,7 +61,7 @@ sbatch -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh rawReads  # Don'
 Output : directory rawReads/rawReads.html and other files  
 
 2.	Filter/trimminging with  
-     a) [AfterQC](https://github.com/OpenGene/AfterQC)  
+     a) [AfterQC](https://github.com/OpenGene/AfterQC) (Define the "AfterQC" variable in 4-rna-seq.config before using)  
 Input : directory rawReads with fastq or fastq.gz files  
 Execution :
 ```bash
