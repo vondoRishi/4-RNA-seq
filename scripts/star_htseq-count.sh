@@ -1,16 +1,14 @@
 #!/bin/bash -l
-# created: Aug 22, 2017 1:55 PM
-# author: dasroy
+##Modified by Qiang Lan from Rishi's 4-rna-seq scripts on 21.12.2019
 #SBATCH -J htseq
-#SBATCH --constraint="snb|hsw"
+#SBATCH --account=Project_2002302 ##*account name must be specified*
 #SBATCH -o OUT/htseq_out_%j.txt
 #SBATCH -e ERROR/htseq_err_%j.txt
-#SBATCH -p serial
-#SBATCH -n 1
-#SBATCH -t 12:20:00
-#SBATCH --mem-per-cpu=1000
+#SBATCH -p large
+#SBATCH -n 1 
+#SBATCH -t 48:15:00
+#SBATCH --mem-per-cpu=1G 
 #SBATCH --mail-type=END
-
 
 source scripts/command_utility.sh
 
@@ -34,7 +32,7 @@ then
 
 fi
 done
-sbatch_commandlist -t 12:00:00 -mem 4000 -jobname htseq_star -threads 1 -commands  commands/$num_cmnds"_htseq_"$2.txt
+sbatch_commandlist -p large -t 12:00:00 -mem 4000 -jobname htseq_star -threads 2 -commands  commands/$num_cmnds"_htseq_"$2.txt
 
 mv *_out_*txt OUT
 mv *_err_*txt ERROR
@@ -44,4 +42,4 @@ source scripts/multiqc_slurm.sh $2
 # end of file: htseq_out
 # Use that to improve your resource request estimate
 # on later jobs.
-used_slurm_resources.bash
+###used_slurm_resources.bash

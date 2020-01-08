@@ -1,19 +1,24 @@
 #!/bin/bash -l
-# author: dasroy
-#SBATCH -J Star
-#SBATCH --constraint="snb|hsw"
-#SBATCH -o OUT/singleStar_out_%j.txt
-#SBATCH -e ERROR/singleStar_err_%j.txt
-#SBATCH -p serial
-#SBATCH -n 1
-#SBATCH -t 12:00:00
-#SBATCH --mem=4000
+##Modified by Qiang Lan from Rishi's 4-rna-seq scripts on 21.12.2019
+#SBATCH -J STAR_alignment
+#SBATCH --account=Project_2002302 ##*account name must be specified*
+#SBATCH -o OUT/Star_out_%j.txt
+#SBATCH -e ERROR/Star_err_%j.txt
+#SBATCH -p large
+#SBATCH -n 1 
+#SBATCH -t 48:15:00
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=1G 
 #SBATCH --mail-type=END
 
+module load biokit
 source scripts/command_utility.sh
 num_cmnds=$( cmnds_in_file )
 
 ## Starting Indexing the genome
+
+##there is a bug, if the first time without indexing, the aligment in the next step will still runding but failed. should be better
+# to add one if condition to check tht index file.
 if [ ! -d star-genome_ann_Indices ]; then
 	
 	mkdir star-genome_ann_Indices
@@ -23,8 +28,8 @@ if [ ! -d star-genome_ann_Indices ]; then
 		--genomeFastaFiles $genome_file --sjdbGTFfile  $gene_annotation \
 		--runThreadN 6 --sjdbOverhang $overhang" >> commands/$num_cmnds"_star-genome_annotated".txt 
 
-	sbatch_commandlist -t 12:00:00 -mem 64000 -jobname star-indexing \
-	-threads 6  -commands commands/$num_cmnds"_star-genome_annotated".txt 
+	sbatch_commandlist -p large -t 12:00:00 -mem 48000 -jobname star-indexing \
+	-threads 5  -commands commands/$num_cmnds"_star-genome_annotated".txt 
 
 	mv *_out_*txt OUT
 	mv *_err_*txt ERROR
@@ -60,7 +65,7 @@ do
 fi
 done
 
-sbatch_commandlist -t 12:00:00 -mem 48000 -jobname STAR_alignment_array \
+sbatch_commandlist -p large -t 12:00:00 -mem 48000 -jobname STAR_alignment_array \
 -threads 4 -commands commands/$num_cmnds"_STAR_align_"$1_commands.txt
 
 mv *_out_*txt OUT
@@ -75,4 +80,4 @@ source scripts/multiqc_slurm.sh $2
 # end of file: STAR_out
 # Use that to improve your resource request estimate
 # on later jobs.
-used_slurm_resources.bash
+##used_slurm_resources.bash

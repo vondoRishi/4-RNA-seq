@@ -1,0 +1,1 @@
+sbatch_commandlist with array is too slow as the servers are too busy. try to optimize it from Rishi's script
