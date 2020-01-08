@@ -2,10 +2,9 @@
 # created: Aug 22, 2017 1:55 PM
 # author: dasroy
 #SBATCH -J tophat2
-#SBATCH --constraint="snb|hsw"
 #SBATCH -o OUT/tophat2_out_%j.txt
 #SBATCH -e ERROR/tophat2_err_%j.txt
-#SBATCH -p serial
+#SBATCH -p large
 #SBATCH -n 1
 #SBATCH -t 12:20:00
 #SBATCH --mem-per-cpu=1000
@@ -38,8 +37,3 @@ mv *_out_*txt OUT
 mv *_err_*txt ERROR
 
 source scripts/multiqc_slurm.sh $2
-# This script will print some usage statistics to the
-# end of file: tophat2_out
-# Use that to improve your resource request estimate
-# on later jobs.
-used_slurm_resources.bash

@@ -1,17 +1,18 @@
 #!/bin/bash -l
-#SBATCH -J sortmerna_idex
-#SBATCH -o OUT/sortmerna_idx_out_%j.txt
-#SBATCH -e ERROR/sortmerna_idx_err_%j.txt
-#SBATCH --account=Project_2002302
-#SBATCH -p large 
+# created: Aug 22, 2017 1:55 PM
+# author: dasroy
+#SBATCH -J sortmerna
+#SBATCH -o sortmerna_out_%j.txt
+#SBATCH -e sortmerna_err_%j.txt
+#SBATCH -p large
 #SBATCH -n 1
-#SBATCH --cpus-per-task=2 ## *Number of fastq files*
-#SBATCH -t 12:50:00
-#SBATCH --mem-per-cpu=2G
-#SBATCH --mail-type=END
-
+#SBATCH -t 03:20:00
+#SBATCH --mem-per-cpu=4000
 
 source scripts/command_utility.sh
+
+module load bioconda
+source activate qiime2-2019.7
 
 my_file=$sortMeRNA_ref
 
@@ -30,9 +31,8 @@ fi
 
 if [ ! -f "$index_file.stats" ]; then
 	echo "rRNA fasta file will be indexed"
-	module load bioconda
-  source activate qiime2-2019.7
 	indexdb_rna --ref $sortMeRNA_ref,$index_file
 else
 	echo "OK to run sortmerna"
 fi
+

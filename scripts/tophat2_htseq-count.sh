@@ -2,10 +2,9 @@
 # created: Aug 22, 2017 1:55 PM
 # author: dasroy
 #SBATCH -J htseq
-#SBATCH --constraint="snb|hsw"
 #SBATCH -o OUT/htseq_out_%j.txt
 #SBATCH -e ERROR/htseq_err_%j.txt
-#SBATCH -p serial
+#SBATCH -p large 
 #SBATCH -n 1
 #SBATCH -t 22:20:00
 #SBATCH --mem-per-cpu=1000
@@ -34,8 +33,3 @@ mv *_out_*txt OUT
 mv *_err_*txt ERROR
 
 source scripts/multiqc_slurm.sh $1
-# This script will print some usage statistics to the
-# end of file: htseq_out
-# Use that to improve your resource request estimate
-# on later jobs.
-used_slurm_resources.bash

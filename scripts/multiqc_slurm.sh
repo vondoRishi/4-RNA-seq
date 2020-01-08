@@ -1,28 +1,26 @@
-#!/bin/bash -l
-#Modified by Qiang Lan from Rishi's 4-rna-seq scripts on 20.12.2019
+#!/bin/bash
 #SBATCH -J multiqc
 #SBATCH -o OUT/multiqc_out_%j.txt
 #SBATCH -e ERROR/multiqc_err_%j.txt
-#SBATCH --account=Project_2002302
-#SBATCH -p large 
+#SBATCH -t 48:00:00
+#SBATCH --mem=4000
 #SBATCH -n 1
-#SBATCH --cpus-per-task=1 ## *Number of fastq files*
-#SBATCH -t 02:15:00
-#SBATCH --mem-per-cpu=1G
+#SBATCH -p large 
 #SBATCH --mail-type=END
-
 
 source scripts/command_utility.sh
 
+export PROJAPPL=/projappl/dasroy/dasroy/
 module load bioconda
-source activate python3-env
+source activate multiqc
+
 
 if [ -d "$1" ]
 then
-	multiqc -f $1 -o $1 -n $1 -c scripts/multiqc_config.yaml
+	multiqc -f $1 -o $1 -n $1
 fi
 
 if [ ! -d "$1" ]
 then
-	multiqc -i $project_name -n $project_name -c scripts/multiqc_config.yaml -f .
+	multiqc -i $project_name -n $project_name -f .
 fi

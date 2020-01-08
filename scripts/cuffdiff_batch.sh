@@ -2,10 +2,9 @@
 # created: Aug 22, 2017 1:55 PM
 # author: dasroy
 #SBATCH -J cuffdiff
-#SBATCH --constraint="snb|hsw"
 #SBATCH -o OUT/cuffdiff_out_%j.txt
 #SBATCH -e ERROR/cuffdiff_err_%j.txt
-#SBATCH -p serial
+#SBATCH -p large
 #SBATCH -n 1
 #SBATCH -t 03:20:00
 #SBATCH --mem-per-cpu=1000
@@ -45,8 +44,3 @@ fi
 done
 # sbatch_commandlist -t 12:00:00 -mem 24000 -jobname cuffdiff_array -threads 8 -commands commands/$num_cmnds"_cuffdiff_"$1_$2_$3.txt
 
-# This script will print some usage statistics to the
-# end of file: cuffdiff_out
-# Use that to improve your resource request estimate
-# on later jobs.
-used_slurm_resources.bash
