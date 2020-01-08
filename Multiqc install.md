@@ -1,18 +1,16 @@
-If you use biopython-env module, you can easily install multiqc for your own use. Try commands:
+This guideline is for puhti.csc.fi which does not look very stable now. Following instructions may need to update carefully again additionally with multiqc scripts
 
-  > module load bioconda  
-  > source /appl/soft/bio/bioconda/set_python_venv_3  
-  > pip install --upgrade pip  
-  > pip install multiqc  
-  > deactivate  
+> export PROJAPPL=/projappl/<project_id>/<user>/ # Any path which is advised to use by system administrator  
+> module load bioconda  
+> conda create --name multiqc  
+> source activate multiqc  
+> conda install -c bioconda -c conda-forge multiqc     
   
-if there are errors related to "numpy" then try  
-  > pip install numpy --upgrade
-
 After that you can start the program with command:   
-  > multiqc
+  > multiqc  
 
 Next time when you log in, you can start multiqc with commands:   
-  > module load bioconda  
-  > source /appl/soft/bio/bioconda/set_python_venv_3    
-  > multiqc   
+> export PROJAPPL=/projappl/<project_id>/<user>/ # Any path which is advised to use by system administrator  
+> module load bioconda  
+> source activate multiqc  
+> multiqc   
