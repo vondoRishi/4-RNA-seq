@@ -10,7 +10,6 @@
 
 source scripts/command_utility.sh
 
-export PROJAPPL=/projappl/dasroy/dasroy/
 module load bioconda
 source activate multiqc
 
