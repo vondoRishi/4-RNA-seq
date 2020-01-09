@@ -29,7 +29,7 @@ then
 	echo $filename ;
 	echo $extension ;
   echo "trimmomatic SE -phred33 -threads 8  $my_file $2/trimmed_$filename.$extension \
-	ILLUMINACLIP:/appl/bio/trimmomatic/adapters/TruSeq3-SE.fa:2:30:10   " >> commands/$num_cmnds"_Trimmomatic_"$1_commands.txt
+	ILLUMINACLIP:/appl/soft/bio/trimmomatic/Trimmomatic-0.39/adapters/TruSeq3-SE.fa:2:30:10   " >> commands/$num_cmnds"_Trimmomatic_"$1_commands.txt
 fi
 done
  
