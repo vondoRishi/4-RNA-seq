@@ -56,7 +56,7 @@ cd myProjectDir
 Input : directory rawReads with fastq or fastq.gz files  
 Execution:
 ```bash
-sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh rawReads  # Don't use "rawReads/" 
+sbatch -A <project> -D $PWD --mail-user <email_id> scripts/fastqc.sh rawReads  # Don't use "rawReads/" 
 ```
 Output : directory rawReads/rawReads.html and other files  
 
@@ -65,7 +65,7 @@ Output : directory rawReads/rawReads.html and other files
 Input : directory rawReads with fastq or fastq.gz files  
 Execution :
 ```bash
-sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/afterqc_batch.sh rawReads  
+sbatch -A <project> -D $PWD --mail-user <email_id> scripts/afterqc_batch.sh rawReads  
 ```   
 
 Output : directory good, bad and QC  
@@ -74,7 +74,7 @@ b) ALERT for *"single end reads"* users!! AfterQC can not trim adapters from [si
 		Input : directory good with fastq or fastq.gz files   
 Execution:  
 ```bash
-sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/trimmo.sh good trimmed_reads  
+sbatch -A <project> -D $PWD --mail-user <email_id> scripts/trimmo.sh good trimmed_reads  
 ```  
 Output : directory trimmed_reads  
 
@@ -85,21 +85,21 @@ _{ Run step 1 review effect of trimming }_
 	Input: good   
 	Execution:  
 	```bash
-	sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/sortmerna.sh good sortMeRna   
+	sbatch -A <project> -D $PWD --mail-user <email_id> scripts/sortmerna.sh good sortMeRna   
 	```  
 	Output: sortMeRna, the folder contains many different types of file. Fastq/fq files starting with non_Rna will be used in downstream analysis. Files with .log will be used by multiqc to summarize. The "rRna" fastq/fq and ".sam" files are removed by default from __sortMeRna__ before next step. To retailn these files comment out "rm -rf $2/rRna_*{fastq,fq}"
 	
 	
 	Execution: 
 	```bash
-	sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/compress_fastq.sh sortMeRna  
+	sbatch -A <project> -D $PWD --mail-user <email_id> scripts/compress_fastq.sh sortMeRna  
 	```  
 	Output: sortMeRna 
 	
 	Now summarize the presence of rRNA.  
 	Execution: 
 	```bash
-	sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/fastqc.sh sortMeRna  
+	sbatch -A <project> -D $PWD --mail-user <email_id> scripts/fastqc.sh sortMeRna  
 	```  
 	Output: sortMeRna  
 
@@ -118,7 +118,7 @@ To align to a reference genome
   Input: folder which contains the filtered reads; ex. __good__ or  __sortMeRna__   
   Execution: 
   ```bash
-  sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/star.sh good star_alignment   
+  sbatch -A <project> -D $PWD --mail-user <email_id> scripts/star.sh good star_alignment   
   ```  
   Output: star_alignment (contains bam files and quality report star_alignment.html)
 	
@@ -134,7 +134,7 @@ To align to a reference genome
   Input: star_alignment   
   Execution: 
   ```bash
-  sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/star_htseq-count.sh star_alignment star_count   
+  sbatch -A <project> -D $PWD --mail-user <email_id> scripts/star_htseq-count.sh star_alignment star_count   
   ```  
   Output: count values at star_count/htseq_\*txt and quality report at star_count.html  
   
@@ -144,7 +144,7 @@ Till now we have generated multiqc reports for every command or folder. Now to s
 Edit multiqc [configuration](https://github.com/vondoRishi/4-RNA-seq/blob/master/multiqc_config.yaml) file if requires 
 
 ```bash
-sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm.sh
+sbatch -A <project> -D $PWD --mail-user <email_id> scripts/multiqc_slurm.sh
 ```
 
 
@@ -154,7 +154,7 @@ sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/multiqc_slurm
 Need to sort (uncomment for tophat output bams) and index.
 
 ```bash
-sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/samtools_index.sh bam_directory
+sbatch -A <project> -D $PWD --mail-user <email_id> scripts/samtools_index.sh bam_directory
 ```  
 ## Concatenating fastq files
 There are, some times, multiple copies of same sample from multiple runs. It will be easier to concatenate all these multiple copies in single fastq.gz files before starting any workflow or 4-RNA-seq. Let us assume there are two samples control_1 and treated_1 and they have two copies from two separate runs, **run_1** and **run_2**. Therefore, in the project directory there should have two sub-directories 
@@ -173,7 +173,7 @@ treated_1
 ```
 Now we can use 
 ```bash
-sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/cat.gz.sh sample_names.txt rawReads
+sbatch -A <project> -D $PWD --mail-user <email_id> scripts/cat.gz.sh sample_names.txt rawReads
 ```
 
 **cat.gz.sh** will search any fastq.gz files matching with names given in **sample_names.txt** in ALL sub-directories and concatenate them. The output files can be found in **rawReads** directory.
@@ -181,7 +181,7 @@ sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/cat.gz.sh sam
 ## Compressing fastq files
 
 ```bash
-sbatch -A <project> -D $PWD --mail-user ur_email_at_domain scripts/compress_fastq.sh old_data
+sbatch -A <project> -D $PWD --mail-user <email_id> scripts/compress_fastq.sh old_data
 ```
 ## Cufflink 
 
