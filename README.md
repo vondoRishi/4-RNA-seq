@@ -24,7 +24,9 @@ cp sourceDir/*fastq.gz myProjectDir/rawReads
 
 # RNA-seq pipeline
 
-This pipeline and workflow is based on [Taito.csc server batch scripts](https://research.csc.fi/taito-batch-jobs). The objective of this documentation is to make execution faster and reproducible as much as possible. The project folder ( should be in $WRKDIR path and in this example "myProjectDir" ) should contain these folders before starting
+This pipeline and workflow is optimized for [Puhti](https://docs.csc.fi/#computing/overview/) server. The old pipeline for [Taito.csc server](https://research.csc.fi/taito-batch-jobs) is moved at "Taito" branch due to decommisioning of the old server.  
+#### Please read the server documentation before start using. It may need to customized according to that.
+The **objective** of this documentation is to make execution faster and reproducible as much as possible. The project folder ( should be in /scratch/\<project\> path and in this example "myProjectDir" ) should contain these folders before starting
 * scripts : contains all scripts to run in taito server
 * OUT : contains  output files from all scripts 
 * ERROR : contains error files from all scripts 
@@ -44,7 +46,8 @@ Need to install afterqc by the user.
 
 # Execution
 Before execution please define the project in the variables of 4-rna-seq.config file.
-These values will be used by different scripts of this pipeline
+These values will be used by different scripts of this pipeline.
+First define PROJAPPL variable as used for installing **MultiQC**
 
 ```bash
 cd myProjectDir
@@ -54,11 +57,14 @@ cd myProjectDir
 1.	Start QC ( quality checking) with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  and [Multiqc](http://multiqc.info/). The scripts/fastqc.sh executes first Fastqc and then Multiqc internally.
 
 Input : directory rawReads with fastq or fastq.gz files  
-Execution:
+Execution: Replace \<project> and <email_id>.
 ```bash
 sbatch -A <project> -D $PWD --mail-user <email_id> scripts/fastqc.sh rawReads  # Don't use "rawReads/" 
 ```
 Output : directory rawReads/rawReads.html and other files  
+```bash
+ls -lrth rawReads/
+```
 
 2.	Filter/trimminging with  
      a) [AfterQC](https://github.com/OpenGene/AfterQC) (Define the "AfterQC" variable in 4-rna-seq.config before using)  
