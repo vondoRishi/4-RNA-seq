@@ -15,12 +15,21 @@ num_cmnds=$( cmnds_in_file )
 
 module load biokit
 
+echo "Blank lines in sortMeRna files (STAR aligner input should NOT contain blank lines):" >> ERROR/blank_lines_check.txt
 for my_file in $1/*.{fastq,fq}
 do
 if [  -f $my_file ]
 then
-
-	echo "gzip  $my_file " >> commands/$num_cmnds"_compress_"$1.txt
+    #Check for blank lines in sortMeRna files. Star Aligner will not take any lines after a blank line as input. 
+    #https://www.biostars.org/p/302365/#315729
+    num_blank=$(grep -E --line-number --with-filename "^$" $my_file | wc -l)
+    if [ $num_blank -gt 0 ]
+        then
+	#if blank lines exist, remove them and add to log file
+        grep -E --line-number --with-filename '^$' $my_file >> ERROR/blank_lines_check.txt
+	sed -i '/^$/d' $my_file
+        fi
+    echo "gzip  $my_file " >> commands/$num_cmnds"_compress_"$1.txt
 fi
 done
 sbatch_commandlist -t 12:00:00 -mem 4000 -jobname compress_array -threads 4 -commands  commands/$num_cmnds"_compress_"$1.txt
