@@ -45,9 +45,9 @@ Need to install afterqc by the user.
 * [AfterQC](https://github.com/OpenGene/AfterQC)  { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/AfterQC%20install.md) .}
 
 # Execution
-Before execution please define the project in the variables of 4-rna-seq.config file.
-These values will be used by different scripts of this pipeline.
-First define PROJAPPL variable as used for installing **MultiQC**
+Before execution please define the project variables inside **4-rna-seq.config** file.  
+These values will be used by different scripts of this pipeline.  
+First define PROJAPPL variable as used for installing **MultiQC**.
 
 ```bash
 cd myProjectDir
