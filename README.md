@@ -47,7 +47,7 @@ Need to install afterqc by the user.
 # Execution
 Before execution please define the project variables inside **4-rna-seq.config** file.  
 These values will be used by different scripts of this pipeline.  
-First define PROJAPPL variable as used for installing **MultiQC**.
+
 
 ```bash
 cd myProjectDir
