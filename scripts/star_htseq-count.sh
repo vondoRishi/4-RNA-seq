@@ -4,7 +4,7 @@
 #SBATCH -J htseq
 #SBATCH -o OUT/htseq_out_%j.txt
 #SBATCH -e ERROR/htseq_err_%j.txt
-#SBATCH -p large
+#SBATCH -p small
 #SBATCH -n 1
 #SBATCH -t 12:20:00
 #SBATCH --mem-per-cpu=1000
@@ -19,6 +19,8 @@ source scripts/command_utility.sh
    fi
 
 module load bioconda/3 
+htseq-count --help  >> version.txt
+
 for my_file in $1/*.bam
 do
 if [ -f "$my_file" ]

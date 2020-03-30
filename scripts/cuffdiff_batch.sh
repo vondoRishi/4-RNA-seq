@@ -4,7 +4,7 @@
 #SBATCH -J cuffdiff
 #SBATCH -o OUT/cuffdiff_out_%j.txt
 #SBATCH -e ERROR/cuffdiff_err_%j.txt
-#SBATCH -p large
+#SBATCH -p small
 #SBATCH -n 1
 #SBATCH -t 03:20:00
 #SBATCH --mem-per-cpu=1000

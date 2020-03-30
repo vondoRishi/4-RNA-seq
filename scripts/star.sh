@@ -3,7 +3,7 @@
 #SBATCH -J Star
 #SBATCH -o OUT/singleStar_out_%j.txt
 #SBATCH -e ERROR/singleStar_err_%j.txt
-#SBATCH -p large
+#SBATCH -p small
 #SBATCH -n 1
 #SBATCH -t 12:00:00
 #SBATCH --mem=4000
@@ -12,6 +12,8 @@
 source scripts/command_utility.sh
 
 module load gcc/9.1.0 star/2.7.2
+echo "STAR" >> version.txt
+STAR -version  >> version.txt
 
 ## Starting Indexing the genome
 if [ ! -d star-genome_ann_Indices ]; then

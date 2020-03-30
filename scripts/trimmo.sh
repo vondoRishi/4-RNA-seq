@@ -4,7 +4,7 @@
 #SBATCH -J Trimmomatic
 #SBATCH -o OUT/Trimmomatic_out_%j.txt
 #SBATCH -e ERROR/Trimmomatic_err_%j.txt
-#SBATCH -p large
+#SBATCH -p small
 #SBATCH -n 1
 #SBATCH -t 01:40:00
 #SBATCH --mem-per-cpu=8000
@@ -13,6 +13,9 @@
 
 source scripts/command_utility.sh
 module load trimmomatic
+
+echo "trimmomatic" >> version.txt
+trimmomatic -version  >> version.txt
 
   if [ ! -d $2 ]
    then

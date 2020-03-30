@@ -4,7 +4,7 @@
 #SBATCH -J cat_gz
 #SBATCH -o OUT/cat_gz_out_%j.txt
 #SBATCH -e ERROR/cat_gz_err_%j.txt
-#SBATCH -p large
+#SBATCH -p small
 #SBATCH -n 1
 #SBATCH -t 01:20:00
 #SBATCH --mem-per-cpu=1000

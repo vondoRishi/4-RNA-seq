@@ -4,7 +4,7 @@
 #SBATCH -J sortmerna
 #SBATCH -o OUT/sortmerna_out_%j.txt
 #SBATCH -e ERROR/sortmerna_err_%j.txt
-#SBATCH -p large
+#SBATCH -p small
 #SBATCH -n 1
 #SBATCH -t 12:20:00
 #SBATCH --mem-per-cpu=1000
@@ -12,9 +12,11 @@
 
 source scripts/command_utility.sh
 source scripts/sortMeRNA_indexdb.sh
+num_cmnds=$( cmnds_in_file )
 
 module load bioconda
 source activate qiime2-2019.7
+sortmerna --version >>  version.txt
 
 if [ ! -d "$2" ]
    then

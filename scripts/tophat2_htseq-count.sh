@@ -4,7 +4,7 @@
 #SBATCH -J htseq
 #SBATCH -o OUT/htseq_out_%j.txt
 #SBATCH -e ERROR/htseq_err_%j.txt
-#SBATCH -p large 
+#SBATCH -p small 
 #SBATCH -n 1
 #SBATCH -t 22:20:00
 #SBATCH --mem-per-cpu=1000

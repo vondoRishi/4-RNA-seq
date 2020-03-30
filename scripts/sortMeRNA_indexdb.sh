@@ -4,7 +4,7 @@
 #SBATCH -J sortmerna
 #SBATCH -o sortmerna_out_%j.txt
 #SBATCH -e sortmerna_err_%j.txt
-#SBATCH -p large
+#SBATCH -p small
 #SBATCH -n 1
 #SBATCH -t 03:20:00
 #SBATCH --mem-per-cpu=4000

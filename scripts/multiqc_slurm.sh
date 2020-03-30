@@ -5,7 +5,7 @@
 #SBATCH -t 48:00:00
 #SBATCH --mem=4000
 #SBATCH -n 1
-#SBATCH -p large 
+#SBATCH -p small 
 #SBATCH --mail-type=END
 
 source scripts/command_utility.sh

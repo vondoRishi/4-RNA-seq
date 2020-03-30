@@ -4,7 +4,7 @@
 #SBATCH -J afterqc
 #SBATCH -o OUT/afterqc_out_%j.txt
 #SBATCH -e ERROR/afterqc_err_%j.txt
-#SBATCH -p large
+#SBATCH -p small
 #SBATCH -n 1
 #SBATCH -t 04:20:00
 #SBATCH --mem-per-cpu=1000
@@ -18,6 +18,9 @@ if [ -d good ]
 then
         mkdir good bad QC
 fi
+
+echo "AfterQC" >> version.txt
+python $AfterQC/after.py --version >> version.txt
 
 for my_file in $1/*.{fastq,fastq.gz,fq,fq.gz}
 do
