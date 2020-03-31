@@ -24,4 +24,4 @@ jid7=$(sbatch --parsable  --dependency=afterok:$jid6 -A $account -D $PWD --mail-
 
 
 #Final report
-jidr8=$(sbatch --parsable  --dependency=afterok:$jid -A $account -D $PWD --mail-user $email scripts/multiqc_slurm.sh )
+jid8=$(sbatch --parsable  --dependency=afterok:$jid7 -A $account -D $PWD --mail-user $email scripts/multiqc_slurm.sh )
