@@ -21,7 +21,6 @@ Make a directory "rawreads" inside  "myProjectDir" and copy fastq(.gz) files the
 mkdir myProjectDir/rawReads
 cp sourceDir/*fastq.gz myProjectDir/rawReads
 ```
-
 # RNA-seq pipeline
 
 This pipeline and workflow is optimized for [Puhti](https://docs.csc.fi/#computing/overview/) server. The old pipeline for [Taito.csc server](https://research.csc.fi/taito-batch-jobs) is moved at "Taito" branch due to decommisioning of the old server.  
@@ -48,10 +47,20 @@ Need to install afterqc by the user.
 Before execution please define the project variables inside **4-rna-seq.config** file.  
 These values will be used by different scripts of this pipeline.  
 
-
 ```bash
 cd myProjectDir
 ```  
+
+## Quickest way
+
+If the varibles are defined correctly then with the single command QC and transcript/gene quantification can be performed.
+
+```bash
+bash pipeline.sh
+```  
+This will execute FastQC, AfterQC, Sortmerna, Salmon and MultiQC. After Completion of each step it will send an email.
+
+# Manual execution step by step
 
 ## QC and Filtering
 1.	Start QC ( quality checking) with [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  and [Multiqc](http://multiqc.info/). The scripts/fastqc.sh executes first Fastqc and then Multiqc internally.
@@ -109,6 +118,36 @@ _{ Run step 1 review effect of trimming }_
 	```  
 	Output: sortMeRna  
 
+	
+
+  
+ ## Counting  
+* __[Salmon](https://salmon.readthedocs.io/en/latest/)__  
+	Confirm the parameters in file 4-rna-seq.config  
+	+ "transcripts" path to reference transcripts  
+	+ "gene_annotation" path to gtf file  
+
+  Input: sortMeRna (any directory containing fastq files)
+  Execution: 
+  ```bash
+  sbatch -A <project> -D $PWD --mail-user <email_id> scripts/salmon.sh sortMeRna salmon_index salmon_quant   
+  ```  
+  Output: salmon_index = transcriptome indices  
+  	**salmon_quant** = provides a sub-directory with _quant.sf_ for each input samples
+  
+
+## Final report
+Till now we have generated multiqc reports for every command or folder. Now to summarize all in one place execute.
+Edit multiqc [configuration](https://github.com/vondoRishi/4-RNA-seq/blob/master/multiqc_config.yaml) file if requires 
+
+```bash
+sbatch -A <project> -D $PWD --mail-user <email_id> scripts/multiqc_slurm.sh
+```
+**salmon_quant** is the final out put folder.
+
+# EXTRA
+
+
  ## Alignment 
  Depending upon the library preparation kit the parameters of alignment software need to set. 
  Here are few examples of different popular [library kits](https://github.com/vondoRishi/4-RNA-seq/blob/master/Parameters_for_Library_kits.md). \[ please report any missing library type and parameters]    
@@ -127,10 +166,8 @@ To align to a reference genome
   sbatch -A <project> -D $PWD --mail-user <email_id> scripts/star.sh good star_alignment   
   ```  
   Output: star_alignment (contains bam files and quality report star_alignment.html)
-	
-
   
- ## Counting  
+## Counting  
 * __[htseq-count](https://htseq.readthedocs.io/en/release_0.11.1/count.html)__  
 \[ STAR can also give count values of htseq-count’s default parameter but htseq-count will be used separately\]   
 	Confirm the parameters in file 4-rna-seq.config  
@@ -144,18 +181,7 @@ To align to a reference genome
   ```  
   Output: count values at star_count/htseq_\*txt and quality report at star_count.html  
   
-
-## Final report
-Till now we have generated multiqc reports for every command or folder. Now to summarize all in one place execute.
-Edit multiqc [configuration](https://github.com/vondoRishi/4-RNA-seq/blob/master/multiqc_config.yaml) file if requires 
-
-```bash
-sbatch -A <project> -D $PWD --mail-user <email_id> scripts/multiqc_slurm.sh
-```
-
-
-# EXTRA
-
+  
 ## Alignment read viewer
 Need to sort (uncomment for tophat output bams) and index.
 
