@@ -19,9 +19,9 @@ salmon --version >> version.txt
 	
 if [ ! -d $2 ]; then
 
-	echo "salmon index -t $transcripts -i $2" >> commands/$num_cmnds"_"$2_commands.txt 
+	echo "salmon index -t $transcripts -i $2 -p 6" >> commands/$num_cmnds"_"$2_commands.txt 
 
-	sbatch_commandlist -t 12:00:00 -mem 12000 -jobname salmon-indexing \
+	sbatch_commandlist -t 12:00:00 -mem 12000 -jobname indexng_salmon \
 	-threads 6  -commands commands/$num_cmnds"_"$2_commands.txt 
 
 	mv *_out_*txt OUT

@@ -2,31 +2,32 @@
 
 source 4-rna-seq.config
 
+slurm_arg="--parsable -A $account -D $PWD --mail-user $email"
 # QC of rawdata 
 ## fastqc
-jid1=$(sbatch --parsable -A $account -D $PWD --mail-user $email scripts/fastqc.sh rawReads)
+jid1=$(sbatch  $slurm_arg scripts/fastqc.sh rawReads)
 
 ## AfterQC
-jid2=$(sbatch --parsable  --dependency=afterok:$jid1 -A $account -D $PWD --mail-user $email scripts/afterqc_batch.sh rawReads )
+jid2=$(sbatch  --dependency=afterok:$jid1  $slurm_arg scripts/afterqc_batch.sh rawReads )
 
 ## Trimmomatic
-jid3=$(sbatch --parsable  --dependency=afterok:$jid2 -A $account -D $PWD --mail-user $email scripts/trimmo.sh good trimmed_reads  )
+jid3=$(sbatch  --dependency=afterok:$jid2  $slurm_arg scripts/trimmo.sh good trimmed_reads  )
 
 ## Sortmerna
 ### Index
-jid_ind=$(sbatch --parsable   -A $account -D $PWD --mail-user $email scripts/sortMeRNA_indexdb.sh )
+jid_ind=$(sbatch    $slurm_arg scripts/sortMeRNA_indexdb.sh )
 
-jid4=$(sbatch --parsable  --dependency=afterok:$jid_ind:$jid3 -A $account -D $PWD --mail-user $email scripts/sortmerna.sh trimmed_reads sortMeRna )
+jid4=$(sbatch  --dependency=afterok:$jid_ind:$jid3  $slurm_arg scripts/sortmerna.sh trimmed_reads sortMeRna )
 
-#jid5=$(sbatch --parsable  --dependency=afterok:$jid4 -A $account -D $PWD --mail-user $email scripts/compress_fastq.sh sortMeRna)
+#jid5=$(sbatch  --dependency=afterok:$jid4  $slurm_arg scripts/compress_fastq.sh sortMeRna)
 
 ## Check the quality of reads after QC  
-jid6=$(sbatch --parsable  --dependency=afterok:$jid4 -A $account -D $PWD --mail-user $email scripts/fastqc.sh sortMeRna)
+jid6=$(sbatch  --dependency=afterok:$jid4  $slurm_arg scripts/fastqc.sh sortMeRna)
 
 # Quantification
 ## Salmon
-jid7=$(sbatch --parsable  --dependency=afterok:$jid6 -A $account -D $PWD --mail-user $email scripts/salmon.sh sortMeRna salmon_index salmon_quant )
+jid7=$(sbatch  --dependency=afterok:$jid6  $slurm_arg scripts/salmon.sh sortMeRna salmon_index salmon_quant )
 
 
 #Final report
-jid8=$(sbatch --parsable  --dependency=afterok:$jid7 -A $account -D $PWD --mail-user $email scripts/multiqc_slurm.sh )
+jid8=$(sbatch  --dependency=afterok:$jid7  $slurm_arg scripts/multiqc_slurm.sh )
