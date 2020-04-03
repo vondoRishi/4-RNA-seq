@@ -11,7 +11,7 @@
 #SBATCH --mail-type=END
 
 source scripts/command_utility.sh
-source scripts/sortMeRNA_indexdb.sh
+# source scripts/sortMeRNA_indexdb.sh
 num_cmnds=$( cmnds_in_file )
 
 module load bioconda
@@ -32,36 +32,14 @@ do
         extension="${filename##*.}"
         filename="${filename%.*}"
 
-  echo "zcat $my_file > $1/$filename" >> commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt
+  echo "bash scripts/custom_sortmerna.sh $1 $2 $my_file  " >> commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt
+#  echo "zcat $my_file > $1/$filename" >> commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt
   
 fi
 done
 
-sbatch_commandlist -t 12:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt
+ sbatch_commandlist -max_running 10 -t 12:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt
 
-
-num_cmnds=$( cmnds_in_file )
-
-for my_file in $1/*.{fastq,fq}
-do
-  if [  -f "$my_file" ]
-   then
-        filename="${my_file##*/}"
-        extension="${filename##*.}"
-        filename="${filename%.*}"
-
-  echo "sortmerna  --ref  $sortMeRNA_ref,$index_file --reads $my_file \
-	--aligned $2/rRna_$filename --other $2/non_rRna_$filename \
-	--sam --SQ --log -v  --fastx  -a 8 " >> commands/$num_cmnds"_sortmerna_"$1_commands.txt
-  
-fi
-done
- sbatch_commandlist -t 12:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/$num_cmnds"_sortmerna_"$1_commands.txt
-
-
-rm -rf $2/rRna_*{fastq,fq}
-
-rm -rf $1/*.fq
 
 mv *_out_*txt OUT
 mv *_err_*txt ERROR

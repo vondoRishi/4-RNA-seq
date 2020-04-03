@@ -13,12 +13,17 @@ jid2=$(sbatch --parsable  --dependency=afterok:$jid1 -A $account -D $PWD --mail-
 jid3=$(sbatch --parsable  --dependency=afterok:$jid2 -A $account -D $PWD --mail-user $email scripts/trimmo.sh good trimmed_reads  )
 
 ## Sortmerna
-jid4=$(sbatch --parsable  --dependency=afterok:$jid3 -A $account -D $PWD --mail-user $email scripts/sortmerna.sh trimmed_reads sortMeRna )
+### Index
+jid_ind=$(sbatch --parsable   -A $account -D $PWD --mail-user $email scripts/sortMeRNA_indexdb.sh )
 
-jid5=$(sbatch --parsable  --dependency=afterok:$jid4 -A $account -D $PWD --mail-user $email scripts/compress_fastq.sh sortMeRna)
+jid4=$(sbatch --parsable  --dependency=afterok:$jid_ind:$jid3 -A $account -D $PWD --mail-user $email scripts/sortmerna.sh trimmed_reads sortMeRna )
 
-jid6=$(sbatch --parsable  --dependency=afterok:$jid5 -A $account -D $PWD --mail-user $email scripts/fastqc.sh sortMeRna)
+#jid5=$(sbatch --parsable  --dependency=afterok:$jid4 -A $account -D $PWD --mail-user $email scripts/compress_fastq.sh sortMeRna)
 
+## Check the quality of reads after QC  
+jid6=$(sbatch --parsable  --dependency=afterok:$jid4 -A $account -D $PWD --mail-user $email scripts/fastqc.sh sortMeRna)
+
+# Quantification
 ## Salmon
 jid7=$(sbatch --parsable  --dependency=afterok:$jid6 -A $account -D $PWD --mail-user $email scripts/salmon.sh sortMeRna salmon_index salmon_quant )
 

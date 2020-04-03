@@ -51,6 +51,8 @@ These values will be used by different scripts of this pipeline.
 cd myProjectDir
 ```  
 
+**Before execution please confirm that there are enough space**
+
 ## Quickest way
 
 If the varibles are defined correctly then with the single command QC and transcript/gene quantification can be performed.
@@ -59,6 +61,12 @@ If the varibles are defined correctly then with the single command QC and transc
 bash pipeline.sh
 ```  
 This will execute FastQC, AfterQC, Sortmerna, Salmon and MultiQC. After Completion of each step it will send an email.
+
+Do not forget to check any error/failure message from any of the programs 
+
+```bash
+grep -rnwi ERROR OUT -e 'error\|fail.*'
+```  
 
 # Manual execution step by step
 

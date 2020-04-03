@@ -5,4 +5,5 @@ cmnds_in_file () {
 }
 num_cmnds=$( cmnds_in_file )
 # echo  "$num_cmnds"_cmnds lines in it.
+
 source 4-rna-seq.config

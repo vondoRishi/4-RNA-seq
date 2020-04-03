@@ -45,7 +45,7 @@ do
 fi
 done
 
-sbatch_commandlist -t 12:00:00 -mem 48000 -jobname salmon_quant \
+sbatch_commandlist -t 12:00:00 -mem 12000 -jobname salmon_quant \
 -threads 4 -commands commands/$num_cmnds"_"$2_$3_commands.txt
 
 mv *_out_*txt OUT
