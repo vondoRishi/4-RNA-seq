@@ -4,6 +4,12 @@ A **Pipeline:4-RNA-seq and a minimal RNA-seq cook book** to explain each step is
 
 The purpose of this project to develop a easily customizable commandline based schema. Additionally it has basic linux scripts for file manipulation which is key to execute command line pipeline.
 
+## Major update
+
+* pipeline.sh : single command to finish the whole pipeline.
+* errors handling : halt and send right job status by email after error in any of the tasks from sbatch_commandlist.
+* version.txt : tracks the versions of the used software for fututre reference.
+
 ## Installation
 4-RNA-seq is required to download every new project.  
 __Download__   
@@ -39,9 +45,8 @@ Input: Reference Genome (DNA sequences) fasta and annotation file (GTF)
 Run “ls -lrth” after every step to find the last modified file
 
 ## Dependency   
-Need to install afterqc by the user.
-* [Multiqc](http://multiqc.info/) ( run almost after all the commands) { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/Multiqc%20install.md)}   
-* [AfterQC](https://github.com/OpenGene/AfterQC)  { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/AfterQC%20install.md) .}
+Need to install afterqc by the users of puhti.csc.fi.
+ * [AfterQC](https://github.com/OpenGene/AfterQC)  { installation [guide](https://github.com/vondoRishi/4-RNA-seq/blob/master/AfterQC%20install.md) .}
 
 # Execution
 Before execution please define the project variables inside **4-rna-seq.config** file.  
