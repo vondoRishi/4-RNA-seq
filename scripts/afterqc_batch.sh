@@ -20,6 +20,7 @@ then
 fi
 
 module load bioconda/2
+echo "Python " >> version.txt
 python --version >> version.txt
 echo "AfterQC" >> version.txt
 python $AfterQC/after.py --version >> version.txt
