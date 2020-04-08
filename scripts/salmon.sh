@@ -19,13 +19,15 @@ salmon --version >> version.txt
 	
 if [ ! -d $2 ]; then
 
-	echo "salmon index -t $transcripts -i $2 -p 6" >> commands/$num_cmnds"_"$2_commands.txt 
+	echo "salmon index -t $transcripts -i $2 -p 6" >> commands/$num_cmnds"_"$2_index_commands.txt 
 
-	sbatch_commandlist -t 12:00:00 -mem 12000 -jobname indexng_salmon \
-	-threads 6  -commands commands/$num_cmnds"_"$2_commands.txt 
+	array_msg=$( sbatch_commandlist -t 12:00:00 -mem 12000 -jobname indexng_salmon \
+	-threads 6  -commands commands/$num_cmnds"_"$2_index_commands.txt )
 
 	mv *_out_*txt OUT
 	mv *_err_*txt ERROR
+
+	check_array_jobStatus "$array_msg"
 fi
 ## Finished Indexing the genome 
 
@@ -45,11 +47,13 @@ do
 fi
 done
 
-sbatch_commandlist -t 12:00:00 -mem 12000 -jobname salmon_quant \
--threads 4 -commands commands/$num_cmnds"_"$2_$3_commands.txt
+array_msg=$( sbatch_commandlist -t 12:00:00 -mem 12000 -jobname salmon_quant \
+-threads 4 -commands commands/$num_cmnds"_"$2_$3_commands.txt )
 
 mv *_out_*txt OUT
 mv *_err_*txt ERROR
+
+check_array_jobStatus "$array_msg"
 
 source scripts/multiqc_slurm.sh $3
 

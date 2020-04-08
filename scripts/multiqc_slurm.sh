@@ -11,8 +11,6 @@
 source scripts/command_utility.sh
 
 module load bioconda
-source activate multiqc
-
 
 if [ -d "$1" ]
 then

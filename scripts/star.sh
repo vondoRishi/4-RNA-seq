@@ -13,7 +13,7 @@ source scripts/command_utility.sh
 
 module load gcc/9.1.0 star/2.7.2
 echo "STAR" >> version.txt
-STAR -version  >> version.txt
+STAR --version  >> version.txt
 
 ## Starting Indexing the genome
 if [ ! -d star-genome_ann_Indices ]; then
@@ -25,11 +25,13 @@ if [ ! -d star-genome_ann_Indices ]; then
 		--genomeFastaFiles $genome_file --sjdbGTFfile  $gene_annotation \
 		--runThreadN 6 --sjdbOverhang $overhang" >> commands/$num_cmnds"_star-genome_annotated".txt 
 
-	sbatch_commandlist -t 12:00:00 -mem 64000 -jobname star-indexing \
-	-threads 6  -commands commands/$num_cmnds"_star-genome_annotated".txt 
+	array_msg=$( sbatch_commandlist -t 12:00:00 -mem 64000 -jobname star-indexing \
+	-threads 6  -commands commands/$num_cmnds"_star-genome_annotated".txt )
 
 	mv *_out_*txt OUT
 	mv *_err_*txt ERROR
+
+	check_array_jobStatus "$array_msg"
 
 fi
 ## Finished Indexing the genome 
@@ -62,11 +64,13 @@ do
 fi
 done
 
-sbatch_commandlist -t 12:00:00 -mem 48000 -jobname STAR_alignment_array \
--threads 4 -commands commands/$num_cmnds"_STAR_align_"$1_commands.txt
+array_msg=$( sbatch_commandlist -t 12:00:00 -mem 48000 -jobname STAR_alignment_array \
+-threads 4 -commands commands/$num_cmnds"_STAR_align_"$1_commands.txt )
 
 mv *_out_*txt OUT
 mv *_err_*txt ERROR
+
+check_array_jobStatus "$array_msg"
 
 source scripts/multiqc_slurm.sh $2
 ## Alignment of each fastq file starts here

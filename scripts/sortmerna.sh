@@ -11,7 +11,6 @@
 #SBATCH --mail-type=END
 
 source scripts/command_utility.sh
-# source scripts/sortMeRNA_indexdb.sh
 num_cmnds=$( cmnds_in_file )
 
 module load bioconda
@@ -38,8 +37,10 @@ do
 fi
 done
 
- sbatch_commandlist -max_running 10 -t 12:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt
+ array_msg=$( sbatch_commandlist -max_running 10 -t 12:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt )
 
 
 mv *_out_*txt OUT
 mv *_err_*txt ERROR
+
+check_array_jobStatus "$array_msg"

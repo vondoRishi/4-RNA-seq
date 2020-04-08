@@ -19,6 +19,8 @@ then
         mkdir good bad QC
 fi
 
+module load bioconda/2
+python --version >> version.txt
 echo "AfterQC" >> version.txt
 python $AfterQC/after.py --version >> version.txt
 
@@ -29,9 +31,10 @@ then
   echo " python $AfterQC/after.py  -1 $my_file " >> commands/$num_cmnds"_afterqc_"$1_commands.txt
 fi
 done
-sbatch_commandlist -t 4:00:00 -mem 4000 -jobname afterqc_array -threads 1  -commands commands/$num_cmnds"_afterqc_"$1_commands.txt
+array_msg=$( sbatch_commandlist -t 4:00:00 -mem 4000 -jobname afterqc_array -threads 1  -commands commands/$num_cmnds"_afterqc_"$1_commands.txt )
 
 
 mv *_out_*txt OUT
 mv *_err_*txt ERROR
 
+check_array_jobStatus "$array_msg"

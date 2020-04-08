@@ -35,9 +35,12 @@ then
 
 fi
 done
-sbatch_commandlist -t 12:00:00 -mem 4000 -jobname htseq_star -threads 1 -commands  commands/$num_cmnds"_htseq_"$2.txt
+
+array_msg=$( sbatch_commandlist -t 12:00:00 -mem 4000 -jobname htseq_star -threads 1 -commands  commands/$num_cmnds"_htseq_"$2.txt )
 
 mv *_out_*txt OUT
 mv *_err_*txt ERROR
+
+check_array_jobStatus "$array_msg"
 
 source scripts/multiqc_slurm.sh $2

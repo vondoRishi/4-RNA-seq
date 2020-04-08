@@ -36,7 +36,9 @@ then
 fi
 done
  
-	sbatch_commandlist -t 1:00:00 -mem 4000 -jobname trimo_array -threads 8 -commands commands/$num_cmnds"_Trimmomatic_"$1_commands.txt
+	array_msg=$( sbatch_commandlist -t 1:00:00 -mem 4000 -jobname trimo_array -threads 8 -commands commands/$num_cmnds"_Trimmomatic_"$1_commands.txt )
 
 mv *_out_*txt OUT
 mv *_err_*txt ERROR
+
+check_array_jobStatus "$array_msg"
