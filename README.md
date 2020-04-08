@@ -104,7 +104,17 @@ Output : directory trimmed_reads
 _{ Run step 1 review effect of trimming }_
 
 3. [Sortmerna.sh](http://bioinfo.lifl.fr/RNA/sortmerna/) \[ We can also execute this at the very beginning (optional) ]  
-	Sometimes ribosomal or any other unwanted RNAs may present in the library. Sortmerna could be used to filterout them.  
+	Sometimes ribosomal or any other unwanted RNAs may present in the library. Sortmerna could be used to filterout them.
+	
+	__First index the reference fasta file__  
+	If the indexing is available then the program will do nothing.  
+	Input: *sortMeRNA_ref* variable in 4-rna-seq.config    
+	Execution:  
+	```bash
+	sbatch -A <project> -D $PWD --mail-user <email_id> scripts/sortMeRNA_indexdb.sh   
+	```  
+	
+	__NOw filter out__  
 	Input: good   
 	Execution:  
 	```bash
