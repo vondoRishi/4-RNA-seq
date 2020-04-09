@@ -6,6 +6,7 @@ The purpose of this project to develop a easily customizable commandline based s
 
 ## Major update
 
+* SortmeRNA: Tuned for disk utilization and no need for a separate command to compress fastq files. 
 * pipeline.sh : single command to finish the whole pipeline.
 * errors handling : halt and send right job status by email after error in any of the tasks from sbatch_commandlist.
 * version.txt : tracks the versions of the used software for fututre reference.
@@ -127,12 +128,6 @@ _{ Run step 1 review effect of trimming }_
 	```  
 	Output: sortMeRna, the folder contains many different types of file. Fastq/fq files starting with non_Rna will be used in downstream analysis. Files with .log will be used by multiqc to summarize. The "rRna" fastq/fq and ".sam" files are removed by default from __sortMeRna__ before next step. To retailn these files comment out "rm -rf $2/rRna_*{fastq,fq}"
 	
-	
-	Execution: 
-	```bash
-	sbatch -A <project> -D $PWD --mail-user <email_id> scripts/compress_fastq.sh sortMeRna  
-	```  
-	Output: sortMeRna 
 	
 	Now summarize the presence of rRNA.  
 	Execution: 

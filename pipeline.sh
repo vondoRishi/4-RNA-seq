@@ -19,8 +19,6 @@ jid_ind=$(sbatch    $slurm_arg scripts/sortMeRNA_indexdb.sh )
 
 jid4=$(sbatch  --dependency=afterok:$jid_ind:$jid3  $slurm_arg scripts/sortmerna.sh trimmed_reads sortMeRna )
 
-#jid5=$(sbatch  --dependency=afterok:$jid4  $slurm_arg scripts/compress_fastq.sh sortMeRna)
-
 ## Check the quality of reads after QC  
 jid6=$(sbatch  --dependency=afterok:$jid4  $slurm_arg scripts/fastqc.sh sortMeRna)
 
