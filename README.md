@@ -120,7 +120,7 @@ _{ Run step 1 review effect of trimming }_
 	sbatch -A <project> -D $PWD --mail-user <email_id> scripts/sortMeRNA_indexdb.sh   
 	```  
 	
-	__NOw filter out__  
+	__Now filter out__  
 	Input: good   
 	Execution:  
 	```bash
@@ -129,7 +129,7 @@ _{ Run step 1 review effect of trimming }_
 	Output: sortMeRna, the folder contains many different types of file. Fastq/fq files starting with non_Rna will be used in downstream analysis. Files with .log will be used by multiqc to summarize. The "rRna" fastq/fq and ".sam" files are removed by default from __sortMeRna__ before next step. To retailn these files comment out "rm -rf $2/rRna_*{fastq,fq}"
 	
 	
-	Now summarize the presence of rRNA.  
+	__Finally summarize the presence of rRNA.__  
 	Execution: 
 	```bash
 	sbatch -A <project> -D $PWD --mail-user <email_id> scripts/fastqc.sh sortMeRna  
