@@ -6,7 +6,9 @@ The purpose of this project to develop a easily customizable commandline based s
 
 ## Major update
 
-* SortmeRNA: Tuned for disk utilization and no need for a separate command to compress fastq files. 
+* SortmeRNA:
+	+ Now possible to give multiple fasta files as reference.
+	+ Tuned for disk utilization and no need for a separate command to compress fastq files. 
 * pipeline.sh : single command to finish the whole pipeline.
 * errors handling : halt and send right job status by email after error in any of the tasks from sbatch_commandlist.
 * version.txt : tracks the versions of the used software for fututre reference.
@@ -110,7 +112,9 @@ Output : directory trimmed_reads
 _{ Run step 1 review effect of trimming }_
 
 3. [Sortmerna.sh](http://bioinfo.lifl.fr/RNA/sortmerna/) \[ We can also execute this at the very beginning (optional) ]  
-	Sometimes ribosomal or any other unwanted RNAs may present in the library. Sortmerna could be used to filterout them.
+	Sometimes ribosomal or any other unwanted RNAs may present in the library. Sortmerna could be used to filterout them.  
+	Confirm the parameters in file 4-rna-seq.config  
+	+ "sortMeRNA_ref" path to a folder to reference rRNA fasta files.
 	
 	__First index the reference fasta file__  
 	If the indexing is available then the program will do nothing.  
