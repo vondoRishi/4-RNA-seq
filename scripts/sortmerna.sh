@@ -32,7 +32,6 @@ do
         filename="${filename%.*}"
 
   echo "bash scripts/custom_sortmerna.sh $1 $2 $my_file  " >> commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt
-#  echo "zcat $my_file > $1/$filename" >> commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt
   
 fi
 done

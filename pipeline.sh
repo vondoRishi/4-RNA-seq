@@ -28,4 +28,4 @@ jid7=$(sbatch  --dependency=afterok:$jid6  $slurm_arg scripts/salmon.sh sortMeRn
 
 
 #Final report
-jid8=$(sbatch  --dependency=afterok:$jid7  $slurm_arg scripts/multiqc_slurm.sh )
+jid8=$(sbatch  --dependency=afterok:$jid7  $slurm_arg -J final_report scripts/multiqc_slurm.sh )

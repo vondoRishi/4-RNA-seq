@@ -1,7 +1,6 @@
 #!/bin/bash
 
-source 4-rna-seq.config
-
+source scripts/command_utility.sh
 ## Uncompressing
 my_file="$3"
 echo "processing $my_file"
@@ -14,16 +13,24 @@ echo "zcat $my_file > $1/$filename"
 zcat $my_file > $1/$filename
 
 ## Sortmerna
-basename="${filename%.*}"
-idx_file=$sortMeRNA_ref
-idx_name="${idx_file%.*}"
-index_file="$idx_name.idx"
+if [[ ! -f $sortMeRNA_ref && ! -d $sortMeRNA_ref ]]; then
+        echoerr "ERROR:  $sortMeRNA_ref do not exist"
+	if [[ "$1" != "$test_str" ]]; then
+	        exit 1
+	fi
+fi
 
-echo "sortmerna  --ref  $sortMeRNA_ref,$index_file --reads $1/$filename \
+## Sortmerna
+basename="${filename%.*}"
+
+ref_msg=$( sortmerna_refString )
+ref_str=${ref_msg##*=}
+
+echo "sortmerna  --ref  $ref_str --reads $1/$filename \
           --aligned $2/rRna_$basename --other $2/non_rRna_$basename \
           --sam --SQ --log -v  --fastx  -a 8 " 
 	  
-sortmerna  --ref  $sortMeRNA_ref,$index_file --reads $1/$filename \
+sortmerna  --ref  $ref_str --reads $1/$filename \
           --aligned $2/rRna_$basename --other $2/non_rRna_$basename \
           --sam --SQ --log -v  --fastx  -a 8  
 
@@ -44,3 +51,5 @@ rm -f $2/rRna_$basename.fq
         fi
   echo "gzip  $2/non_rRna_$basename.fq "
   gzip $2/non_rRna_$basename.fq
+
+
