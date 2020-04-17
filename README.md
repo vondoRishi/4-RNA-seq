@@ -165,7 +165,17 @@ Edit multiqc [configuration](https://github.com/vondoRishi/4-RNA-seq/blob/master
 ```bash
 sbatch -A <project> -D $PWD --mail-user <email_id> scripts/multiqc_slurm.sh
 ```
-**salmon_quant** is the final out put folder.
+
+**salmon_quant** is the final out put folder. 
+
+**Archieve the important folders**  
+
+It is an example command only.
+
+```bash
+tar -czvf results_export.tar.gz *.html *.gtf* *.fa* salmon_quant/ 4-rna-seq.config version.txt
+```bash
+
 
 # EXTRA
 
