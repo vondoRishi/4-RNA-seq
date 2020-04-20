@@ -1,0 +1,157 @@
+---
+title: "Mouse TxDb from different sources"
+output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 2
+---
+
+```{r eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+### It may take long time
+if(BiocManager::version()<"3.10")
+  BiocManager::install(version = "3.10")
+```
+
+
+To get gene level analysis from Salmon output which is in trnscript level we need the information of transcript_id <--> gene_id mapping. There are different way to get this information. Here few of them will be evaluated. Following packages are required.
+
+```{r warning=FALSE,message=FALSE}
+
+if(!require("tximport"))
+        BiocManager::install("tximport")
+if(!require("GenomicFeatures"))
+       BiocManager::install("GenomicFeatures")
+if(!require("AnnotationDbi"))
+        BiocManager::install("AnnotationDbi")
+if(!require("tidyverse"))
+        install.packages("tidyverse")
+if(!require("gplots"))
+  install.packages("gplots")
+if(!require("RMariaDB"))
+  install.packages("RMariaDB")
+
+library(tidyverse)
+library(AnnotationDbi)
+library(tximport)
+
+```
+
+First , let us import a sample RNA-seq data aligned to Mouse transcript.
+
+```{r warning=FALSE,message=FALSE}
+quant <- read_delim("salmon_quant/non_rRna_trimmed_Derm5Ctrl_run032119.good.fq_quant/quant.sf", 
+    "\t", escape_double = FALSE, trim_ws = TRUE)
+head(quant)
+```
+
+
+
+# TX<==>Gene 
+
+The reads are aligned to `r  dim(quant)[1]` transcripts (TX) and the TX identifiers are from Ensembl. We need transcript <==> gene mapping info to get the gene level expression values. 
+
+There are different sources to get these mappings.
+
+## From package
+
+Search for right package for your organism based on your requirement from [bioconductor](http://bioconductor.org/packages/release/BiocViews.html#___Organism)
+
+```{r search,warning=FALSE,message=FALSE}
+BiocManager::available("Mmusculus")
+```
+
+"EnsDb.Mmusculus.v79" looks like provide mapping from Ensembl database.
+
+```{r message=FALSE, warning=FALSE}
+if(!require("EnsDb.Mmusculus.v79"))
+  BiocManager::install("EnsDb.Mmusculus.v79")
+
+library("EnsDb.Mmusculus.v79")
+txdb_pkg <- EnsDb.Mmusculus.v79
+# columns(txdb_pkg)
+k <- keys(txdb_pkg, keytype="TXID")
+tx2gene_pkg <- AnnotationDbi::select(txdb_pkg, k, "GENEID", "TXID")
+
+# head(tx2gene_pkg)
+dim(tx2gene_pkg)
+gplots::venn(list(require_tx=quant$Name, EnsDb.Mmusculus.v79= tx2gene_pkg$TXID))
+```
+
+Information about 30k TX ids are **missing** 
+
+## GTF file
+
+We can download the GTF file from Ensemble and use it.
+
+```{r message=FALSE,warning=FALSE}
+download.file(url = "ftp://ftp.ensembl.org/pub/release-99/gtf/mus_musculus/Mus_musculus.GRCm38.99.gtf.gz",
+              destfile = "Mus_musculus.GRCm38.99.gtf.gz")
+TxGTF <- GenomicFeatures::makeTxDbFromGFF(file = "Mus_musculus.GRCm38.99.gtf.gz")
+ k <- keys(TxGTF, keytype = "TXNAME")
+ tx2gene_gtf <- AnnotationDbi::select(TxGTF, k, "GENEID", "TXNAME")
+ # head(tx2gene)
+ dim(tx2gene_gtf)
+ 
+gplots::venn(list(require_tx=quant$Name, EnsDb.Mmusculus.v79= tx2gene_pkg$TXID, GTF_file=tx2gene_gtf$TXNAME))
+```
+
+The GTF provides more but not all the Tx ids
+
+## Pkg:GenomicFeatures
+
+It is also possible to download this information from Ensembl directly
+
+```{r eval=FALSE}
+mmusculusEnsembl_biomart <- GenomicFeatures::makeTxDbFromEnsembl(organism = "Mus musculus", release = 99)
+saveRDS(mmusculusEnsembl_biomart, file = "mmusculusEnsembl_biomart.rds")
+
+```
+
+
+```{r message=FALSE,warning=FALSE}
+mmusculusEnsembl_biomart <- GenomicFeatures::makeTxDbFromEnsembl(organism = "Mus musculus", release = 99)
+k <- keys(mmusculusEnsembl_biomart, keytype = "TXNAME")
+tx2gene_bm <- select(mmusculusEnsembl_biomart, k, "GENEID", "TXNAME")
+# head(tx2gene_bm)
+dim(tx2gene_bm)
+gplots::venn(list(require_tx=quant$Name, FromGFF=tx2gene_gtf$TXNAME, GenomicFeatures = tx2gene_bm$TXNAME))
+```
+
+**GenomicFeatures** successfully downloaded all the required Tx ids.  
+
+## ensembldb  
+
+Using [ensembldb](https://bioconductor.org/packages/release/bioc/html/ensembldb.html) suggested by tximport following [this](http://bioconductor.org/packages/release/bioc/vignettes/ensembldb/inst/doc/ensembldb.html) tutorial. [Always check latest updated documentation]
+
+
+```{r message=FALSE, warning=FALSE}
+if(!require("AnnotationHub"))
+  install.packages("AnnotationHub")
+
+library(AnnotationHub)
+
+mouse_query <- AnnotationHub::query(AnnotationHub(), c("mus musculus","EnsDb",99))
+mouse_Ensdb <- mouse_query[[1]]
+# listColumns(mouse_Ensdb)
+
+tx2gene_ensembldb <- transcripts(mouse_Ensdb,
+          columns = c("tx_id", "gene_id"),
+          return.type = "DataFrame")
+
+gplots::venn(list(ensembldb=tx2gene_ensembldb$tx_id, GenomicFeatures = tx2gene_bm$TXNAME))
+```
+**ensembldb** provides identical Tx ids compare to  GenomicFeatures  
+
+# Conclusion
+
+* Always better to cross check different sources.
+* GenomicFeatures == ensembldb
+* ensembldb faster than other methods
+
+```{r}
+sessionInfo()
+```
+

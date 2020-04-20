@@ -1,0 +1,98 @@
+---
+title: "salmon tximport recipe"
+output: 
+  html_notebook: 
+    toc: yes
+---
+
+Experimental: Exploring DeSeq2 with [tximport](http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html)
+
+Use https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html 
+Learn https://yulab-smu.github.io/clusterProfiler-book/index.html 
+ 
+```{r warning=FALSE,message=FALSE}
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+if(BiocManager::version()<"3.10")
+  BiocManager::install(version = "3.10")
+
+if(!require("tximport"))
+        BiocManager::install("tximport")
+
+if(!require("tidyverse"))
+        install.packages("tidyverse")
+
+library(tidyverse)
+library(tximport)
+```
+
+
+# Import Salmon
+
+## Set file paths
+
+```{r }
+quant_files <- list.files( path = "salmon_quant",pattern = "quant.sf", full.names = TRUE, recursive = TRUE)
+quant_files
+```
+
+## Design matrix
+
+Design matrix gives information about the experiment. Here the samples are paired and conditioned
+
+```{r }
+paired <- c("5","5","6","6","7","7")
+condition <- rep(c("Ctrl","Fgf20"))
+coldata <- data.frame(condition =condition, paired= paired, filePath= quant_files , stringsAsFactors = FALSE)
+coldata
+```
+
+
+## Tx <==> Gene  
+
+The reads are aligned to transcripts. We need transcript <-> gene mapping to get the gene level expression values. There are different ways to get the mappings.
+
+```{r message=FALSE, warning=FALSE}
+mouse_query <- query(AnnotationHub(), c("mus musculus","EnsDb",99))
+mouse_Ensdb <- mouse_query[[1]]
+# listColumns(mouse_Ensdb)
+
+tx2gene_ensembldb <- transcripts(mouse_Ensdb,
+          columns = c("tx_id", "gene_id"),
+          return.type = "DataFrame")
+
+```
+
+
+
+## Tx import 
+
+Let import salmon count values and summarize them at gene level.
+
+```{r message=FALSE}
+
+txi_gene <- tximport(coldata$filePath, type = "salmon", tx2gene = tx2gene_ensembldb,ignoreTxVersion = TRUE)
+names(txi_gene)
+head(txi_gene$counts)
+```
+
+
+
+```{r message=FALSE,warning=FALSE}
+if(!require("DESeq2"))
+        BiocManager::install("DESeq2")
+
+library("DESeq2")
+ddsTxi <- DESeqDataSetFromTximport(txi_gene,
+                                   colData = coldata,
+                                   design = ~ condition)
+```
+
+From here follow the Deseq2 [guidelines](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#differential-expression-analysis) and explanations are there.
+
+
+```{r }
+sessionInfo()
+```
+
