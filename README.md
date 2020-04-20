@@ -174,7 +174,7 @@ It is an example command only.
 
 ```bash
 tar -czvf results_export.tar.gz *.html *.gtf* *.fa* salmon_quant/ 4-rna-seq.config version.txt
-```bash
+```
 
 
 # EXTRA
