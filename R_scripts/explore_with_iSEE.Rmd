@@ -1,0 +1,175 @@
+---
+title: "explore with iSEE"
+output: html_notebook
+---
+
+```{r echo=FALSE}
+BiocManager::install("iSEE")
+```
+
+Explore the dataset with  [iSEE](https://bioconductor.org/packages/release/bioc/html/iSEE.html) which is mainly for single cell data to DeSeq2 reasults.
+
+
+```{r warning=FALSE}
+ddsTxi <- readRDS(file = "R_scripts/ddsTxi.rds")
+# class(ddsTxi)
+```
+
+Get the differentially expressed genes in a **dirty way**
+
+```{r warning=FALSE}
+result_df <- function(dds, p_contrast) {
+  dds <- DESeq(dds, quiet = TRUE)
+  res <-
+    results(
+      dds,
+      contrast = p_contrast
+    )
+  
+  resSig_df <- as.data.frame(subset(res, padj < 0.01))
+  resSig_df$gene_id <- rownames(resSig_df)
+  return(resSig_df[order(resSig_df$log2FoldChange, decreasing = TRUE),])
+}
+
+round_df <- function(df, digits) {
+  nums <- vapply(df, is.numeric, FUN.VALUE = logical(1))
+
+  df[,nums] <- round(df[,nums], digits = digits)
+
+  (df)
+}
+
+```
+
+
+```{r warning=FALSE}
+result_dds <- result_df(ddsTxi, p_contrast = c("condition",
+                                               "Ctrl",
+                                               "Fgf20"))
+result_dds <- round_df(result_dds,digits = 3)
+head(result_dds)
+```
+
+Get gene info
+
+```{r message=FALSE,warning=FALSE}
+library(AnnotationHub)
+mouse_query <- AnnotationHub::query(AnnotationHub(), c("mus musculus","EnsDb",99))
+mouse_Ensdb <- mouse_query[[1]]
+# listColumns(mouse_Ensdb)
+
+gene_info <- genes(mouse_Ensdb,
+          columns = c("gene_name", "gene_id","gene_biotype"),
+          return.type = "data.frame")
+```
+
+prepare the rowdata with DEG genes
+
+```{r message=FALSE}
+require(dplyr)
+row_featureData <- gene_info %>% dplyr::filter(gene_id %in% rownames(ddsTxi)) %>% dplyr::full_join(result_dds, by="gene_id")
+
+row_featureData <- row_featureData[order(row_featureData$log2FoldChange, decreasing = TRUE),]
+
+# rowData(ddsTxi) <- row_featureData
+```
+
+preparing for iSEE [following](https://gist.github.com/federicomarini/4a543eebc7e7091d9169111f76d59de1)
+
+```{r message=FALSE} 
+wrapup_for_iSEE <- function(dds, res) {
+  # dds to vst
+  dds <- estimateSizeFactors(dds)
+  vst <- vst(dds)
+  
+  # initialize the container
+  se <- SummarizedExperiment(
+    assays = List(
+      counts = counts(dds),
+      normcounts = counts(dds,normalized = TRUE),
+      vst_counts = assay(vst)
+    )
+  )
+  
+  # adding colData, taken directly from the DESeqDataSet object
+  colData(se) <- colData(dds)
+  
+  # extract contrast info
+  # this_contrast <- sub(".*p-value: (.*)","\\1",mcols(res, use.names=TRUE)["pvalue","description"])
+  
+  # getting the rowData from the dds itself
+  rdd <- rowData(dds)
+  
+  # modifying in advance the DESeqResults object
+  res$log10_baseMean <- log10(res$baseMean)
+  res$log10_pvalue <- -log10(res$pvalue)
+  # and for the rowData
+  # rdd$log10_dispersion <- log10(rdd$dispersion)
+  
+  # adding rowData to se
+  # rowData(se)[[paste0("DESeq2_",gsub(" ","_",this_contrast))]] <- res
+  
+  # merging in the existing rowData slot
+  rowData(se) <- cbind(rowData(se), rdd)
+  
+  return(as(se, "SingleCellExperiment"))
+}
+```
+
+### Configurartion 
+
+Configure the app from the [document](https://bioconductor.org/packages/release/bioc/vignettes/iSEE/inst/doc/configure.html)
+
+```{r message=FALSE, warning=FALSE}
+library(iSEE)
+
+ddsTxi_se <- wrapup_for_iSEE(dds = ddsTxi, res = row_featureData)
+
+rowData(ddsTxi_se) <- row_featureData
+fexArg <- featAssayPlotDefaults(ddsTxi_se, 1)
+fexArg$DataBoxOpen <- TRUE
+
+fexArg[1, "XAxis"] <- "Column data"
+fexArg[1, "XAxisColData"] <- "condition"
+fexArg[1,"YAxisRowTable"] <- "Row statistics table 1"
+
+## visual parameters
+# cdArgs <- colDataPlotDefaults(ddsTxi_se, 1)
+# cdArgs$VisualBoxOpen <- TRUE
+# cdArgs$VisualChoices <- list(c("Color", "Shape"), c("Color", "Shape"))
+# cdArgs$ColorBy <- "Column data"
+# cdArgs$ShapeBy <- "Column data"
+# cdArgs$ColorByColData <- c("condition")
+# cdArgs$ShapeByColData <- c("condition")
+
+init <- DataFrame(
+    Name = c( "Row statistics table 1","Feature assay plot 1"),
+    Width = c(12, 12),
+    Height = c(6,6)
+)
+app <- iSEE::iSEE(ddsTxi_se, initialPanels = init,  featAssayArgs = fexArg #, colDataArgs = cdArgs
+                  )
+```
+
+Run from terminal
+```{r eval=FALSE}
+app
+```
+
+
+```{r echo=FALSE,eval=FALSE}
+library(airway)
+data(airway)
+airway_sce <- as(airway, "SingleCellExperiment")
+
+fexArg <- featAssayPlotDefaults(airway_sce, 1)
+fexArg$DataBoxOpen <- TRUE
+
+init <- DataFrame(
+    Name = c( "Row statistics table 1","Feature assay plot 1"),
+    Width = c(12, 12)
+)
+ iSEE::iSEE(airway_sce, initialPanels = init,  featAssayArgs = fexArg #, colDataArgs = cdArgs
+                  )
+```
+
