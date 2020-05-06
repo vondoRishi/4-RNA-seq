@@ -1,0 +1,304 @@
+---
+title: "Evaluation of interaction term in design matrix"
+output: 
+  html_notebook: 
+    toc: yes
+---
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+if(BiocManager::version()<"3.10")
+  BiocManager::install(version = "3.10")
+
+if(!require("tximport"))
+        BiocManager::install("tximport")
+
+if(!require("tidyverse"))
+        install.packages("tidyverse")
+
+library(tidyverse)
+library(tximport)
+library(AnnotationHub)
+```
+
+
+```{r echo=FALSE}
+quant_files <- list.files( path = "salmon_quant",pattern = "quant.sf", full.names = TRUE, recursive = TRUE)
+# quant_files
+```
+
+## Design matrix
+
+Design matrix gives information about the experiment. Here the samples are paired and conditioned
+
+```{r }
+coldata <- as.data.frame(str_split_fixed(str_extract(quant_files, pattern = "A0[0-9]+.*_[0-9]_"),pattern = "_", n=4)[,c(2:3)])
+
+colnames(coldata) <- c("genotype","condition")
+
+coldata$filePath= quant_files
+coldata
+```
+
+
+Tx <==> Gene  
+
+The reads are aligned to transcripts. We need transcript <-> gene mapping to get the gene level expression values. There are different ways to get the mappings.
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+ens_query <- AnnotationHub::query(AnnotationHub(), c("elegans","EnsDb",99))
+elegans_Ensdb <- ens_query[[1]]
+# listColumns(elegans_Ensdb)
+
+tx2gene_ensembldb <- transcripts(elegans_Ensdb,
+          columns = c("tx_id", "gene_id"),
+          return.type = "DataFrame")
+
+gene_name2gene_ensembldb <- genes(elegans_Ensdb,
+          columns = c("gene_name", "gene_id","gene_biotype","description"),
+          return.type = "data.frame")
+
+saveRDS(tx2gene_ensembldb, file = "tx2gene_ensembldb.rds")
+saveRDS(gene_name2gene_ensembldb, file = "gene_name2gene_ensembldb.rds")
+# head(tx2gene_ensembldb)
+# sample_quant <- read_delim(coldata$filePath[1], 
+#     "\t", escape_double = FALSE, trim_ws = TRUE)
+# head(sample_quant)
+# gplots::venn(list(ensemble=tx2gene_ensembldb$tx_id, reference=sample_quant$Name))
+```
+
+
+
+Tx import 
+
+Let import salmon count values and summarize them at gene level.
+
+```{r echo=FALSE,message=FALSE}
+
+txi_gene <- tximport(coldata$filePath, type = "salmon", tx2gene = tx2gene_ensembldb)
+# names(txi_gene)
+# head(txi_gene$counts)
+```
+
+
+
+```{r echo=FALSE,message=FALSE,warning=FALSE}
+if(!require("DESeq2"))
+        BiocManager::install("DESeq2")
+
+library("DESeq2")
+ddsTxi <- DESeqDataSetFromTximport(txi_gene,
+                                   colData = coldata,
+                                   design = ~ genotype + condition + genotype:condition  )
+
+
+```
+
+Check reference levels:
+
+```{r }
+ddsTxi$condition
+ddsTxi$genotype
+```
+
+The first term of the second line shows the reference level. Which is correct here , however can be adjusted by following command
+
+```{r message=FALSE,eval=FALSE}
+dds$genotype = relevel( dds$genotype, "N2")
+```
+
+
+```{r echo=FALSE,warning=FALSE}
+vsd <- vst(ddsTxi, blind=FALSE)
+plotPCA(vsd, intgroup=c("genotype","condition"))
+```
+
+Good [article](https://rstudio-pubs-static.s3.amazonaws.com/329027_593046fb6d7a427da6b2c538caf601e1.html) on design matrix.
+
+## DEG {.tabset}
+
+Using different design matrix to identify differentially expressed genes between N2:EV vs N2:TLK
+
+```{r echo=FALSE}
+result_df <- function(dds, p_contrast) {
+  dds <- DESeq(dds, quiet = TRUE)
+  res <-
+    results(
+      dds,
+      contrast = p_contrast,
+      alpha = 0.05,
+      lfcThreshold = 1
+    )
+  
+  resSig_df <- as.data.frame(subset(res, padj < 0.05))
+  resSig_df$gene_id <- rownames(resSig_df)
+  return(resSig_df[order(resSig_df$log2FoldChange, decreasing = TRUE),])
+}
+
+round_df <- function(df, digits) {
+  nums <- vapply(df, is.numeric, FUN.VALUE = logical(1))
+
+  df[,nums] <- round(df[,nums], digits = digits)
+
+  (df)
+}
+```
+
+
+
+### Interaction
+
+Set up the model, and run DESeq2:
+
+```{r message=FALSE} 
+design(ddsTxi) <- ~ genotype + condition + genotype:condition
+ddsTxi <- DESeq(ddsTxi) 
+resultsNames(ddsTxi)
+
+df <- as.data.frame(colData(ddsTxi)[,c("genotype","condition")])
+rld <- rlog(ddsTxi, blind=FALSE)
+
+# The design matrix can be genarate by 
+# stats::model.matrix.default(design(ddsTxi), data=as.data.frame(colData(ddsTxi)))
+```
+
+```{r}
+inter_result <- as.data.frame(results(ddsTxi, contrast=c("condition","TLK","EV"), alpha = 0.05))
+inter_result <- subset(inter_result, padj <0.05 & abs(log2FoldChange) >1) 
+inter_result <- inter_result[order(inter_result$log2FoldChange),]
+inter_top_down_up <- rbind(head(inter_result), tail(inter_result) )
+# ix = which.min(inter_result$padj,)
+# inter_result[1:5,-(3:4)]
+
+# plotCounts(ddsTxi, gene = rownames(inter_top_down_up)[1], intgroup = c("genotype","condition"))
+```
+
+### group variable
+
+```{r message=FALSE}
+ddsTxi$group <- factor(paste0(ddsTxi$genotype, ddsTxi$condition))
+design(ddsTxi) <- ~ 0 + group
+ddsTxi <- DESeq(ddsTxi)
+resultsNames(ddsTxi)
+```
+
+```{r}
+group_result <- as.data.frame(results(ddsTxi, contrast=c("group","N2TLK","N2EV"), alpha = 0.05))
+group_result <- subset(group_result, padj <0.05 & abs(log2FoldChange) >1) 
+group_result <- group_result[order(group_result$log2FoldChange),]
+group_top_down_up <- rbind(head(group_result), tail(group_result) )
+
+```
+
+#### Is there any difference ?
+
+```{r }
+library(UpSetR)
+
+listInput <-
+  list(
+    inter_up = rownames(inter_result[inter_result$log2FoldChange > 0,]),
+    inter_down = rownames(inter_result[inter_result$log2FoldChange < 0,]),
+    group_up = rownames(group_result[group_result$log2FoldChange > 0,]),
+    group_down = rownames(group_result[group_result$log2FoldChange < 0,])
+  )
+
+setFig <- upset(fromList(listInput), nsets = 4,shade.color = "green", sets = names(listInput), keep.order = TRUE)
+print(setFig)
+```
+
+#### Conclusion 
+     The results are same by grouping instead of interaction. 
+     
+#### Heatmap of top DE genes
+
+```{r}
+pheatmap(
+  assay(rld)[rownames(inter_top_down_up), ],
+  cluster_rows = FALSE,
+  show_rownames = TRUE,
+  cluster_cols = FALSE,
+  annotation_col = df
+)
+```
+
+### Subset
+
+Using only the subset of samples
+
+```{r warning=FALSE,message=FALSE}
+dds_n2 <- ddsTxi[,ddsTxi$genotype == "N2"]
+design(dds_n2) <- ~ condition
+
+dds_n2 <- DESeq(dds_n2)
+
+subset_result <- as.data.frame(results(dds_n2, contrast=c("condition","TLK","EV"), alpha = 0.05))
+subset_result <- subset(subset_result, padj <0.05 & abs(log2FoldChange) >1 ) 
+subset_result <- subset_result[order(subset_result$log2FoldChange),]
+subset_top_down_up <- rbind(head(subset_result), tail(subset_result) )
+# ix = which.min(inter_result$padj,)
+# inter_result[1:5,-(3:4)]
+
+pheatmap(
+  assay(rld)[rownames(subset_top_down_up), ],
+  cluster_rows = FALSE,
+  show_rownames = TRUE,
+  cluster_cols = FALSE,
+  annotation_col = df
+)
+```
+
+
+
+
+
+## Set
+
+```{r}
+library(UpSetR)
+
+listInput <-
+  list(
+    inter_up = rownames(inter_result[inter_result$log2FoldChange > 0, ]),
+    inter_down = rownames(inter_result[inter_result$log2FoldChange < 0, ]),
+    group_up = rownames(group_result[group_result$log2FoldChange > 0, ]),
+    group_down = rownames(group_result[group_result$log2FoldChange < 0, ]),
+    subset_up = rownames(subset_result[subset_result$log2FoldChange > 0, ]),
+    subset_down = rownames(subset_result[subset_result$log2FoldChange < 0, ])
+  )
+
+setFig <- upset(fromList(listInput), nsets = 6,shade.color = "green", sets = names(listInput), keep.order = TRUE)
+print(setFig)
+```
+
+```{r}
+gplots::venn(listInput[1:4])
+
+```
+
+```{r}
+uniq_sub <- setdiff(listInput$subset_up, listInput$inter_up)
+
+pheatmap(
+  assay(rld)[uniq_sub, ],
+  cluster_rows = FALSE,
+  show_rownames = TRUE,
+  cluster_cols = FALSE,
+  annotation_col = df
+)
+```
+
+
+```{r}
+subset_result %>% dplyr::filter( rownames(subset_result) %in% uniq_sub)
+
+```
+
+
+```{r }
+sessionInfo()
+```
+

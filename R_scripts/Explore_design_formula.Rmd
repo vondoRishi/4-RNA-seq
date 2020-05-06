@@ -1,0 +1,368 @@
+---
+title: "Evaluation of different design formulas and 'end result' in linear models with DeSeq2"
+author: rishi.dasroy<@helsinki.fi>
+output: 
+  html_notebook: 
+    toc: yes
+---
+
+Here I will try to examine ..  
+
+* How many different ways the design formula can be formed in a two variables gene expression experiment?   
+* How does it effect the end result or list of Differentially expressed genes (DEG)? 
+
+I will use here **DeSeq2** (The interpretation should be same for any linear model based software like limma, edgeR). 
+
+There is another good approach to explain this [here](https://rstudio-pubs-static.s3.amazonaws.com/329027_593046fb6d7a427da6b2c538caf601e1.html). But it does not show how the end result depends on the design formula. 
+
+Additional resource  
+
++ [Treatment contrasts](https://www.flutterbys.com.au/stats/tut/tut7.1.html#h3_4)
++ [Contrasts in Linear Models](https://rcompanion.org/rcompanion/h_01.html)
++ [Interactions and contrasts](http://genomicsclass.github.io/book/pages/interactions_and_contrasts.html)
+
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+if(!require("tidyverse"))
+        install.packages("tidyverse")
+library(tidyverse)
+
+if(!require("DESeq2"))
+        BiocManager::install("DESeq2")
+library("DESeq2")
+```
+
+# Simulated data  
+First make an example data with 12 samples
+```{r message=FALSE,warning=FALSE}
+dds <- makeExampleDESeqDataSet(n=10000,m=12)
+```
+<!-- By default it is a very simple experiment with two conditions. -->
+```{r eval=FALSE,echo=FALSE}
+colData(dds)
+```
+
+Now let us add two variables each with two factors to the dataset. It is not known whether the expression of genes depend on these variables.
+
+```{r } 
+dds$condition <- NULL
+dds$group <- factor( c( rep("Fin",6), rep("Ind",6) ) )
+dds$food <- factor( rep(rep(c("NS","S"),each=3),2) )
+
+#renaming column names
+colnames(dds) <- paste(as.character( dds$food), as.character( dds$group), rownames(colData(dds)),  sep="_"  )
+colnames(dds) = gsub("sample","",colnames(dds))
+assay(dds)[c(1:5),]
+```
+
+### Sample info 
+
+```{r echo=FALSE}
+DT::datatable(as.data.frame(colData(dds))[,1:2], options= list(paging=FALSE), class = 'cell-border stripe')
+```
+
+
+Let us assume in this study the expression level of genes are measured to examine the impact of "S" (spicy) compared to "NS" (non-spicy) food consumption. Additionally the samples are assumed from two different nationalities, Finnish and Indians.
+
+
+```{r echo=FALSE,warning=FALSE}
+design(dds) <- ~ group + food
+vsd <- DESeq2::vst(dds, blind=FALSE)
+rld <- rlog(dds, blind=FALSE)
+df <- as.data.frame(colData(dds)[,c("food","group")])
+# plotPCA(vsd, intgroup=c("food","group"))
+```
+
+## Grouping
+The data is completely random. Add some signal
+
+```{r}
+cts <- counts(dds)
+ranGenes <- floor(runif(300) * 1000)
+for (i in ranGenes) {
+  cts[i, colData(dds)$group == "Ind"] <-
+    as.integer(cts[i, colData(dds)$group == "Ind"] + round(rnorm(1, 150, sd = 1)))
+  
+    cts[i, colData(dds)$food == "S"] <-
+    as.integer(cts[i, colData(dds)$food == "S"] + round(rnorm(1, 50, sd = 1)))
+}
+
+counts(dds) <- cts
+```
+
+
+```{r echo=FALSE,warning=FALSE}
+design(dds) <- ~ group + food
+vsd <- DESeq2::vst(dds, blind=FALSE)
+plotPCA(vsd, intgroup=c("group","food"))
+```
+
+After adding (biased) signal there is a difference between groups.
+
+# DEG {.tabset}
+
+Differentially expressed genes (DEG)
+
+## Hypothesis  
+Now the primary objective is to find which genes are up regulated due to "S" (spicy) food compared to "NS" (non-spicy) food consumption in Fin (Finnish) group. 
+
+Now these can be answered differently depending upon the hypothesis or design/model. Based on the hypothesis, linear model will be fitted to gene expression and then required contrast can be used.
+
+Here different models are fitted using  
+
++ *Only* Finnsih samples  
+
+```
+   dds_n2 <- dds[,dds$group == "Fin"]  
+   design(dds_n2) <- ~ food  
+   dds_n2 <- DESeq(dds_n2)
+```  
++ *Including* other group Indian  
+
+``` 
+design(dds) <- ~ group + food 
+dds <- DESeq(dds) 
+resultsNames(dds)
+``` 
++ *Interaction* between group and food  
+Gene expression level may depend on the genetic or cultural background which can also be modeled.
+```
+design(dds) <- ~ group + food + group:food
+dds <- DESeq(dds) 
+resultsNames(dds)
+```
+
+
+#### Results
+
+DEGs are identified (adjusted *p-value* < 0.05) and top UP-DOWN regulated genes (by log fold change) are plotted as heatmap, visualized in the tabs.
+
+  
+The corresponding design matrix can be evaluate with following command.
+```{r eval=FALSE}
+stats::model.matrix.default(design(dds), data=as.data.frame(colData(dds)))
+```
+
+
+```{r echo=FALSE}
+result_df <- function(dds, p_contrast) {
+  dds <- DESeq(dds, quiet = TRUE)
+  res <-
+    results(
+      dds,
+      contrast = p_contrast,
+      alpha = 0.05,
+      lfcThreshold = 1
+    )
+  
+  resSig_df <- as.data.frame(subset(res, padj < 0.05))
+  resSig_df$gene_id <- rownames(resSig_df)
+  return(resSig_df[order(resSig_df$log2FoldChange, decreasing = TRUE),])
+}
+
+round_df <- function(df, digits) {
+  nums <- vapply(df, is.numeric, FUN.VALUE = logical(1))
+
+  df[,nums] <- round(df[,nums], digits = digits)
+
+  (df)
+}
+```
+
+
+## Only
+
+Using only the samples corresponding to Finns
+
+```{r warning=FALSE,message=FALSE}
+dds_n2 <- dds[,dds$group == "Fin"]
+design(dds_n2) <- ~ food
+
+dds_n2 <- DESeq(dds_n2)
+```
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+subset_result <- as.data.frame(results(dds_n2, contrast=c("food","S","NS"), alpha = 0.05))
+subset_result <- subset(subset_result, padj <0.05 & abs(log2FoldChange) > 1 ) 
+subset_result <- subset_result[order(subset_result$log2FoldChange, decreasing = TRUE),]
+subset_top_down_up <- rbind(head(subset_result), tail(subset_result) )
+
+
+pheatmap(
+  assay(vsd)[rownames(subset_top_down_up), ],
+  cluster_rows = FALSE,
+  show_rownames = TRUE,
+  cluster_cols = FALSE, 
+  annotation_col =  df
+)
+```
+
+## Including
+
+```{r message=FALSE,warning=FALSE} 
+design(dds) <- ~ group + food
+dds <- DESeq(dds) 
+resultsNames(dds)
+```
+
+```{r echo=FALSE}
+include_result <- as.data.frame(results(dds, contrast=c("food","S","NS"), alpha = 0.05))
+include_result <- subset(include_result, padj <0.05 & abs(log2FoldChange) >1) 
+include_result <- include_result[order(include_result$log2FoldChange , decreasing = TRUE),]
+include_top_down_up <- rbind(head(include_result), tail(include_result) )
+
+pheatmap(
+  assay(vsd)[rownames(include_top_down_up), ],
+  cluster_rows = FALSE,
+  show_rownames = TRUE,
+  cluster_cols = FALSE, 
+  annotation_col =  df
+)
+
+```
+
+
+## Interaction
+
+```{r message=FALSE} 
+design(dds) <- ~ group + food + group:food
+dds <- DESeq(dds) 
+resultsNames(dds)
+```
+
+```{r echo=FALSE,message=FALSE}
+inter_result <- as.data.frame(results(dds, contrast=c("food","S","NS"), alpha = 0.05))
+inter_result <- subset(inter_result, padj <0.05 & abs(log2FoldChange) >1) 
+inter_result <- inter_result[order(inter_result$log2FoldChange, decreasing = TRUE),]
+inter_top_down_up <- rbind(head(inter_result), tail(inter_result) )
+  
+pheatmap(
+  assay(vsd)[rownames(inter_top_down_up), ],
+  cluster_rows = FALSE,
+  show_rownames = TRUE,
+  cluster_cols = FALSE, 
+  annotation_col =  df
+)
+```
+
+
+# Conclusion
+
+Above different models are used to identify DEGs in Finns with spicy or non-spicy food. Have they identified same genes ?
+
+```{r echo=FALSE}
+library(UpSetR)
+
+listInput <-
+  list(
+    inter_up = rownames(inter_result[inter_result$log2FoldChange > 1, ]),
+    inter_down = rownames(inter_result[inter_result$log2FoldChange < 1, ]),
+    include_up = rownames(include_result[include_result$log2FoldChange > 1, ]),
+    include_down = rownames(include_result[include_result$log2FoldChange < 1, ]),
+    only_up = rownames(subset_result[subset_result$log2FoldChange > 1, ]),
+    only_down = rownames(subset_result[subset_result$log2FoldChange < 1, ])
+  )
+
+setFig <- upset(fromList(listInput), nsets = 6,shade.color = "green", sets = names(listInput), keep.order = TRUE,)
+print(setFig)
+```
+
+```{r echo=FALSE}
+plotGenes <- function(Object, geneIds) {
+  x <- as.data.frame(assay(Object)[geneIds, ])
+  x$gene<- rownames(x)
+  x_melt <- reshape2::melt(x, value.name="expr")
+  super_melt <- x_melt %>% separate(variable,c("food","group","id"))
+  
+  p <- ggplot(super_melt,aes(y=expr,x=group,color=food))+geom_jitter(position=position_dodge(width=0.5))+facet_wrap(~ gene)+theme_bw()
+  return(p)
+}
+
+```
+
+
+```{r warning=FALSE,message=FALSE,echo=FALSE}
+uniq_inter_up <- setdiff(listInput$inter_up , c( listInput$only_up, listInput$include_up))
+
+ggplot(inter_result, aes(log2FoldChange,baseMean))+geom_point(aes(alpha=  rownames(inter_result) %in% uniq_inter_up))+ labs(alpha  =  "Uniquly identified by \n using interaction term")+theme(legend.position = "bottom")
+
+# plotGenes(dds, uniq_inter_up)
+# plotCounts(dds, gene = listInput$include_up, intgroup = c("group", "food"))
+```
+
+By using interaction terms we have identified `r length(uniq_inter_up)` unique DEGs. However, from above volcano plot it is clear these genes have mostly lower expression level and log fold change.
+
+#### Ordering
+There are 141 common upregulated genes identified by above all modelling. However if we the genes are ordered by fold change then model '~ group + food' does not match with rest.
+
+## Advantage of interaction  {.tabset}
+
+We can do different type of testing by using interaction  term in __design__ will return following terms. 
+```{r message=FALSE}
+design(dds)
+resultsNames(dds)
+```
+
+What does these terms means? 
+
+At this point I have realized the simulated data is not good enough to understand this. Hence I will try to make a better simulated dataset next time.
+
+<!-- ### Effect on Indians -->
+
+```{r echo=FALSE,eval=FALSE}
+india_result <- as.data.frame(results(dds, list( c("food_S_vs_NS","group_Ind_vs_Fin") ), alpha = 0.05))
+india_result <- subset(india_result, padj <0.05 & abs(log2FoldChange) >1) 
+india_result <- india_result[order(india_result$log2FoldChange, decreasing = TRUE),]
+india_top_down_up <- rbind(head(india_result), tail(india_result) )
+  
+pheatmap(
+  assay(vsd)[rownames(india_top_down_up), ],
+  cluster_rows = FALSE,
+  show_rownames = TRUE,
+  cluster_cols = FALSE, 
+  annotation_col =  df
+)
+```
+
+
+<!-- ### Genotype effect -->
+
+```{r echo=FALSE, eval=FALSE}
+food_inter_result <- as.data.frame(results(dds, list( c("groupInd.foodS") ), alpha = 0.05))
+food_inter_result <- subset(food_inter_result, padj <0.05 & abs(log2FoldChange) >1) 
+food_inter_result <- food_inter_result[order(food_inter_result$log2FoldChange, decreasing = TRUE),]
+food_inter_top_down_up <- rbind(head(food_inter_result), tail(food_inter_result) )
+  
+pheatmap(
+  assay(vsd)[rownames(food_inter_top_down_up), ],
+  cluster_rows = FALSE,
+  show_rownames = TRUE,
+  cluster_cols = FALSE, 
+  annotation_col =  df
+)
+```
+
+```{r echo=false}
+p_food <- dds$food
+p_group <- dds$group
+
+# head(inter_top_down_up)
+# gene_name <- "gene675"
+# inter_top_down_up[gene_name,]
+# subset_result[gene_name,]
+# food_inter_result[gene_name,]
+# india_result[gene_name,]
+# 
+# coef(dds,SE=FALSE)[gene_name,]
+
+gene_exp <- as.vector(counts(dds[gene_name,],normalized = FALSE))
+```
+
+
+```{r echo=FALSE}
+sessionInfo()
+```
+
