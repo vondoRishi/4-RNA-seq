@@ -1,6 +1,5 @@
 # 4-RNA-seq
-A [slurm](https://slurm.schedmd.com/) based schema for RNA-seq analysis to execute on linux clusters.  
-A **Pipeline:4-RNA-seq and a minimal RNA-seq cook book** to explain each step is freely available [here](https://vondorishi.github.io/4-RNA-seq/). This book was based on old Taito server. For practical use read below instructions.   
+A [slurm](https://slurm.schedmd.com/) based schema for RNA-seq analysis to execute on linux clusters.  A **Pipeline:4-RNA-seq and a minimal RNA-seq cook book** to explain each step is freely available [here](https://vondorishi.github.io/4-RNA-seq/). This book was based on old Taito server. For practical use read below instructions.   
 
 The purpose of this project to develop a easily customizable commandline based schema "for RNAseq" analysis. Additionally it has basic linux scripts for file manipulation which is bottle neck for developing new command line pipeline.
 
