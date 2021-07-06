@@ -72,7 +72,7 @@ This will execute FastQC, AfterQC, Sortmerna, Salmon and MultiQC. After Completi
 Do not forget to check any error/failure message from any of the programs 
 
 ```bash
-grep -rnwi ERROR OUT -e 'error\|fail.*'
+grep -rnwi ERROR OUT -e 'error\|fail\|Disk.*'
 ```  
 
 # Manual execution step by step
