@@ -15,7 +15,7 @@ do
 if [  -f $my_file ]
 then
         filename="${my_file##*/}"
-	ida upload /Rat/SingleFastq/$filename $my_file
+	ida upload $2/$filename $my_file
 fi
 done
 
