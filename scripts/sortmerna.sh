@@ -4,9 +4,9 @@
 #SBATCH -J sortmerna
 #SBATCH -o OUT/sortmerna_out_%j.txt
 #SBATCH -e ERROR/sortmerna_err_%j.txt
-#SBATCH -p small
-#SBATCH -n 1
-#SBATCH -t 12:20:00
+#SBATCH -p large
+#SBATCH -n 2
+#SBATCH -t 71:20:00
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
 
@@ -36,7 +36,7 @@ do
 fi
 done
 
- array_msg=$( sbatch_commandlist -max_running 10 -t 12:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt )
+ array_msg=$( sbatch_commandlist -max_running 10 -t 71:00:00 -mem 24000 -jobname sortmerna_array -threads 8 -commands commands/$num_cmnds"_gunzipSortMeRNA_"$1_commands.txt )
 
 
 mv *_out_*txt OUT

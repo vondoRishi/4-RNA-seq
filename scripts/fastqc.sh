@@ -4,8 +4,8 @@
 #SBATCH -J fastqc
 #SBATCH -o OUT/fastqc_out_%j.txt
 #SBATCH -e ERROR/fastqc_err_%j.txt
-#SBATCH -p small
-#SBATCH -n 1
+#SBATCH -p large
+#SBATCH -n 2
 #SBATCH -t 02:50:00
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END

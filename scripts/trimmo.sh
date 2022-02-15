@@ -4,9 +4,9 @@
 #SBATCH -J Trimmomatic
 #SBATCH -o OUT/Trimmomatic_out_%j.txt
 #SBATCH -e ERROR/Trimmomatic_err_%j.txt
-#SBATCH -p small
-#SBATCH -n 1
-#SBATCH -t 01:40:00
+#SBATCH -p large
+#SBATCH -n 2
+#SBATCH -t 71:40:00
 #SBATCH --mem-per-cpu=8000
 #SBATCH --cpus-per-task=8
 #SBATCH --mail-type=END
@@ -36,7 +36,7 @@ then
 fi
 done
  
-	array_msg=$( sbatch_commandlist -t 1:00:00 -mem 4000 -jobname trimo_array -threads 8 -commands commands/$num_cmnds"_Trimmomatic_"$1_commands.txt )
+	array_msg=$( sbatch_commandlist -t 32:00:00 -mem 8000 -jobname trimo_array -threads 8 -commands commands/$num_cmnds"_Trimmomatic_"$1_commands.txt )
 
 mv *_out_*txt OUT
 mv *_err_*txt ERROR

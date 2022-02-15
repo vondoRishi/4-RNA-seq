@@ -4,8 +4,8 @@
 #SBATCH -J index_sortmerna
 #SBATCH -o OUT/index_sortmerna_out_%j.txt
 #SBATCH -e ERROR/index_sortmerna_err_%j.txt
-#SBATCH -p small
-#SBATCH -n 1
+#SBATCH -p large
+#SBATCH -n 2
 #SBATCH -t 03:20:00
 #SBATCH --mem-per-cpu=16000
 #SBATCH --mail-type=END

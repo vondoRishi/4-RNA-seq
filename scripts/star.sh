@@ -3,8 +3,8 @@
 #SBATCH -J Star
 #SBATCH -o OUT/singleStar_out_%j.txt
 #SBATCH -e ERROR/singleStar_err_%j.txt
-#SBATCH -p small
-#SBATCH -n 1
+#SBATCH -p large
+#SBATCH -n 2
 #SBATCH -t 12:00:00
 #SBATCH --mem=4000
 #SBATCH --mail-type=END

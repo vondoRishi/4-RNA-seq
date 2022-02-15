@@ -4,8 +4,8 @@
 #SBATCH -e ERROR/multiqc_err_%j.txt
 #SBATCH -t 48:00:00
 #SBATCH --mem=4000
-#SBATCH -n 1
-#SBATCH -p small 
+#SBATCH -n 2
+#SBATCH -p large 
 #SBATCH --mail-type=END
 
 source scripts/command_utility.sh

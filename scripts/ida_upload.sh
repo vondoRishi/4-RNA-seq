@@ -4,8 +4,8 @@
 #SBATCH -J ida
 #SBATCH -o OUT/ida_out_%j.txt
 #SBATCH -e ERROR/ida_err_%j.txt
-#SBATCH -p small
-#SBATCH -n 1
+#SBATCH -p large
+#SBATCH -n 2
 #SBATCH -t 02:50:00
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
@@ -15,7 +15,8 @@ do
 if [  -f $my_file ]
 then
         filename="${my_file##*/}"
-	ida upload $2/$filename $my_file
+	echo "ida upload $2/$filename $my_file"
+	#ida upload $2/$filename $my_file
 fi
 done
 

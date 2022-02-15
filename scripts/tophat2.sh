@@ -4,8 +4,8 @@
 #SBATCH -J tophat2
 #SBATCH -o OUT/tophat2_out_%j.txt
 #SBATCH -e ERROR/tophat2_err_%j.txt
-#SBATCH -p small
-#SBATCH -n 1
+#SBATCH -p large
+#SBATCH -n 2
 #SBATCH -t 12:20:00
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END

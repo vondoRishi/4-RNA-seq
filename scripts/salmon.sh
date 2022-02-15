@@ -3,9 +3,9 @@
 #SBATCH -J salmon
 #SBATCH -o OUT/salmon_out_%j.txt
 #SBATCH -e ERROR/salmon_err_%j.txt
-#SBATCH -p small
-#SBATCH -n 1
-#SBATCH -t 12:00:00
+#SBATCH -p large
+#SBATCH -n 2
+#SBATCH -t 71:00:00
 #SBATCH --mem=4000
 #SBATCH --mail-type=END
 
@@ -21,7 +21,7 @@ if [ ! -d $2 ]; then
 
 	echo "salmon index -t $transcripts -i $2 -p 6" >> commands/$num_cmnds"_"$2_index_commands.txt 
 
-	array_msg=$( sbatch_commandlist -t 12:00:00 -mem 12000 -jobname indexng_salmon \
+	array_msg=$( sbatch_commandlist -t 71:00:00 -mem 12000 -jobname indexng_salmon \
 	-threads 6  -commands commands/$num_cmnds"_"$2_index_commands.txt )
 
 	mv *_out_*txt OUT
@@ -47,7 +47,7 @@ do
 fi
 done
 
-array_msg=$( sbatch_commandlist -t 12:00:00 -mem 12000 -jobname salmon_quant \
+array_msg=$( sbatch_commandlist -t 71:00:00 -mem 12000 -jobname salmon_quant \
 -threads 4 -commands commands/$num_cmnds"_"$2_$3_commands.txt )
 
 mv *_out_*txt OUT

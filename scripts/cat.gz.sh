@@ -4,8 +4,8 @@
 #SBATCH -J cat_gz
 #SBATCH -o OUT/cat_gz_out_%j.txt
 #SBATCH -e ERROR/cat_gz_err_%j.txt
-#SBATCH -p small
-#SBATCH -n 1
+#SBATCH -p large
+#SBATCH -n 2
 #SBATCH -t 01:20:00
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
@@ -21,9 +21,11 @@ if test -f "$1" ; then
                 exit 1 
         fi
 
+	rm -f $2/cat_summary.txt
         while IFS= read -r line
         do
           echo "cat */*$line*fastq.gz > $2/$line.fastq.gz" >> commands/$num_cmnds"_cat.gz".txt
+          ls */*$line*fastq.gz >> $2/cat_summary.txt 
         done < "$1"
         
         sbatch_commandlist -jobname cat -commands commands/$num_cmnds"_cat.gz".txt

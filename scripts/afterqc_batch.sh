@@ -4,9 +4,9 @@
 #SBATCH -J afterqc
 #SBATCH -o OUT/afterqc_out_%j.txt
 #SBATCH -e ERROR/afterqc_err_%j.txt
-#SBATCH -p small
-#SBATCH -n 1
-#SBATCH -t 04:20:00
+#SBATCH -p large
+#SBATCH -n 2
+#SBATCH -t 08:20:00
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
 
@@ -32,7 +32,7 @@ then
   echo " python $AfterQC/after.py  -1 $my_file " >> commands/$num_cmnds"_afterqc_"$1_commands.txt
 fi
 done
-array_msg=$( sbatch_commandlist -t 4:00:00 -mem 4000 -jobname afterqc_array -threads 1  -commands commands/$num_cmnds"_afterqc_"$1_commands.txt )
+array_msg=$( sbatch_commandlist -t 8:00:00 -mem 4000 -jobname afterqc_array -threads 1  -commands commands/$num_cmnds"_afterqc_"$1_commands.txt )
 
 
 mv *_out_*txt OUT

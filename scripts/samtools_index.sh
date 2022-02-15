@@ -4,8 +4,8 @@
 #SBATCH -J samtools
 #SBATCH -o OUT/samtools_out_%j.txt
 #SBATCH -e ERROR/samtools_err_%j.txt
-#SBATCH -p small
-#SBATCH -n 1
+#SBATCH -p large
+#SBATCH -n 2
 #SBATCH -t 12:20:00
 #SBATCH --mem-per-cpu=1000
 #SBATCH --mail-type=END
