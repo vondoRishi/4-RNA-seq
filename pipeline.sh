@@ -1,6 +1,9 @@
 #! /bin/bash
 
-source 4-rna-seq.config
+#source 4-rna-seq.config
+source scripts/command_utility.sh 
+
+validate_param
 
 slurm_arg="--parsable -A $account -D $PWD --mail-user $email"
 # QC of rawdata 

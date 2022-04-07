@@ -66,4 +66,16 @@ done
 echo "$indexing_done=$index_ref"
 }
 
+validate_param(){
+   if [[ ${#email} -lt 1 ]] ; then
+	      echo "Please enter valid email $email" >/dev/stderr
+	      exit 1
+   fi
+
+   if [[ ${#account} -lt 1 ]] ; then
+	      echo "Please enter valid account ID  $account" >/dev/stderr
+	      exit 1
+   fi
+}
+
 source 4-rna-seq.config
