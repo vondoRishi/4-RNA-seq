@@ -11,10 +11,7 @@
 #SBATCH --mail-type=END
 
 source scripts/command_utility.sh
-
-module load bioconda
-source activate qiime2-2019.7
-
+module load qiime2
 
 if [[ ! -f $sortMeRNA_ref && ! -d $sortMeRNA_ref ]]; then
         echoerr "ERROR:  $sortMeRNA_ref do not exist"
