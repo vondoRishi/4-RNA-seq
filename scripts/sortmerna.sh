@@ -13,8 +13,8 @@
 source scripts/command_utility.sh
 num_cmnds=$( cmnds_in_file )
 
-module load bioconda
-source activate qiime2-2019.7
+module load qiime2
+
 sortmerna --version >>  version.txt
 
 if [ ! -d "$2" ]
