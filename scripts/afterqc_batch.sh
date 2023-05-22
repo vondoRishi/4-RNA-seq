@@ -19,9 +19,7 @@ then
         mkdir good bad QC
 fi
 
-module load bioconda/2
-echo "Python " >> version.txt
-python --version >> version.txt
+export PATH="$AfterQC:$PATH"
 echo "AfterQC" >> version.txt
 python $AfterQC/after.py --version >> version.txt
 
