@@ -18,7 +18,7 @@ source scripts/command_utility.sh
         mkdir $2
    fi
 
-module load bioconda/3 
+module load biopythontools/11.3.0_3.10.6 
 htseq-count --help  >> version.txt
 
 for my_file in $1/*.bam
