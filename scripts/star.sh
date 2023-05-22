@@ -11,7 +11,7 @@
 
 source scripts/command_utility.sh
 
-module load gcc/9.1.0 star/2.7.2
+module load star/2.7.10a
 echo "STAR" >> version.txt
 STAR --version  >> version.txt
 
