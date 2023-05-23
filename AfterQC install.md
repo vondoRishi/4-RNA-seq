@@ -4,11 +4,11 @@
 Install with [Tykky module](https://docs.csc.fi/computing/containers/tykky/)). Here is the required env.yml file will look
 
     channels:
-      - conda-forge
+      - bioconda
     dependencies:
-      - python=3.8.8
-      - scipy
-      - nglview
+      - python=2.7
+      - afterqc
+
 
 > conda-containerize new --prefix <install_dir> env.yml  
 
