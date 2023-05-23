@@ -10,7 +10,7 @@
 
 source scripts/command_utility.sh
 
-module load bioconda
+module load multiqc
 
 if [ -d "$1" ]
 then
