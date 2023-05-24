@@ -19,7 +19,7 @@ source scripts/command_utility.sh
    fi
 
 module load biopythontools/11.3.0_3.10.6 
-htseq-count --help  >> version.txt
+htseq-count --version >> version.txt
 
 for my_file in $1/*.bam
 do
