@@ -3,6 +3,8 @@ A [slurm](https://slurm.schedmd.com/) based schema for RNA-seq analysis to execu
 
 The purpose of this project to develop a easily customizable commandline based schema "for RNAseq" analysis. Additionally it has basic linux scripts for file manipulation which is bottle neck for developing new command line pipeline.
 
+An alternative of **4-RNA-seq** is [nf-co.re/rnaseq](https://nf-co.re/rnaseq). However, it can not perform pseudo alignment where [reference genome is miising](https://github.com/nf-core/rnaseq/issues/688). Therefore it is still relevant.
+
 ## Major update
 
 * SortmeRNA:
