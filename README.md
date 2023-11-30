@@ -1,23 +1,23 @@
 # 4-RNA-seq
-A [slurm](https://slurm.schedmd.com/) based schema for RNA-seq analysis to execute on linux clusters.  A **Pipeline:4-RNA-seq and a minimal RNA-seq cook book** to explain each step is freely available [here](https://vondorishi.github.io/4-RNA-seq/). This book was based on old Taito server. For practical use read below instructions.   
+A [slurm](https://slurm.schedmd.com/) based schema for RNA-seq analysis to execute on Linux clusters.  A **Pipeline:4-RNA-seq and a minimal RNA-seq cook book** to explain each step is freely available [here](https://vondorishi.github.io/4-RNA-seq/). This book was based on the old Taito server. For practical use read the below instructions.   
 
-The purpose of this project to develop a easily customizable commandline based schema "for RNAseq" analysis. Additionally it has basic linux scripts for file manipulation which is bottle neck for developing new command line pipeline.
+The purpose of this project is to develop an easily customizable commandline based schema "for RNAseq" analysis. Additionally, it has basic Linux scripts for file manipulation which is a bottleneck for developing a new command line pipeline.
 
-An alternative of **4-RNA-seq** is [nf-co.re/rnaseq](https://nf-co.re/rnaseq). However, it can not perform pseudo alignment where [reference genome is miising](https://github.com/nf-core/rnaseq/issues/688). Therefore it is still relevant.
+An alternative of **4-RNA-seq** is [nf-co.re/rnaseq](https://nf-co.re/rnaseq). However, it can not perform pseudo alignment where [reference genome is missing](https://github.com/nf-core/rnaseq/issues/688). Therefore it is still relevant.
 
 ## Major update
 
 * SortmeRNA:
 	+ Now possible to give multiple fasta files as reference.
 	+ Tuned for disk utilization and no need for a separate command to compress fastq files. 
-* pipeline.sh : single command to finish the whole pipeline.
-* errors handling : halt and send right job status by email after error in any of the tasks from sbatch_commandlist.
-* version.txt : tracks the versions of the used software for fututre reference.
+* pipeline.sh: single command to finish the whole pipeline.
+* errors handling: halt and send the right job status by email after an error in any of the tasks from sbatch_commandlist.
+* version.txt: tracks the versions of the used software for future reference.
 
 ## Installation
 4-RNA-seq is required to download every new project.  
 __Download__   
-For each experiment 4-RNA-seq pipeline needs to be downloaded separately. Let us download it to a directory named  "myProjectDir" with following commands
+For each experiment, the 4-RNA-seq pipeline needs to be downloaded separately. Let us download it to a directory named  "myProjectDir" with the following commands
 
 ```bash
 git clone https://github.com/vondoRishi/4-RNA-seq myProjectDir
